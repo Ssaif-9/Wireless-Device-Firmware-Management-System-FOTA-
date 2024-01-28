@@ -47,6 +47,8 @@ WiFiMulti multi;
 
 void setup()
 {
+    Serial2.begin(115200, SERIAL_8N1, 17, 16);  // UART2: RX = GPIO17, TX = GPIO16
+
     Serial.begin(115200);
 
 #if defined(ARDUINO_RASPBERRY_PI_PICO_W)
@@ -136,10 +138,51 @@ void readfile(const char *path) {
   Serial.println("Failed to open file for reading");
   return;
   }
-  Serial.print("Read from file: ");
+  Serial.print("Read from file: \n");
   while (file.available()) {Serial.write(file.read()); }
   file.close();
 }
+
+
+void processHexRecord(const char *record)
+{
+  // Assuming the record is in Intel Hex format with a colon at the beginning
+  // You may want to perform additional validation depending on your requirements
+
+  // Extract the data part of the record (excluding the colon)
+  const char *data = record ;
+
+  // Calculate the length of the data
+  size_t dataLength = strlen(data);
+
+  // Print the address and data of the record
+ // Serial.printf("Address: %.*s, Data: %.*s\n", 8, data, dataLength - 8, data + 8);
+  Serial.printf("%s\n",data);
+  Serial2.println(data);
+  while(!Serial.available())  //wait NULL in uart0 
+  {
+
+  }
+  Serial.read();   //free buffer 
+}
+
+void BootloaderSendData(const char *path)
+{
+  File file = LittleFS.open(path, "r");
+
+  while (file.available())
+  {
+    char record[128]={0}; // Adjust the size as needed
+    file.readBytesUntil('\n', record, sizeof(record));
+
+    // Process the current line (record)
+    processHexRecord(record);
+  }
+
+  // Close the file after reading
+  file.close();
+}
+
 void loop()
 {
 
@@ -152,10 +195,11 @@ void loop()
         Serial.println("\nDownload file...\n");
 
         // The file systems for flash and SD/SDMMC can be changed in FirebaseFS.h.
-        if (!Firebase.Storage.download(&fbdo, STORAGE_BUCKET_ID /* Firebase Storage bucket id */, "KIA/KIA.bin" /* path of remote file stored in the bucket */, "/Update.bin" /* path to local file */, mem_storage_type_flash /* memory storage type, mem_storage_type_flash and mem_storage_type_sd */, fcsDownloadCallback /* callback function */))
+        if (!Firebase.Storage.download(&fbdo, STORAGE_BUCKET_ID /* Firebase Storage bucket id */, "KIA/KIA.hex" /* path of remote file stored in the bucket */, "/Update.txt" /* path to local file */, mem_storage_type_flash /* memory storage type, mem_storage_type_flash and mem_storage_type_sd */, fcsDownloadCallback /* callback function */))
             Serial.println(fbdo.errorReason());
 
-            readfile("/Update.bin");
-
+            readfile("/Update.txt");
+            Serial.println("\n");
+            BootloaderSendData("/Update.txt");
     }
 }
