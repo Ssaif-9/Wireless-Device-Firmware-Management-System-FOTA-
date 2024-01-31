@@ -2,6 +2,7 @@
 
 #include <Firebase_ESP_Client.h>
 #include <addons/TokenHelper.h>
+#include <addons/RTDBHelper.h>
 
 #include "FIREBASE_config.h"
 #include "FIREBASE_interface.h"
@@ -18,7 +19,7 @@ void FIREBASE_INIT(void)
 
     /* Assign the api key (required) */
     config.api_key = API_KEY;
-
+    config.database_url = RealTimeDataBase_BUCKET_ID;
     /* Assign the user sign in credentials */
     auth.user.email = USER_EMAIL;
     auth.user.password = USER_PASSWORD;
@@ -78,10 +79,11 @@ void processHexRecord(const char *record)
 
   // Print the address and data of the record
  // Serial.printf("Address: %.*s, Data: %.*s\n", 8, data, dataLength - 8, data + 8);
-  Serial.printf("%s\n",data);
-  UART_TransimiteString2(data);
-  UART_ReceiveACK0();
-  UART_FreeBuffer0(); // free buffer
+  
+   Serial.printf("%s\n",data);
+   UART_TransimiteString2(data);
+    UART_ReceiveACK0();
+    UART_FreeBuffer0(); // free buffer
 }
 
 void BootloaderSendData(const char *path)
@@ -99,4 +101,40 @@ void BootloaderSendData(const char *path)
 
   // Close the file after reading
   file.close();
+}
+
+
+bool WaitAcception(void)
+{
+  char Data;
+  UART_ReceiveChar(&Data);
+  if(Data=='T')
+    return true;
+  else
+    return false;
+}
+
+bool readBooleanData(FirebaseData fbdo,const char *path) 
+{
+  bool value=false;
+  if (Firebase.ready()) {
+    if (Firebase.RTDB.getBool(&fbdo,path)) {
+      value = fbdo.boolData();
+    } else {
+      Serial.println("Failed to read from database");
+      Serial.println(fbdo.errorReason());
+    }
+  }
+  return value;
+}
+
+void writeBooleanData(FirebaseData fbdo,const char *path,bool data) {
+  if (Firebase.ready()) {
+    if (Firebase.RTDB.setBool(&fbdo,path,data)) {
+      Serial.println("Boolean data written to database");
+    } else {
+      Serial.println("Failed to write to database");
+      Serial.println(fbdo.errorReason());
+    }
+  }
 }
