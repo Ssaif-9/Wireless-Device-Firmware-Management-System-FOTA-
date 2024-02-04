@@ -31,6 +31,8 @@ carSchema.methods.toJSON = function () {
     const carObject = car.toObject()
 
     delete carObject.hex
+    delete carObject.owner
+    
 
     return carObject
 }

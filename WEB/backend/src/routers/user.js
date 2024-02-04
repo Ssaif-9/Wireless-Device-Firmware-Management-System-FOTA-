@@ -198,6 +198,28 @@ router.delete("/users/me", auth, async (req, res) => {
   }
 });
 
+//           Get User Owned Cars
+router.get("/users/me/cars", auth, async (req, res) => {
+  try {
+    userCars = req.user.cars;
+    const ownedCars = [];
+    for (let i = 0; i < userCars.length; i++) {
+      const car = await Car.findById(userCars[i]);
+      ownedCars.push(car);
+    }
+    console.log(ownedCars);
+    res.send(ownedCars);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+
+
+
+
+
+
 const uploadImage = multer({
   limits: {
     fileSize: 1000000,
