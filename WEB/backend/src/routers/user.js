@@ -5,7 +5,7 @@ const auth = require("../middleware/auth");
 const multer = require("multer");
 const bodyParser = require('body-parser');
 const mailer = require("../functions/nodemailer");
-const uploadCarUpdate = require("../functions/firebase");
+const firebase = require("../functions/firebase");
 const router = new express.Router();
 
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -276,7 +276,9 @@ router.post("/admin/upload", uploadHexFile.single("hex"), async (req, res) => {
     await car.save();
     console.log(car.hex.length);
 
-    uploadCarUpdate(car.maker, car.model, car.year, car.hex.length, base64Data);
+    await firebase.uploadCarUpdate_Storage(car.maker, car.model, car.year, car.hex.length, base64Data);
+    await firebase.uploadCarUpdate_RealtimeDB(car.maker, car.model, car.year);
+
     res.send(car);
   } catch (error) {
     console.error('Error:', error.message);
