@@ -48,6 +48,27 @@ function displayOwnedCars() {
     });
 }
 
+function toggleAddMode() {
+    if (document.getElementById("button").textContent === "Add Car") {
+        document.getElementById("button").textContent = "Cancel";
+        popup();
+    } else if (document.getElementById("button").textContent === "Cancel"){
+        document.getElementById("button").textContent = "Add Car";
+        closePopup();
+    }
+}
+
+
+function toggleRemoveMode() {
+    if (document.getElementById("removeBtn").textContent === "Remove Car") {
+    removeOwnedCars();
+    document.getElementById("removeBtn").textContent = "Cancel";
+  } else if (document.getElementById("removeBtn").textContent === "Cancel"){
+    displayOwnedCars();
+    document.getElementById("removeBtn").textContent = "Remove Car";
+  }
+}
+
 function removeOwnedCars() {
     fetch('http://localhost:8626/users/me/cars',
     {
@@ -97,6 +118,7 @@ function removeOwnedCars() {
             const carItem4 = document.createElement("td");
             const removeButton = document.createElement("button");
             removeButton.textContent = "Remove";
+            removeButton.style = "align-items: center;background-image: linear-gradient(to right, #6cd4e4 0%, #c2e9fb 51%, #51cfe2 100%);padding: 12px;text-align: center;text-transform: uppercase;transition: 0.5s;background-size: 200% auto;color: white;box-shadow: 0 0 20px #eee;border-top-left-radius: 25px;border-bottom-left-radius: 25px;border-top-right-radius: 25px;border-bottom-right-radius: 25px;cursor: pointer;width: auto;"
             removeButton.onclick = function() {
                 removeCar(car.maker, car.model, car.year);
             }
@@ -129,7 +151,8 @@ function removeCar(maker, model, year) {
         }
     }).then((data) => {
         console.log(data);
-        removeOwnedCars();
+        // removeOwnedCars();
+        document.getElementById("removeBtn").textContent = "Remove Car";
         displayOwnedCars();
     }).catch((error) => {
         console.error(error);
@@ -141,10 +164,6 @@ function removeCar(maker, model, year) {
         const maker = document.getElementById("car-brand").value;
         const model = document.getElementById("car-model").value;
         const year = document.getElementById("car-year").value;
-
-        // console.log(maker);
-        // console.log(model);
-        // console.log(year);
 
         fetch('http://localhost:8626/users/me/cars',
         {
@@ -161,6 +180,7 @@ function removeCar(maker, model, year) {
         }).then((response) => {
             if (response.ok) {
                 closePopup();
+                document.getElementById("button").textContent = "Add Car";
                 return response.json();
             } else {
                 throw new Error("Failed to add car");
@@ -188,36 +208,9 @@ function removeCar(maker, model, year) {
         }
     }
 
-    // window.onclick = function(event) {
-    //     if (event.target != document.getElementById('popup')){
-    //         popup.style.display = 'none';
-    //     }
-    // }
-
-
-
-
     function closePopup() {
         document.getElementById("popup-addCar").style.display = "none";
     }
-
-    // Close the dropdown if the user clicks outside of it
-
-
-
-
-    // window.onclick = function(event) {
-    //     if (event.target !== document.getElementById("popup")) {
-    //         document.getElementById("popup").style.display = "none";
-    //     }
-    // }
-
-
-
-
-
-
-
 
 //         for Car Selection
 function car_brand() {
