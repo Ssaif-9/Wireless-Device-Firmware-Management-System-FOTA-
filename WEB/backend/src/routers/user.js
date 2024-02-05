@@ -207,8 +207,32 @@ router.get("/users/me/cars", auth, async (req, res) => {
       const car = await Car.findById(userCars[i]);
       ownedCars.push(car);
     }
-    console.log(ownedCars);
+    // console.log(ownedCars);
     res.send(ownedCars);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+//           Add car to user
+router.post("/users/me/cars", auth, async (req, res) => {
+  try {
+    const userCar = await Car.findOne({
+      model: req.body.model,
+      maker: req.body.maker,
+      year: req.body.year,
+    });
+    if (!userCar) {
+      throw new Error("Car not found");
+    }
+    if (userCar.owner.includes(req.user._id)){
+      throw new Error("Car already added");
+    }
+    userCar.owner.push(req.user._id);
+    await userCar.save();
+    req.user.cars.push(userCar);
+    await req.user.save();
+    res.send(req.user);
   } catch (error) {
     res.status(400).send(error);
   }

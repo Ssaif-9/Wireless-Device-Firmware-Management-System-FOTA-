@@ -49,7 +49,7 @@ async function submit() {
                 localStorage.setItem("token", responseData.token);
                 localStorage.setItem("user", JSON.stringify(responseData.user));
                 
-                window.location.href = "../home.html";
+                window.location.href = "./home.html";
 
               return responseData;
             } else {

@@ -6,8 +6,8 @@
     <title>Owned Cars</title>
     <link rel="stylesheet" href="./styles/owned_cars.css">
 </head>
-<body>
-    <script src="./js/owned_cars.js"></script>
+<script src="./js/auth.js"></script>
+<body onload="{getOwnedCars(), car_brand()}">
     <div>
         <nav>
             <ul class="nav_bar">
@@ -18,36 +18,42 @@
                 <li><a href="./about.html">About</a></li>
                 <li><a href="./contact.html">Contact</a></li>
                 <li><a href="./notifications.html">Notifications</a></li>
-                <li><a href="./logout.html">Logout</a></li>
+                <li onclick="logout()"><a href="./login.html">Logout</a></li>
             </ul>
         </nav>
     </div>
     <div>
-        <h2>Owned Cars</h2>
-        <div>
-            <div>
-                <h3>Car 1</h3>
-                <p>Car 1 description</p>
-                <button>View</button>
-                <button>Edit</button>
-                <button>Delete</button>
-            </div>
-            <div>
-                <h3>Car 2</h3>
-                <p>Car 2 description</p>
-                <button>View</button>
-                <button>Edit</button>
-                <button>Delete</button>
-            </div>
-            <div>
-                <h3>Car 3</h3>
-                <p>Car 3 description</p>
-                <button>View</button>
-                <button>Edit</button>
-                <button>Delete</button>
-            </div>
+        <div class="head">
+            <h2>Owned Cars</h2>
+            <button class="button" id="button" onclick="popup()">Add Car</button>
+        </div>
+        <table id="carList">
+            <tr>
+                <th>Car Brand</th>
+                <th>Car Model</th>
+                <th>Car Year</th>
+            </tr>
+        </table>
+    </div>
+    <div class="popup-menu" id="popup">
+        <div class="labels">
+            <label for="car-brand">Car Brand:</label>
+            <label for="car-model">Car Model:</label>
+            <label for="car-year">Car Year:</label>
+        </div>
+        <div class="inputs">
+            <select name="car-brand" id="car-brand" onclick="{car_brand()}" onkeydown="car_brand()"></select>
+            <br>
+            <select name="car-model" id="car-model" onchange="{car_year()}"></select>
+            <br>
+            <select name="car-year" id="car-year"></select>
+            <br>
+        </div>
+        <div class="add-button">
+            <span id="error_show"></span>
+            <input type="submit" value="Add" onclick="addCar()">
         </div>
     </div>
-    
+    <script src="./js/owned_cars.js"></script>
 </body>
 </html>

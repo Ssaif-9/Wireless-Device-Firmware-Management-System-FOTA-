@@ -31,3 +31,153 @@ nav ul li a:hover{
     background-color: #7bbec8;
 }
 
+table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+table th, table td{
+    border: 1px solid #333;
+    padding: 10px;
+    text-align: center;
+}
+table th{
+    background-color: #7bbec8;
+    color: #fff;
+}
+
+.head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.button{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    float: right;
+    background-image: linear-gradient(to right, #6cd4e4 0%, #c2e9fb 51%, #51cfe2 100%);                width: 12%;
+    margin: 10px;
+    padding: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    cursor: pointer;
+    width: auto;
+}
+.button:hover{
+    background-position: right center;
+}
+
+.popup-menu {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    border-radius: 5px;
+    margin: auto;
+    padding: 10px;
+    /* margin-left: 20%; */
+    /* margin-right: 20%; */
+    right: 0;
+    left: 0;
+    width: 500px;
+  }
+
+/* .popup-menu a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+    transition: 0.3s;
+  } */
+
+#error_show {
+    display: none;
+    color: red;
+    text-align: center;
+    margin-bottom: 10px;
+    transition: opacity 0.3s ease-in-out;
+}
+
+  .labels{
+    float: left;
+    font-family: sans-serif;
+    font-style: normal;
+    font-size: large;
+}
+.labels label{
+    display: block;   
+    color: #59888f;
+    margin-top: 4px;
+    margin-bottom: 22%;
+        
+}
+.inputs{
+    float: inline-end;
+    /* margin-right: 10%; */
+}
+
+.inputs input,select{
+    border-style: solid;
+    border-color: #53f0f3;
+    border-radius: 10px;
+    box-sizing: border-box;
+    width: 280px;
+    margin-bottom: 5px;
+    padding: 8px;
+    border: 1px ridge #53f0f3;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    text-align: center;
+}
+select:hover{
+    background-color: #f2f2f2;
+}
+select:focus{
+    background-color: #f2f2f2;
+    outline: none;
+}
+select:focus-visible{
+    background-color: #aaeffa;
+    outline: none;
+}
+.add-button{
+    display: inline-block;
+    width: auto;
+    /* margin: 0%; */
+    margin-inline: 40%;
+    margin-inline-end: 60%;
+    
+}
+input[type="submit"]{
+    background-image: linear-gradient(to right, #6cd4e4 0%, #c2e9fb 51%, #51cfe2 100%);                width: 12%;
+    flex: 1 1 auto;
+    margin: 10px;
+    padding: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    cursor: pointer;
+    width: 100px;
+    /* display: inline-flex; */
+}
+input[type="submit"]:hover {
+    background-position: right center; /* change the direction of the change here */            }

@@ -33,7 +33,6 @@ carSchema.methods.toJSON = function () {
     delete carObject.hex
     delete carObject.owner
     
-
     return carObject
 }
 
