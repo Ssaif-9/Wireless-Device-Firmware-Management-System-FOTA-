@@ -238,6 +238,26 @@ router.post("/users/me/cars", auth, async (req, res) => {
   }
 });
 
+//        remove car from user
+router.delete("/users/me/cars", auth, async (req, res) => {
+  try {
+    const userCar = await Car.findOne({
+      model: req.body.model,
+      maker: req.body.maker,
+      year: req.body.year,
+    });
+    if (!userCar) {
+      throw new Error("Car not found");
+    }
+    userCar.owner.pop(req.user._id);
+    await userCar.save();
+    req.user.cars.pop(userCar);
+    await req.user.save();
+    res.send(req.user);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
 
 
 

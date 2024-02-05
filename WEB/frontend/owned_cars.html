@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./styles/owned_cars.css">
 </head>
 <script src="./js/auth.js"></script>
-<body onload="{getOwnedCars(), car_brand()}">
+<body onload="{displayOwnedCars(), car_brand()}">
     <div>
         <nav>
             <ul class="nav_bar">
@@ -25,7 +25,10 @@
     <div>
         <div class="head">
             <h2>Owned Cars</h2>
-            <button class="button" id="button" onclick="popup()">Add Car</button>
+            <div>
+                <button class="button" id="button" onclick="popup()">Add Car</button>
+                <button class="button" onclick="removeOwnedCars()">Remove Car</button>
+            </div>
         </div>
         <table id="carList">
             <tr>
@@ -35,7 +38,7 @@
             </tr>
         </table>
     </div>
-    <div class="popup-menu" id="popup">
+    <div class="popup-addCar" id="popup-addCar">
         <div class="labels">
             <label for="car-brand">Car Brand:</label>
             <label for="car-model">Car Model:</label>

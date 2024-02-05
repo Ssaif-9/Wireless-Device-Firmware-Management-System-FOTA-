@@ -1,4 +1,4 @@
-function getOwnedCars() {
+function displayOwnedCars() {
     fetch('http://localhost:8626/users/me/cars',
     {
         method: 'GET',
@@ -48,6 +48,95 @@ function getOwnedCars() {
     });
 }
 
+function removeOwnedCars() {
+    fetch('http://localhost:8626/users/me/cars',
+    {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+    }).then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Failed to fetch cars");
+        }
+    }).then((data) => {
+        // console.log(data);
+        const cars = data;
+        const carList = document.getElementById("carList");
+        carList.innerHTML = "";
+        const carRow = document.createElement("tr");
+        carList.appendChild(carRow);
+        const carItem = document.createElement("th");
+        carItem.textContent = "Maker";
+        carList.appendChild(carItem);
+        const carItem2 = document.createElement("th");
+        carItem2.textContent = "Model";
+        carList.appendChild(carItem2);
+        const carItem3 = document.createElement("th");
+        carItem3.textContent = "Year";
+        carList.appendChild(carItem3);
+        const carItem4 = document.createElement("th");
+        carItem4.textContent = "Remove";
+        carList.appendChild(carItem4);
+        
+        cars.forEach((car) => {
+            const carRow = document.createElement("tr");
+            carList.appendChild(carRow);
+            const carItem = document.createElement("td");
+            carItem.textContent = `${car.maker}`;
+            carList.appendChild(carItem);
+            const carItem2 = document.createElement("td");
+            carItem2.textContent = `${car.model}`;
+            carList.appendChild(carItem2);
+            const carItem3 = document.createElement("td");
+            carItem3.textContent = `${car.year}`;
+            carList.appendChild(carItem3);
+            const carItem4 = document.createElement("td");
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            removeButton.onclick = function() {
+                removeCar(car.maker, car.model, car.year);
+            }
+            carItem4.appendChild(removeButton);
+            carList.appendChild(carItem4);
+        });
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
+function removeCar(maker, model, year) {
+    fetch('http://localhost:8626/users/me/cars',
+    {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({
+            maker,
+            model,
+            year
+        })
+    }).then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Failed to remove car");
+        }
+    }).then((data) => {
+        console.log(data);
+        removeOwnedCars();
+        displayOwnedCars();
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
+
     function addCar() {
         const maker = document.getElementById("car-brand").value;
         const model = document.getElementById("car-model").value;
@@ -79,7 +168,7 @@ function getOwnedCars() {
         }).then((data) => {
             console.log(data);
 
-            getOwnedCars();
+            displayOwnedCars();
         }).catch((error) => {
             document.getElementById("error_show").textContent = error.message;
             document.getElementById("error_show").style.display = "block";
@@ -89,12 +178,12 @@ function getOwnedCars() {
 
     function popup() {
         console.log("popup");
-        console.log(document.getElementById("popup").style.display);
-        document.getElementById("popup").style.display === "block" ? document.getElementById("popup").style.display = "none" : document.getElementById("popup").style.display = "block";
+        console.log(document.getElementById("popup-addCar").style.display);
+        document.getElementById("popup-addCar").style.display === "block" ? document.getElementById("popup-addCar").style.display = "none" : document.getElementById("popup-addCar").style.display = "block";
     }
 
     window.onclick = function(event) {
-        if (event.target === document.getElementById("popup") || event.target === document.getElementById("car-brand") || event.target === document.getElementById("car-model") || event.target === document.getElementById("car-year") || event.target === document.getElementById("error_show")){
+        if (event.target === document.getElementById("popup-addCar") || event.target === document.getElementById("car-brand") || event.target === document.getElementById("car-model") || event.target === document.getElementById("car-year") || event.target === document.getElementById("error_show")){
             document.getElementById("error_show").style.display = "none";
         }
     }
@@ -109,7 +198,7 @@ function getOwnedCars() {
 
 
     function closePopup() {
-        document.getElementById("popup").style.display = "none";
+        document.getElementById("popup-addCar").style.display = "none";
     }
 
     // Close the dropdown if the user clicks outside of it
