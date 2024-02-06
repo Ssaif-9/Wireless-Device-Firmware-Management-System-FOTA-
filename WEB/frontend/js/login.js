@@ -60,8 +60,15 @@ async function submit() {
           } catch (error) {
             // Log the error message and status code
             console.error('Error:', error.status, error.message);
+            document.getElementById("error_show").textContent = error.message;
+            document.getElementById("error_show").style.display = "block";
             // Optionally, you can rethrow the error or handle it in another way
             throw error;
           }
         }
 
+        window.onclick = function(event) {
+          if (event.target != document.getElementById("submit")){
+              document.getElementById("error_show").style.display = "none";
+          }
+      }

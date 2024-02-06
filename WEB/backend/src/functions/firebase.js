@@ -18,7 +18,7 @@ const upload = multer({ storage: storageConfig });
 
 async function uploadCarUpdate_Storage(make, model, year, version, hex) {
   // Set the destination in the bucket
- const destination = make + "/" + model + "/" + year + "/v_" + version + ".hex";
+ const destination = make + "/" + model + "/" + year + "/version" + ".hex";
  
  // Set the content type to 'application/octet-stream'
  const metadata = {
@@ -68,9 +68,9 @@ const app = initializeApp(firebaseConfig);
 
 async function uploadCarUpdate_RealtimeDB(make, model, year) {
     const db = getDatabase(app);
-    set(ref(db, make + '/' + model + '/' + year), {
-      hex: true,
-    }).then(() => {
+    const car_year = year;
+    set(ref(db, make + '/' + model + '/' + year), true
+    ).then(() => {
         console.log('Hex file uploaded successfully.');
       })
       .catch((error) => {

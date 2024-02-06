@@ -71,7 +71,7 @@ router.post("/users/login", async (req, res) => {
         const timeDifferenceInHours = timeDifferenceInMelliseconds / (1000 * 60 * 60);
         const timeDifferenceInDays = timeDifferenceInMelliseconds / (1000 * 60 * 60 * 24);
   
-        if (timeDifferenceInHours < 3){
+        if (timeDifferenceInHours < 1){
             const token = await user.generateAuthToken();
             res.send({ user, token });
           }
@@ -98,7 +98,7 @@ router.post("/users/login", async (req, res) => {
       }
     }
   } catch (e) {
-    res.status(400).send({"message":e.message});
+    res.status(400).send(e.message);
   }
 });
 

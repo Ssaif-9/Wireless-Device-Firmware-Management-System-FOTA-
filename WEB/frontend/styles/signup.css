@@ -127,3 +127,11 @@ input[type="submit"]:hover {
     margin: 0px;
 }
 
+
+#error_show {
+    display: none;
+    color: red;
+    text-align: center;
+    margin-bottom: 10px;
+    transition: opacity 0.3s ease-in-out;
+}
