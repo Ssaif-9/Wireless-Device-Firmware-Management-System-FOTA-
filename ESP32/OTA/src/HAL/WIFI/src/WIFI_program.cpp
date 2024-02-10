@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <WiFi.h>
 
-#include "WIFI_config.h"
-#include "WIFI_interface.h"
+#include "../include/WIFI_config.h"
+#include "../include/WIFI_interface.h"
 
 void WIFI_INIT(void)
 {

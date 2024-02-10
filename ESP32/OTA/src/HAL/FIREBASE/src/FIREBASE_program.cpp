@@ -4,11 +4,11 @@
 #include <addons/TokenHelper.h>
 #include <addons/RTDBHelper.h>
 
-#include "FIREBASE_config.h"
-#include "FIREBASE_interface.h"
+#include "../include/FIREBASE_config.h"
+#include "../include/FIREBASE_interface.h"
 
-#include "../UART/UART_config.h"
-#include "../UART/UART_interface.h"
+#include "../../../MCAL/UART/include/UART_config.h"
+#include "../../../MCAL/UART/include/UART_interface.h"
 
 FirebaseAuth auth;
 FirebaseConfig config;
@@ -54,7 +54,8 @@ void fcsDownloadCallback(FCS_DownloadStatusInfo info)
     }
 }
 
-void ReadFile(const char *path) {
+void ReadFile(const char *path) 
+{
   Serial.printf("Reading file: %s\n", path);
   File file = LittleFS.open(path, "r");
   if (!file) {
@@ -62,16 +63,21 @@ void ReadFile(const char *path) {
   return;
   }
   Serial.print("Read from file: \n");
-  while (file.available()) {Serial.write(file.read()); }
+  while (file.available())
+  {
+    Serial.write(file.read()); 
+  }
   file.close();
 }
 
 void processHexRecord(const char *record)
 {
+  
   // Assuming the record is in Intel Hex format with a colon at the beginning
   // You may want to perform additional validation depending on your requirements
 
   // Extract the data part of the record (excluding the colon)
+  char Ack;
   const char *data = record ;
 
   // Calculate the length of the data
@@ -81,9 +87,12 @@ void processHexRecord(const char *record)
  // Serial.printf("Address: %.*s, Data: %.*s\n", 8, data, dataLength - 8, data + 8);
   
    Serial.printf("%s\n",data);
-   UART_TransimiteString2(data);
-    UART_ReceiveACK0();
-    UART_FreeBuffer0(); // free buffer
+    while(!Serial.available())  //wait NULL in uart0 
+         {  }
+    UART0_FreeBuffer();              // free buffer
+    UART0_ReceiveChar(&Ack);
+    UART2_TransimiteString(data);
+    UART0_FreeBuffer();
 }
 
 void BootloaderSendData(const char *path)
@@ -104,15 +113,7 @@ void BootloaderSendData(const char *path)
 }
 
 
-bool WaitAcception(void)
-{
-  char Data;
-  UART_ReceiveChar(&Data);
-  if(Data=='T')
-    return true;
-  else
-    return false;
-}
+
 
 bool readBooleanData(FirebaseData fbdo,const char *path) 
 {
@@ -128,10 +129,11 @@ bool readBooleanData(FirebaseData fbdo,const char *path)
   return value;
 }
 
-void writeBooleanData(FirebaseData fbdo,const char *path,bool data) {
+void writeBooleanData(FirebaseData fbdo,const char *path,bool data)
+ {
   if (Firebase.ready()) {
     if (Firebase.RTDB.setBool(&fbdo,path,data)) {
-      Serial.println("Boolean data written to database");
+      //Serial.println("Boolean data written to database");
     } else {
       Serial.println("Failed to write to database");
       Serial.println(fbdo.errorReason());
