@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Function to send a verification email
-function sendVerificationEmail(email, verificationCode, callback) {
+function sendVerificationEmail(email, verificationCode) {
   const mailOptions = {
     from: process.env.EMAIL_USERNAME, // replace with your Gmail address
     to: email,
@@ -28,7 +28,7 @@ function sendVerificationEmail(email, verificationCode, callback) {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      return callback(error);
+      return error;
     }
     callback(null, "Verification email sent successfully");
   });

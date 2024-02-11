@@ -6,6 +6,8 @@ const multer = require("multer");
 const bodyParser = require('body-parser');
 const mailer = require("../functions/nodemailer");
 const firebase = require("../functions/firebase");
+const CryptoJS = require("crypto-js");
+const { Buffer } = require("buffer");
 const router = new express.Router();
 
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -22,7 +24,7 @@ router.post("/users", async (req, res) => {
     // }
     if( await User.findOne( {email:req.body.email} )){
       console.error("Email already Taken");
-      throw new Error("Email already Taken")
+      throw new Error("Account Already Exist")
     }
     if( await User.findOne( {phone:req.body.phone} )){
       console.error("Phone already exists");
@@ -44,7 +46,7 @@ router.post("/users", async (req, res) => {
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
   } catch (error) {
-    res.status(400).send({"Error":error.message});
+    res.status(400).send(error.message);
   }
 });
 
@@ -113,10 +115,10 @@ router.post("/users/me/verify",auth,async (req,res) =>{
       await req.user.save();
       res.status(200).send({"message":"Verification successful"});
     } else {
-    res.status(500).send({"message":"Invalid verification code"});
+    res.status(500).send("Invalid verification code");
   }
 } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send(error.message);
   }
 });
 
@@ -164,7 +166,7 @@ router.patch("/users/me", auth, async (req, res) => {
   });
 
   if (!isValidOperation) {
-    return res.status(400).send({ error: "Invalid updates!" });
+    return res.status(400).send( "Invalid updates!");
   }
 
   try {
@@ -172,7 +174,7 @@ router.patch("/users/me", auth, async (req, res) => {
     await req.user.save();
     res.send(req.user);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send(error.message);
   }
 });
 
@@ -234,7 +236,7 @@ router.post("/users/me/cars", auth, async (req, res) => {
     await req.user.save();
     res.send(req.user);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send(error.message);
   }
 });
 
@@ -255,7 +257,7 @@ router.delete("/users/me/cars", auth, async (req, res) => {
     await req.user.save();
     res.send(req.user);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send(error.message);
   }
 });
 
@@ -341,9 +343,22 @@ router.post("/admin/upload", uploadHexFile.single("hex"), async (req, res) => {
     // console.log(car);
     await car.save();
     console.log(car.hex.length);
+    
+    // console.log(base64Data);
+    console.log({'base64Data:':base64Data});
+        
+    // // Encrypt
+    // var ciphertext = CryptoJS.AES.encrypt(base64Data, 'secret key 123').toString();
+    // console.log({"Ciphertext":ciphertext});
+    // // Decrypt
+    // var bytes  = CryptoJS.AES.decrypt(ciphertext, 'secret key 123');
+    // var originalText = bytes.toString(CryptoJS.enc.Utf8);
 
-    await firebase.uploadCarUpdate_Storage(car.maker, car.model, car.year, car.hex.length, base64Data);
-    await firebase.uploadCarUpdate_RealtimeDB(car.maker, car.model, car.year);
+    // console.log({"OriginalText":originalText}); // 'my message'
+    // // console.log(ciphertext);
+
+    // await firebase.uploadCarUpdate_Storage(car.maker, car.model, car.year, car.hex.length, base64Data);
+    // await firebase.uploadCarUpdate_RealtimeDB(car.maker, car.model, car.year);
 
     res.send(car);
   } catch (error) {

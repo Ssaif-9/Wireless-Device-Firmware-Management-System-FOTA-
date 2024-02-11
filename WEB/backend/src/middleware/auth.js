@@ -21,9 +21,11 @@ const auth = async (req, res, next) =>{
         if (decoded.exp < Date.now() / 1000) {
             // Remove the expired token from the user's tokens array
             user.tokens = user.tokens.filter(token => tokens.token !== token);
+            
             await user.save();
             return res.status(401).send({ error: 'Token has expired.' });
         }
+
 
         req.token = token;
         req.user = user;
@@ -32,5 +34,7 @@ const auth = async (req, res, next) =>{
         res.status(401).send({error: 'Please authenticate.' })
     }
 }
+
+
 
 module.exports = auth

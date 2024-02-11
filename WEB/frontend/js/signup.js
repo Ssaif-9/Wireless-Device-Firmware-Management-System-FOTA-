@@ -93,10 +93,6 @@ async function submit() {
   const password = document.getElementById("password").value;
   const repassword = document.getElementById("repassword").value;
   try {
-    if (!validateEmail(email)) {
-      console.error("Please enter a valid E-mail!!");
-      throw new Error("Please enter a valid E-mail!!");
-    }
     if (!validateName(name)) {
       console.error("Please enter a valid Name!");
       throw new Error("Please enter a valid Name!");
@@ -104,6 +100,10 @@ async function submit() {
     if (!validatePhone(phone)) {
       console.error("Phone Number must be 11 numbers!");
       throw new Error("Phone Number must be 11 numbers!");
+    }
+    if (!validateEmail(email)) {
+      console.error("Please enter a valid E-mail!!");
+      throw new Error("Please enter a valid E-mail!!");
     }
     if (password != repassword) {
       console.error("Password Not Match");
@@ -129,9 +129,6 @@ async function submit() {
       console.error("Please enter a valid Year!");
       throw new Error("Please enter a valid Year!");
     }
-  } catch (error) {
-    console.log({"Error": error});
-  }
     const data = {
       name: name,
       phone: phone,
@@ -141,8 +138,7 @@ async function submit() {
       email: email,
       password: password,
     };
-    // console.log(data);
-  try {
+    // console.log(data); 
     // Create an options object for the fetch request
     const options = {
       method: 'POST',
@@ -164,7 +160,14 @@ async function submit() {
       localStorage.setItem("user", JSON.stringify(responseData.user));
       
       window.location.href = "./home.html";
-
+      document.getElementById("name").value = "";
+      document.getElementById("phone-number").value = "";
+      document.getElementById("car-brand").value = "";
+      document.getElementById("car-model").value = "";
+      document.getElementById("car-year").value  = "";
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("repassword").value = "";
       return responseData;
     } else {
       // If there was an error, handle the error response
@@ -174,9 +177,27 @@ async function submit() {
   } catch (error) {
     // Log the error message and status code
     console.error('Error:', error.status, error.message);
+    document.getElementById("error_show").textContent = error.message;
+    document.getElementById("error_show").style.display = "block";  
     // Optionally, you can rethrow the error or handle it in another way
     throw error;
   }
-  
 }
 
+window.onclick = function (event) {
+  if (
+    event.target === document.getElementById("name") ||
+    event.target === document.getElementById("phone-number") ||
+    event.target === document.getElementById("car-brand") ||
+    event.target === document.getElementById("car-model") ||
+    event.target === document.getElementById("car-year") ||
+    event.target === document.getElementById("email") ||
+    event.target === document.getElementById("password") ||
+    event.target === document.getElementById("repassword") ||
+    event.target === document.getElementById("image") ||
+    event.target === document.getElementById("signup-body")
+    
+  ) {
+    document.getElementById("error_show").style.display = "none";
+  }
+};
