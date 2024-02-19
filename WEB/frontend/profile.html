@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/profile.css">
+</head>
+
+<body>
+    <div>
+        <nav>
+            <ul class="nav_bar">
+                <li><a href="./home.html">Home</a></li>
+                <li><a href="./owned_cars.html">Owned Cars</a></li>
+                <li><a href="./profile.html">Profile</a></li>
+                <li><a href="./about.html">About</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li onclick="show_notification()"><a>Notifications</a></li>
+                <li onclick="logout()"><a href="./login.html">Logout</a></li>
+            </ul>
+        </nav>
+        <div class="notification" id="notification">
+            <ul>
+                <li id="list">
+                    <div class="message">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia nam vel nobis exercitationem
+                        officiis voluptatem temporibus rem sed, voluptas quasi.
+                    </div>
+                    <div class="button">
+                        <button>DONE</button>
+                    </div>
+                </li>
+                <li>Heloo2</li>
+                <li>Heloo3</li>
+                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam nulla, expedita corporis
+                    recusandae cum porro. Tempore ullam assumenda omnis amet eligendi minima, accusantium nostrum dolore
+                    facere alias rerum illo voluptate!</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <img src="https://via.placeholder.com/200" alt="Profile Picture">
+        <h1>John Doe</h1>
+        <div style="display: flex;" >
+            <div>
+                <p><strong>Email:</strong></p>
+                <p><strong>Phone:</strong></p>
+                <p><strong>Bio:</strong></p>
+            </div>
+            <div style="margin-left: 10px;">
+                <p>john.doe@example.com</>
+                <p>New York, NY</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, sapien quis
+                    bibendum bibendum, velit sapien bibendum sapien, vel bibendum sapien sapien vel sapien. Sed euismod,
+                    sapien
+                    quis bibendum bibendum, velit sapien bibendum sapien, vel bibendum sapien sapien vel sapien.</p>
+            </div>
+        </div>
+
+
+        <a href="#" class="btn">Edit Profile</a>
+    </div>
+</body>
+
+</html>

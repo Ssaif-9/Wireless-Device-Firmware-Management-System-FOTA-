@@ -48,9 +48,13 @@ async function submit() {
               console.log(responseData);
                 localStorage.setItem("token", responseData.token);
                 localStorage.setItem("user", JSON.stringify(responseData.user));
+                if (responseData.user.role === "admin"){
+                  window.location.href = "./admin_home.html"
+                }
+                else{
+                  window.location.href = "./home.html";
+                }
                 
-                window.location.href = "./home.html";
-
               return responseData;
             } else {
               // If there was an error, handle the error response

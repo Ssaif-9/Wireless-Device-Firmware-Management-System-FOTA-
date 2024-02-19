@@ -16,12 +16,6 @@ router.use(bodyParser.urlencoded({ extended: true }));
 //              Sign Up
 router.post("/users", async (req, res) => {
   try {
-    // const existEmail = await User.findOne( {email:req.body.email})
-    // if (existEmail){
-    //   console.error("Email already Taken");
-    //   throw new Error("Email already Taken")
-    //   res.send({"message":"Email already Taken"})
-    // }
     if( await User.findOne( {email:req.body.email} )){
       console.error("Email already Taken");
       throw new Error("Account Already Exist")

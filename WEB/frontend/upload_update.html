@@ -4,12 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/admin.css">
+    <link rel="stylesheet" href="./styles/upload_update.css">
     <title>Admin Panel</title>
 </head>
 
 <body onload="car_brand()">
     <script src="./js/admin.js"></script>
+    <div>
+        <nav>
+            <ul class="nav_bar">
+                <li><a href="./admin_home.html">Home</a></li>
+                <li><a href="./upload_update.html">Add Updates</a></li>
+                <li><a href="./admin_add_member.html">Add Member</a></li>
+                <li><a href="./live_diag.html">Live Diagnostics</a></li>
+                <li onclick="logout()"><a href="./login.html">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
     <div class="admin-body">
         <div class="labels">
             <label for="car-brand">Car Brand:</label>

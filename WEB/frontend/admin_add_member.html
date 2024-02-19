@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Member</title>
+    <link rel="stylesheet" href="./styles/admin_add_member.css">
+</head>
+<body>
+    <div>
+        <nav>
+            <ul class="nav_bar">
+                <li><a href="./admin_home.html">Home</a></li>
+                <li><a href="./upload_update.html">Add Updates</a></li>
+                <li><a href="./admin_add_member.html">Add Member</a></li>
+                <li><a href="./live_diag.html">Live Diagnostics</a></li>
+                <li onclick="logout()"><a href="./login.html">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="admin-body">
+        <div class="labels">
+            <label for="name">Name:</label>
+            <label for="email">Email:</label>
+            <label for="password">Password:</label>
+            <label for="role">Role:</label>
+        </div>
+        <div class="inputs">
+            <input type="text" name="name" id="name" placeholder="Name">
+            <br>
+            <input type="email" name="email" id="email" placeholder="E-Mail">
+            <br>
+            <input type="password" name="password" id="password" placeholder="Password">
+            <br>
+            <select name="role" id="role">
+                <option value="admin">Admin</option>
+                <option value="member">Member</option>
+            </select>
+        </div>
+        <div class="upload-button">
+            <input type="submit" value="Add Member" onclick="add_member()">
+        </div>
+</body>
+</html>
