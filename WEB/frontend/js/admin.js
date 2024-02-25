@@ -79,6 +79,7 @@ async function upload() {
   const maker = document.getElementById("car-brand").value;
   const model = document.getElementById("car-model").value;
   const year = document.getElementById("car-year").value;
+  const car_parts = document.getElementById("car-parts").value;
   const fileInput = document.getElementById("file");
   // Create a FormData object and append the file to it
   const formData = new FormData();
@@ -88,6 +89,7 @@ async function upload() {
   formData.append("maker", maker);
   formData.append("model", model);
   formData.append("year", year);
+  formData.append("car_parts",car_parts)
 //   console.log(formData.get);
   try {
     // Create options for the fetch request
@@ -113,6 +115,14 @@ async function upload() {
     }
   } catch (error) {
     console.error("Error:", error.status, error.message);
+    document.getElementById("error_show").textContent = error.message;
+    document.getElementById("error_show").style.display = "block";
     throw error;
+  }
+}
+
+window.onclick = function(event) {
+  if (event.target != document.getElementById("submit")){
+      document.getElementById("error_show").style.display = "none";
   }
 }

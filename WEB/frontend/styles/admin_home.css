@@ -2,7 +2,7 @@ body {
   background-color: #ceeff4;
   font-family: Arial, sans-serif;
 }
-nav {
+/* nav {
   background-color: #f2f2f2;
   padding: 10px;
   margin-bottom: 10px;
@@ -29,7 +29,7 @@ nav ul li a {
 }
 nav ul li a:hover {
   background-color: #7bbec8;
-}
+} */
 .news {
   display: block;
   border-radius: 10px;
@@ -42,29 +42,28 @@ nav ul li a:hover {
   height: auto;
 }
 
-label {
+/* label {
   float: left;
   font-family: sans-serif;
   font-style: normal;
   font-size: large;
   display: block;
   color: #59888f;
-  /* margin: 10%; */
-  /* margin-bottom: 10%; */
   margin-right: 2%;
-}
+} */
 
-/* .inputs {
+.inputs {
   float: inline-end;
   margin-left: 50px; 
-} */
-textarea {
-  width: 520px; /* Set an initial width */
-  height: 100px; /* Set an initial height */
-  resize: none; /* Disable manual resizing */
-  overflow: hidden; /* Hide overflow content */
+}
+
+/* textarea {
+  width: 200px; 
+  height: 30px;
+  resize: none; 
+  overflow: hidden; 
   min-width: 200px;
-  min-height: 100px;
+  min-height: 30px;
 
   border-style: solid;
   border-color: #53f0f3;
@@ -76,14 +75,13 @@ textarea {
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
   text-align: center;
-}
+} */
 
 /* Make the textarea adjust its height automatically based on content */
 textarea.auto-resize {
   height: auto;
 }
-input,
-select {
+/* input{
   border-style: solid;
   border-color: #53f0f3;
   border-radius: 10px;
@@ -98,15 +96,15 @@ select {
   border-bottom-right-radius: 25px;
   text-align: center;
   float: right;
-}
-select,textarea:hover {
+} */
+textarea:hover {
   background-color: #f2f2f2;
 }
-select,textarea:focus {
+textarea:focus {
   background-color: #f2f2f2;
   outline: none;
 }
-select,textarea:focus-visible {
+textarea:focus-visible {
   background-color: #aaeffa;
   outline: none;
 }
@@ -133,8 +131,8 @@ input[type="submit"] {
   border-bottom-right-radius: 25px;
   cursor: pointer;
   width: 100px;
-  margin-inline: 45%;
-}
+  margin-inline: 40%;
+} 
 input[type="submit"]:hover {
-  background-position: right center; /* change the direction of the change here */
+  background-position: right center; 
 }

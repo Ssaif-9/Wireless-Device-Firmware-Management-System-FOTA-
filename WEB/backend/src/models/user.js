@@ -15,18 +15,13 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         default: 'user',
-        enum: ['user', 'admin']
+        enum: ['user', 'admin','member']
     },
     phone:{
         type: String ,
-        required: true,
+        // required: true,
         trim: true,
         unique: true,
-        // validate(value) {
-        //     if(!validator.isMobilePhone(value)) {
-        //         throw new Error('Please enter a valid phone number!')
-        //     }
-        // }
     },
     email:{
         type: String,
