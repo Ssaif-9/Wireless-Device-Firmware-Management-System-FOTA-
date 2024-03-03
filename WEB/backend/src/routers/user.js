@@ -16,136 +16,136 @@ const router = new express.Router();
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
-//                            Admin
+// //                            Admin
 
-const uploadNewsImage = multer({
-  limits: {
-    fileSize: 1000000,
-  },
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(jpg|png|jpeg)$/)) {
-      return cb(new Error("Please upload an Image file"));
-    }
-    cb(undefined, true);
-  },
-});
-router.post("/admin/news",uploadNewsImage.single("image") ,async (req, res) => {
-  try {
-    const news = new News();
-    if (!req.file) {
-      return res.status(400).send('No file uploaded.');
-  }
-  if (!req.body.title || !req.body.content){
-    return res.status(400).send('Title and Content are required');
-  }
+// const uploadNewsImage = multer({
+//   limits: {
+//     fileSize: 1000000,
+//   },
+//   fileFilter(req, file, cb) {
+//     if (!file.originalname.match(/\.(jpg|png|jpeg)$/)) {
+//       return cb(new Error("Please upload an Image file"));
+//     }
+//     cb(undefined, true);
+//   },
+// });
+// router.post("/admin/news",uploadNewsImage.single("image") ,async (req, res) => {
+//   try {
+//     const news = new News();
+//     if (!req.file) {
+//       return res.status(400).send('No file uploaded.');
+//   }
+//   if (!req.body.title || !req.body.content){
+//     return res.status(400).send('Title and Content are required');
+//   }
 
-    news.title = req.body.title;
-    news.content = req.body.content;
-    // news.owner = req.body.owner;
-    news.image = req.file.buffer;
+//     news.title = req.body.title;
+//     news.content = req.body.content;
+//     // news.owner = req.body.owner;
+//     news.image = req.file.buffer;
 
-    await news.save();
-    res.status(201).send(news);
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
-});
+//     await news.save();
+//     res.status(201).send(news);
+//   } catch (error) {
+//     res.status(400).send(error.message);
+//   }
+// });
 
-//                    ADD Member
-router.post("/admin/members", async (req, res) => {
-  try {
-    const user = new User();
-    if( await User.findOne( {email:req.body.email} )){
-      console.error("Email already Taken");
-      throw new Error("Account Already Exist")
-    }
-    user.name = req.body.name;
-    user.email = req.body.email;
-    user.password = req.body.password;
-    user.role = req.body.role;
-    // const token = await user.generateAuthToken();
-    // mailer.handleSignup(user.email)
-    await user.save();
-    res.status(201).send(user);
+// //                    ADD Member
+// router.post("/admin/members", async (req, res) => {
+//   try {
+//     const user = new User();
+//     if( await User.findOne( {email:req.body.email} )){
+//       console.error("Email already Taken");
+//       throw new Error("Account Already Exist")
+//     }
+//     user.name = req.body.name;
+//     user.email = req.body.email;
+//     user.password = req.body.password;
+//     user.role = req.body.role;
+//     // const token = await user.generateAuthToken();
+//     // mailer.handleSignup(user.email)
+//     await user.save();
+//     res.status(201).send(user);
 
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
-});
+//   } catch (error) {
+//     res.status(400).send(error.message);
+//   }
+// });
 
-//                      Get Live Diagnostics
-router.get("/admin/live_diag", async (req,res) =>{
-  try {
-    const diag = await Diagnostic.find();
-    res.send(diag);
-  } catch (error){
-    res.status(400).send(error.message)
-  }
-});
-
-
+// //                      Get Live Diagnostics
+// router.get("/admin/live_diag", async (req,res) =>{
+//   try {
+//     const diag = await Diagnostic.find();
+//     res.send(diag);
+//   } catch (error){
+//     res.status(400).send(error.message)
+//   }
+// });
 
 
 
 
 
 
-const uploadHexFile = multer({
-  limits: {
-    fileSize: 1000000,
-  },
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(hex)$/)) {
-      cb(new Error("Please upload an Hex file"));
-    } else {
-      cb(null, true);
-    }
-  },
-});
 
-router.post("/admin/upload", uploadHexFile.single("hex"), async (req, res) => {
-  try {
-    const car = await Car.findOne({
-      maker: req.body.maker,
-      model: req.body.model,
-      year: req.body.year,
-    });
 
-    if (!car) {
-      return res.status(404).send("Car not found");
-    }
-    if (!req.file) {
-      return res.status(400).send('No file uploaded.');
-  }
-    const binaryData = Buffer.from(req.file.buffer, 'hex');
-    const base64Data = binaryData.toString('base64');
-    car.hex.push(req.file.buffer);
-    // console.log(car);
-    await car.save();
-    console.log(car.hex.length);
+// const uploadHexFile = multer({
+//   limits: {
+//     fileSize: 1000000,
+//   },
+//   fileFilter(req, file, cb) {
+//     if (!file.originalname.match(/\.(hex)$/)) {
+//       cb(new Error("Please upload an Hex file"));
+//     } else {
+//       cb(null, true);
+//     }
+//   },
+// });
+
+// router.post("/admin/upload", uploadHexFile.single("hex"), async (req, res) => {
+//   try {
+//     const car = await Car.findOne({
+//       maker: req.body.maker,
+//       model: req.body.model,
+//       year: req.body.year,
+//     });
+
+//     if (!car) {
+//       return res.status(404).send("Car not found");
+//     }
+//     if (!req.file) {
+//       return res.status(400).send('No file uploaded.');
+//   }
+//     const binaryData = Buffer.from(req.file.buffer, 'hex');
+//     const base64Data = binaryData.toString('base64');
+//     car.hex.push(req.file.buffer);
+//     // console.log(car);
+//     await car.save();
+//     console.log(car.hex.length);
     
-    // console.log(base64Data);
-    console.log({'base64Data:':base64Data});
+//     // console.log(base64Data);
+//     console.log({'base64Data:':base64Data});
         
-    // // Encrypt
-    // var ciphertext = CryptoJS.AES.encrypt(base64Data, 'secret key 123').toString();
-    // console.log({"Ciphertext":ciphertext});
-    // // Decrypt
-    // var bytes  = CryptoJS.AES.decrypt(ciphertext, 'secret key 123');
-    // var originalText = bytes.toString(CryptoJS.enc.Utf8);
+//     // // Encrypt
+//     // var ciphertext = CryptoJS.AES.encrypt(base64Data, 'secret key 123').toString();
+//     // console.log({"Ciphertext":ciphertext});
+//     // // Decrypt
+//     // var bytes  = CryptoJS.AES.decrypt(ciphertext, 'secret key 123');
+//     // var originalText = bytes.toString(CryptoJS.enc.Utf8);
 
-    // console.log({"OriginalText":originalText}); // 'my message'
-    // // console.log(ciphertext);
+//     // console.log({"OriginalText":originalText}); // 'my message'
+//     // // console.log(ciphertext);
 
-    await firebase.uploadCarUpdate_Storage(car.maker, car.model, car.year, car.hex.length, base64Data);
-    await firebase.uploadCarUpdate_RealtimeDB(car.maker, car.model, car.year);
+//     await firebase.uploadCarUpdate_Storage(car.maker, car.model, car.year, car.hex.length, base64Data);
+//     await firebase.uploadCarUpdate_RealtimeDB(car.maker, car.model, car.year);
 
-    res.send(car);
-  } catch (error) {
-    console.error('Error:', error.message);
-    res.status(500).send({ error: error.message });
-  }
-});
+//     res.send(car);
+//   } catch (error) {
+//     console.error('Error:', error.message);
+//     res.status(500).send({ error: error.message });
+//   }
+// });
 
 
 

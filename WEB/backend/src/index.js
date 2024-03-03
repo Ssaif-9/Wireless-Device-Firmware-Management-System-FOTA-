@@ -3,6 +3,7 @@ const cors = require('cors');
 require('./db/mongoose');
 const userRouter = require('./routers/user');
 const carRouter = require('./routers/car');
+const adminRouter = require('./routers/admin')
 const dotenv = require('dotenv');
 dotenv.config();
 console.log(`Your port is ${process.env.PORT}`); // 8626
@@ -19,6 +20,7 @@ app.use(cors({
 app.use(express.json());
 app.use(userRouter)
 app.use(carRouter)
+app.use(adminRouter)
 
 app.listen(port, () => console.log(`Server is up on port  ${port}!`));
 
