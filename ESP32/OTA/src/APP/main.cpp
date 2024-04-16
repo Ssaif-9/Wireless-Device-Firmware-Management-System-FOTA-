@@ -30,7 +30,7 @@ void loop()
 
     // Firebase.ready() should be called repeatedly to handle authentication tasks.
 
-    if(readBooleanData(fbdo_RTDB_READ,"/KIA/777/2020") == false )
+    if(readBooleanData(fbdo_RTDB_READ,"/alfa-romeo/mito/2016") == false )
     {
         Serial.println("\nNo Update Available.\n");
     }
@@ -38,7 +38,7 @@ void loop()
     {
         UART0_TransimiteChar('N'); // Send Notification to HMI
         UART0_FreeBuffer();
-        Serial.println("Notification send. ");
+        Serial.println("\nNotification send. ");
 
         if (ReceiveReply(&HMI_REPLY) == true)
         {
@@ -48,19 +48,19 @@ void loop()
              Serial.println("\nCheck file...\n");
 
              // The file systems for flash and SD/SDMMC can be changed in FirebaseFS.h.
-            if (!Firebase.Storage.download(&fbdo, STORAGE_BUCKET_ID /* Firebase Storage bucket id */, "KIA/777/2020/version.hex" /* path of remote file stored in the bucket */, "/Update.txt" /* path to local file */, mem_storage_type_flash /* memory storage type, mem_storage_type_flash and mem_storage_type_sd */, fcsDownloadCallback /* callback function */))
+            if (!Firebase.Storage.download(&fbdo, STORAGE_BUCKET_ID /* Firebase Storage bucket id */, "alfa-romeo/mito/2016/version.hex" /* path of remote file stored in the bucket */, "/Updated.txt" /* path to local file */, mem_storage_type_flash /* memory storage type, mem_storage_type_flash and mem_storage_type_sd */, fcsDownloadCallback /* callback function */))
                  {Serial.println(fbdo.errorReason());} 
             Serial.println("update available.\n   \nDownload file...\n");
-            ReadFile("/Update.txt");
+            ReadFile("/Updated.txt");
             Serial.println("\n");
-            BootloaderSendData("/Update.txt");
-            writeBooleanData(fbdo_RTDB_WRITE, "/KIA/777/2020", false);
+            BootloaderSendData("/Updated.txt");
+            writeBooleanData(fbdo_RTDB_WRITE, "/alfa-romeo/mito/2016", false);
             Serial.println("All Updated!!\n");
            } 
         }
         else
         {
-            writeBooleanData(fbdo_RTDB_WRITE, "/KIA/777/2020", false);
+            writeBooleanData(fbdo_RTDB_WRITE, "/alfa-romeo/mito/2016", false);
         }
     }
 }
