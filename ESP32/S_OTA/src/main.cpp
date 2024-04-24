@@ -41,6 +41,8 @@ void loop()
       const char * ESP_file = "/TestStorage.hex";
       Server_Download(FB_file);
       ReadFile(ESP_file);
+      Version_Recieve();
+      UpdateCheck();
     }
   }
 }
