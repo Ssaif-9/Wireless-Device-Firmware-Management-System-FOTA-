@@ -24,15 +24,6 @@ void loop()
   if (Serial.available())
   {
     ReadSerial = Serial.read();
-/*
-    if (ReadSerial == 'X')
-    {
-      char a = Serial2.read();
-      WriteDiagnostics((int)a); 
-      Serial.write((int)a);
-      
-    }
-    */
     if (ReadSerial == DOWNLOAD_PERMISSION)
     {
       ReadSerial = 0;
