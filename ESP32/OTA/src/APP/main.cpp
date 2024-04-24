@@ -89,11 +89,11 @@ bool ReceiveReply(char *Reply)
         Value=WaitReply();
         break;
 
-    case 'I':
+   /* case 'I':
         Serial.println("Ignore Update!!\n");
         Value= false;
         break;
-    
+    */
     default:
         break;
     }
@@ -120,11 +120,12 @@ bool WaitReply(void)
         Serial.println("Accept Update!!\n");
         W_Value= true;
         break;
+    /*
     case 'I':
         Serial.println("Ignore Update!!\n");
         W_Value= false;
         break;
-    
+    */
     default:
         break;
     }
