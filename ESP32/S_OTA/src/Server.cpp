@@ -55,20 +55,22 @@ void Server_Connect(void)
   if (Firebase.signUp(&config, &auth, "", ""))
   {
      Serial.println("ok");
-    signupOK = true;
+     signupOK = true;
   }
 
   else {
     Serial.printf("%s\n", config.signer.signupError.message.c_str());
   }
-  */ 
+*/
+
   /* Assign the callback function for the long running token generation task */
   
   config.token_status_callback = tokenStatusCallback; //see addons/TokenHelper.h
    
-  
   Firebase.reconnectWiFi(true);
+
   config.fcs.download_buffer_size = 2048;
+
   Firebase.begin(&config, &auth);
 }
 
@@ -91,6 +93,7 @@ void fcsDownloadCallback(FCS_DownloadStatusInfo info)
         debugf("Download failed, %s\n", info.errorMsg.c_str());
     }
 }
+
 void Server_Download(String file)
 {
   char test;
@@ -107,7 +110,25 @@ void Server_Download(String file)
   }
 }
 
-/*
+
+void ReadFile(const char *path)
+{
+  Serial.printf("Reading file: %s\n", path);
+  File file = LittleFS.open(path, "r");
+  if (!file) {
+  debugln("Failed to open file for reading");
+  return;
+  }
+  debugln("Read from file: ");
+  while (file.available())
+  {
+    Serial.write(file.read()); 
+  }
+  file.close();
+  debugln();
+}
+
+
 int Version_Recieve(void)
 {
   if (Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0))
@@ -127,12 +148,21 @@ int Version_Recieve(void)
       Serial.println(fbdo.errorReason());
     }
   }
+  return -1;
 }
-*/
 
-/*
+
+
 void UpdateCheck(void)
 {
+  debug("Global_App1CarVersion =");
+  debugln(Global_App1CarVersion);
+  debug("Global_App1ServerVersion =");
+  debugln(Global_App1ServerVersion);
+  debug("Last_Notification =");
+  debugln(Last_Notification);
+  debugln();
+
   if (Global_App1CarVersion == Global_App1ServerVersion)
 	{
 		Global_App1ServerVersion = Version_Recieve();             
@@ -141,74 +171,22 @@ void UpdateCheck(void)
 	{
 		if (Last_Notification < Global_App1ServerVersion)
 		{
-			Serial2.write(UPDATE_NOTIFICATION);
-			Serial2.write(UPDATE_NOTIFICATION);
+			Serial.write(UPDATE_NOTIFICATION);
+			Serial.write(UPDATE_NOTIFICATION);
 			Last_Notification = Global_App1ServerVersion;          
 		}
 		if (Last_Notification == Global_App1ServerVersion)
 		{
 			Global_App1ServerVersion = Version_Recieve();
-		}                
-	}
-    
-
-  if (Global_App2CarVersion == Global_App2ServerVersion)
-	{
-		Global_App2ServerVersion = Version_Recieve();             
-	}
-	else if (Global_App2ServerVersion > Global_App2CarVersion)
-	{
-		if (Last_Notification < Global_App2ServerVersion)
-		{
-			Serial2.write(UPDATE_NOTIFICATION);
-			Serial2.write(UPDATE_NOTIFICATION);
-			Last_Notification = Global_App2ServerVersion;          
-		}
-		if (Last_Notification == Global_App2ServerVersion)
-		{
-			Global_App2ServerVersion = Version_Recieve();
-		}                
+		}        
 	}
 
-}
-*/
-
-void ReadFile(const char *path)
-{
-  Serial.printf("Reading file: %s\n", path);
-  File file = LittleFS.open(path, "r");
-  if (!file) {
-  debugln("Failed to open file for reading");
-  return;
-  }
-  debugln("Read from file: ");
-  while (file.available())
-  {
-    Serial.write(file.read()); 
-  }
-  file.close();
+  debug("Global_App1CarVersion =");
+  debugln(Global_App1CarVersion);
+  debug("Global_App1ServerVersion =");
+  debugln(Global_App1ServerVersion);
+  debug("Last_Notification =");
+  debugln(Last_Notification);
 }
 
-/*
-void WriteDiagnostics(int data)
-{  
-    if (Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0)){
-    sendDataPrevMillis = millis();
-    // Write an Int number on the database path test/int
-    if (Firebase.RTDB.setInt(&fbdo, "/zPPO6sJUEU5WrqeEnB2N9g==/Feedback", data)){
-      Serial.println("PASSED");
-      Serial.println("PATH: " + fbdo.dataPath());
-      Serial.println("TYPE: " + fbdo.dataType());
-    }
-    else {
-      Serial.println("FAILED");
-      Serial.println("REASON: " + fbdo.errorReason());
-    }
-    }
-    else
-    {
-      Serial.println("Firebase not ready");
-    }
 
-}
-*/

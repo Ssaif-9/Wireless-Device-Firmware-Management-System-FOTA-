@@ -24,15 +24,6 @@ void loop()
   if (Serial.available())
   {
     ReadSerial = Serial.read();
-/*
-    if (ReadSerial == 'X')
-    {
-      char a = Serial2.read();
-      WriteDiagnostics((int)a); 
-      Serial.write((int)a);
-      
-    }
-    */
     if (ReadSerial == DOWNLOAD_PERMISSION)
     {
       ReadSerial = 0;
@@ -41,6 +32,8 @@ void loop()
       const char * ESP_file = "/TestStorage.hex";
       Server_Download(FB_file);
       ReadFile(ESP_file);
+      Version_Recieve();
+      UpdateCheck();
     }
   }
 }
