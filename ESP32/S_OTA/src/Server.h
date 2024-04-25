@@ -24,8 +24,8 @@
 #define STORAGE_BUCKET_ID               "fota-4ca08.appspot.com"
 
 #define BAUD_RATE                       9600
-#define RXD2                            17
-#define TXD2                            16
+#define RXD2                            16
+#define TXD2                            17
 
 #define UPDATE_NOTIFICATION           'P'
 

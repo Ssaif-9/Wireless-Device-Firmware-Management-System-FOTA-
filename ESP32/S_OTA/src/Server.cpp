@@ -25,7 +25,7 @@ bool signupOK = false;
 void Wifi_Connect(void)
 {
   Serial.begin(115200);
-  Serial2.begin(115200, SERIAL_8N1, RXD2, TXD2);
+  Serial2.begin(BAUD_RATE, SERIAL_8N1, RXD2, TXD2);
 
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   debug("Connecting to Wi-Fi");
@@ -148,7 +148,6 @@ int Version_Recieve(void)
       Serial.println(fbdo.errorReason());
     }
   }
-  return -1;
 }
 
 

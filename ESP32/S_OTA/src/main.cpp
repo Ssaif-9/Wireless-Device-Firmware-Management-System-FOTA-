@@ -1,9 +1,10 @@
 #include <Arduino.h>
 #include "Debug.h"
 #include "Server.h"
+#include "FileHandler.h"
+#include "SPIFFS.h"
 
-#define DOWNLOAD_PERMISSION           'k'
-
+  
 char ReadSerial;
 
 void setup(){
@@ -28,12 +29,19 @@ void loop()
     {
       ReadSerial = 0;
       debugln("Downlaod Enabled");
+
       String FB_file = "alfa-romeo/mito/2016/version.hex";
       const char * ESP_file = "/TestStorage.hex";
+
       Server_Download(FB_file);
       ReadFile(ESP_file);
       Version_Recieve();
-      UpdateCheck();
+     // UpdateCheck();
+
+      debugln("\nUpdated file:");
+      //Serial.println(getFile(ESP_file));  
+
+      SendFile(ESP_file); 
     }
   }
 }
