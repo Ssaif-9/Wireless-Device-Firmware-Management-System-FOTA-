@@ -1,7 +1,7 @@
 #include "Debug.h"
 #include "FileHandler.h"
 #include "HardwareSerial.h"
-
+#include "Decryption.h"
 
 char Acknowledge;
 
@@ -87,3 +87,23 @@ void SendFile(const char * path)
 }
 
 
+void DecryptFile(const char *Cipher_path,const char *Decrypted_path)
+{
+  String Chipher_line ;
+  String decrypted_line;
+
+  File Cipher_File = LittleFS.open(Cipher_path, "r");
+  File Decrypted_File = LittleFS.open(Decrypted_path, "w");
+
+  while (Cipher_File.available()) 
+  {  
+    Chipher_line = "";
+    Chipher_line = Cipher_File.readStringUntil('\n');
+    
+    decrypted_line = decryptString(Chipher_line,CIPHER_KEY);
+
+    Decrypted_File.print(decrypted_line + "\n");
+  }
+  Cipher_File.close();
+  Decrypted_File.close();
+}

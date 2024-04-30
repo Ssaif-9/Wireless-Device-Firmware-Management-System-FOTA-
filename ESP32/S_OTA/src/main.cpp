@@ -3,8 +3,8 @@
 #include "Server.h"
 #include "FileHandler.h"
 
+bool Update_Secure = true;
 
-  
 char ReadSerial;
 
 void setup()
@@ -27,12 +27,34 @@ void loop()
       debugln("Downlaod Enabled");
 
       const char * FB_file = "alfa-romeo/mito/2016/version.hex";
-      const char * ESP_file = "/TestStorage.hex";
+      const char * ESP_Cipher_file = "/TestStorage.hex";
+      const char * ESP_Decrypted_file = "/Decrypted.hex";
 
       Server_Download(FB_file);
-      ReadFile(ESP_file);
-     
-      SendFile(ESP_file); 
+      ReadFile(ESP_Cipher_file);
+
+      DecryptFile(ESP_Cipher_file, ESP_Decrypted_file);
+      ReadFile(ESP_Decrypted_file);
+
+      
+      /**********************************************************/
+      /*                    Check Digest                        */
+      /**********************************************************/
+
+      /*
+      DigestCheck(&Update_Secure);
+      if(Update_Secure)
+        continue;
+      else
+        {
+          debugln("Update Not Secure ");
+          DeleteFiles();
+          break;
+        }
+      */
+      /**********************************************************/
+
+      SendFile(ESP_Cipher_file); 
     }
   }
   UpdateCheck();
