@@ -1,5 +1,5 @@
 #include "Debug.h"
-#include "Server.h"
+#include "FireBase.h"
 #include <WiFi.h>
 #include <Firebase_ESP_Client.h>
 //Provide the token generation process info.
@@ -105,9 +105,6 @@ void Server_Download(const char *file)
     }
   }
 }
-
-
-
 
 
 int Version_Recieve(void)

@@ -1,5 +1,5 @@
 #include "Debug.h"
-#include "FileHandler.h"
+#include "IOManager.h"
 #include "HardwareSerial.h"
 #include "Decryption.h"
 
@@ -87,6 +87,7 @@ void SendFile(const char * path)
 }
 
 
+/*
 void DecryptFile(const char *Cipher_path,const char *Decrypted_path)
 {
   String Chipher_line ;
@@ -107,3 +108,10 @@ void DecryptFile(const char *Cipher_path,const char *Decrypted_path)
   Cipher_File.close();
   Decrypted_File.close();
 }
+
+
+void DigestCheck(bool *SecurityStatue);
+{
+
+}
+*/

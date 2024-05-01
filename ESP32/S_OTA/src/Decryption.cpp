@@ -1,4 +1,4 @@
-#include "Cipher.h"
+#include "Decryption.h"
 
 
 void decrypt(unsigned char * cipherText, char * key, unsigned char * outputBuffer) {
@@ -10,5 +10,16 @@ void decrypt(unsigned char * cipherText, char * key, unsigned char * outputBuffe
   mbedtls_aes_crypt_ecb(&aes, MBEDTLS_AES_DECRYPT, (const unsigned char*)cipherText, outputBuffer);
   mbedtls_aes_free( &aes );
 }
+/*
 
- 
+ String decryptBuffer(String cipherText, char *key)
+ {
+
+ }
+
+String decryptString(String cipherText, char * key)
+{
+
+}
+
+*/
