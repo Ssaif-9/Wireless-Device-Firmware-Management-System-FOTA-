@@ -1,15 +1,15 @@
-#ifndef SERVER_H_
-#define SERVER_H_
+#ifndef FIREBASE_H_
+#define FIREBASE_H_
 
 #include <Arduino.h>
 
 //Define the WiFi credentials
 
-#define WIFI_SSID                      "Saif_sultan"    
-#define WIFI_PASSWORD                  "12345678s"      
+//#define WIFI_SSID                      "Saif_sultan"    
+//#define WIFI_PASSWORD                  "12345678s"      
 
-//#define WIFI_SSID                         "TE DATA"
-//#define WIFI_PASSWORD                     "S9S26#s25s1"
+#define WIFI_SSID                         "TE DATA"
+#define WIFI_PASSWORD                     "S9S26#s25s1"
 
 
 //Define the API Key
@@ -27,7 +27,7 @@
 #define RXD2                            16
 #define TXD2                            17
 
-#define UPDATE_NOTIFICATION           'P'
+#define UPDATE_NOTIFICATION           'N'
 
 //Function to connect to Wifi
 void Wifi_Connect(void);

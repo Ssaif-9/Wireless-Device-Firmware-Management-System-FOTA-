@@ -1,8 +1,7 @@
-#ifndef CIPHER_H_
-#define CIPHER_H_
+#ifndef DECRYPTION_H_
+#define DECRYPTION_H_
 
 #include <Arduino.h>
-
 #include "mbedtls/aes.h"
 
 #define CIPHER_KEY                    "fotaprojectfotaa"
@@ -13,4 +12,4 @@ String decryptBuffer(String cipherText, char *key);
 
 String decryptString(String cipherText, char * key);
 
-#endif /* CIPHER_H_ */
+#endif /* DECRYPTION_H_ */
