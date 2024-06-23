@@ -1,11 +1,13 @@
-#include <Arduino.h>
 #include "Debug.h"
 #include "FireBase.h"
 #include "IOManager.h"
+#include <LittleFS.h>
+#include "mbedtls/aes.h"
+#include <Base64.h>
 
 bool Update_Secure = true;
 
-char ReadSerial;
+char ReadSerial='0';
 
 void setup()
 {
@@ -18,25 +20,28 @@ void setup()
 
 void loop()
 {
-  if (Serial.available())
+  UpdateCheck();
+
+  if (Serial2.available())
   {
-    ReadSerial = Serial.read();                     //Receive Yes to Start Update 
+    ReadSerial = Receive(); // Receive Yes to Start Update
+    debugln(ReadSerial);
     if (ReadSerial == DOWNLOAD_PERMISSION)
     {
-      ReadSerial = 0;
+      ReadSerial = '0';
+      digitalWrite(ledPin, LOW);
       debugln("Downlaod Enabled");
 
-      const char * FB_file = "alfa-romeo/mito/2016/version.hex";
-      const char * ESP_Cipher_file = "/TestStorage.hex";
-      const char * ESP_Decrypted_file = "/Decrypted.hex";
+      const char *FB_file = "alfa-romeo/mito/2016/version.hex";
+      const char *ESP_Cipher_file = "/TestStorage.hex";
+      // const char * ESP_Decrypted_file = "/Decrypted.hex";
 
       Server_Download(FB_file);
-      ReadFile(ESP_Cipher_file);
+      // ReadFile(ESP_Cipher_file);
 
-      //DecryptFile(ESP_Cipher_file, ESP_Decrypted_file);
-      //ReadFile(ESP_Decrypted_file);
+      // DecryptFile(ESP_Cipher_file, ESP_Decrypted_file);
+      // ReadFile(ESP_Decrypted_file);
 
-      
       /**********************************************************/
       /*                    Check Digest                        */
       /**********************************************************/
@@ -57,5 +62,4 @@ void loop()
       SendFile(ESP_Cipher_file); 
     }
   }
-  UpdateCheck();
 }
