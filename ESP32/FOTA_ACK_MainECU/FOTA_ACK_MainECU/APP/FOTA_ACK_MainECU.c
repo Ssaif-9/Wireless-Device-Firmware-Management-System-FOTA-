@@ -5,7 +5,8 @@
  *  Author: Seif Eldin Sultan
  */ 
 
-
+#define F_CPU 16000000U
+#include <avr/delay.h>
 #include "../lib/STD_TYPE.h"
 #include "../lib/BIT_MATH.h"
 
@@ -25,38 +26,39 @@
 #include "../MCAL/G_INT/GLBI_interfase.h"
 #include "../MCAL/G_INT/GLBI_private.h"
 
-void ACK_a (void);
-//void ACK_e (void);
+void ACK_A (void);
 
 int main(void)
 {
+	u8 NOTI;
+	u8 Accept='y';
+	u8 NotifyFlag;
+	
 	GLBI_Enable();
 	UART_init();
-	//LED_init(DIO_PORTC,DIO_PIN2);
-	//LED_init(DIO_PORTD,DIO_PIN3);
 	LCD_init();
 	
 	EXTI_Enable(EXTI_INT0,EXTI_RISING_EDGE);
-	//EXTI_Enable(EXTI_INT2,EXTI_RISING_EDGE);
 	
-	EXTI_SetCallBackInt0(&ACK_a);
-	//EXTI_SetCallBackInt2(&ACK_e);
+	EXTI_SetCallBackInt0(&ACK_A);
 	
     while(1)
     {
-    
-    }
+	
+		UART_ReceiveChar(&NOTI);
+		LCD_sendChar(NOTI);
+		
+		if (NOTI=='N')
+		{
+			UART_TransmiteChar(Accept);
+			LCD_GoToLocation(1,2);
+			LCD_sendChar(Accept);
+		}
+		
+	}	  
 }
-void ACK_a (void)
+void ACK_A(void)
 {
 	UART_TransmiteChar('A');
-	//LED_Toggle(DIO_PORTC,DIO_PIN2);
 	LCD_sendChar('A');
 }
-
-// void ACK_e (void)
-// {
-// 	UART_TransmiteChar('e');
-// 	LED_Toggle(DIO_PORTD,DIO_PIN3);
-// 	//LCD_sendChar('e');
-// }

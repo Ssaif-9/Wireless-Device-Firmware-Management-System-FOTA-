@@ -1,28 +1,42 @@
+
 #include "Debug.h"
 #include "FireBase.h"
 #include <WiFi.h>
 #include <Firebase_ESP_Client.h>
-//Provide the token generation process info.
+
 #include <addons/TokenHelper.h>
 #include <addons/RTDBHelper.h>
+
 
 FirebaseData fbdo;
 FirebaseAuth auth;
 FirebaseConfig config;
 FirebaseJson json;
 
+static int Version;
+int Target;
+
 int Global_App1ServerVersion;
 int Global_App1CarVersion;
-int Last_Notification;
+int Last_APP1Notification;
+
+int Global_App2ServerVersion;
+int Global_App2CarVersion;
+int Last_APP2Notification;
 
 bool taskCompleted = false;
 unsigned long sendDataPrevMillis = 0;
-int Version_int;
+
+
+String UpdateInfo;
+
 bool signupOK = false;
 
 void Wifi_Connect(void)
 {
-  Serial.begin(115200);
+  pinMode(ledPin, OUTPUT);
+
+  Serial.begin(BAUD_RATE);
   Serial2.begin(BAUD_RATE, SERIAL_8N1, RXD2, TXD2);
 
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -112,14 +126,36 @@ int Version_Recieve(void)
   if (Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0))
   {
     sendDataPrevMillis = millis();
-    if (Firebase.RTDB.getInt(&fbdo,"/alfa-romeo/mito/2016"))
+    if (Firebase.RTDB.getString(&fbdo,"/alfa-romeo/mito/2016"))
     {
-      if (fbdo.dataType() == "int")
+      if (fbdo.dataType() == "String")
       {
-        Version_int = fbdo.intData();
+        UpdateInfo = fbdo.stringData();
+
+
+        int targetLength = 3;
+        int versionLength = 3;
+
+    String target = "";
+    for (int i = 0; i < targetLength; ++i) 
+    {
+        target += UpdateInfo[i]; // Append characters to target string
+    }
+
+    String version = "";
+    for (int i = targetLength; i < targetLength + versionLength; ++i) {
+       version += UpdateInfo[i]; // Append characters to version string
+    }
+
+    Target = atoi(target.c_str());
+    Version = atoi(version.c_str());
+
+ 
+        debug("Target ECU : ");
+        debugln(Target);
         debug("Function Version = ");
-        debugln(Version_int);
-        return Version_int;
+        debugln(Version);
+        return Version;
       }
     }
     else 
@@ -131,22 +167,54 @@ int Version_Recieve(void)
 
 void UpdateCheck(void)
 {
-  if (Global_App1CarVersion == Global_App1ServerVersion)
+  if(1==Target)
+  {
+    if (Global_App1CarVersion == Global_App1ServerVersion)
 	{
 		Global_App1ServerVersion = Version_Recieve();             
 	}
 	else if (Global_App1ServerVersion > Global_App1CarVersion)
 	{
-		if (Last_Notification < Global_App1ServerVersion)
+		if (Last_APP1Notification < Global_App1ServerVersion)
 		{
-			Serial.write(UPDATE_NOTIFICATION);
-			Last_Notification = Global_App1ServerVersion;          
-		}
-		if (Last_Notification == Global_App1ServerVersion)
+			Transmit(UPDATE_NOTIFICATION);
+      debugln(UPDATE_NOTIFICATION);
+      digitalWrite(ledPin, HIGH);
+      Last_APP1Notification = Global_App1ServerVersion;
+    }
+		if (Last_APP1Notification == Global_App1ServerVersion)
 		{
 			Global_App1ServerVersion = Version_Recieve();
 		}        
 	}
+  }
+  else if (2==Target)
+  {
+     if (Global_App2CarVersion == Global_App2ServerVersion)
+	{
+		Global_App2ServerVersion = Version_Recieve();             
+	}
+	else if (Global_App2ServerVersion > Global_App2CarVersion)
+	{
+		if (Last_APP2Notification < Global_App2ServerVersion)
+		{
+			Transmit(UPDATE_NOTIFICATION);
+      debugln(UPDATE_NOTIFICATION);
+      digitalWrite(ledPin, HIGH);
+      Last_APP2Notification = Global_App2ServerVersion;
+    }
+		if (Last_APP2Notification == Global_App2ServerVersion)
+		{
+			Global_App2ServerVersion = Version_Recieve();
+		}        
+	}
+
+  }
+  else 
+  {
+    debugln("Target not valid");
+    Version_Recieve();
+  }
 }
 
 
