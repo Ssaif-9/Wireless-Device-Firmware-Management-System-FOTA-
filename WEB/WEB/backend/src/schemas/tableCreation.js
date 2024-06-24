@@ -12,6 +12,9 @@ const sequelize = require("./postgres");
 // const { DataTypes, Model } = require("sequelize");
 User.hasMany(LiveDiagnostics, { as: 'liveDiagnostics', onDelete: 'CASCADE' });
 LiveDiagnostics.belongsTo(User);
+LiveDiagnostics.belongsTo(Car);
+Car.hasMany(LiveDiagnostics, { as: 'liveDiagnostics', onDelete: 'CASCADE' });
+
 // Sync the models with the database
 sequelize
   .sync({ force: false }) // Set force: true only for development; it drops existing tables

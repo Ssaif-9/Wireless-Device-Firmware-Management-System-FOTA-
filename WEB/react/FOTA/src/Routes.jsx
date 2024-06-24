@@ -8,6 +8,7 @@ import UserHome from './user/home';
 import OwnedCars from './user/ownedCars';
 import Profile from './user/profile';
 import About from './user/about';
+import LiveDiagnostics from './user/liveDiagnostics';
 import NotFoundPage from './NotFoundPage';
 
 
@@ -32,6 +33,7 @@ const Router = () => (
         <Route path="/ownedCars" element={<OwnedCars/>} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/about" element={<About />} />
+        <Route path="/liveDiag" element={<LiveDiagnostics />} />
 
         {/* ADMIN ROUTES */}
         <Route path="/adNews" element={<AdminHome />} />

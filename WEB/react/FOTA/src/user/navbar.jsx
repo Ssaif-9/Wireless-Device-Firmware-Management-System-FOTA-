@@ -74,7 +74,7 @@ const navbar = () => {
                             <a href="./about" className='no-underline text-[#333] transition-[0.3s] p-2.5 rounded-br-[20px] rounded-t-[20px] rounded-bl-[20px] rounded-[5px] hover:bg-[#7bbec8]'>About</a>
                         </li>
                         <li>
-                            <a className='no-underline text-[#333] transition-[0.3s] p-2.5 rounded-br-[20px] rounded-t-[20px] rounded-bl-[20px] rounded-[5px] hover:bg-[#7bbec8]'>Notifications</a>
+                            <a href='/liveDiag' className='no-underline text-[#333] transition-[0.3s] p-2.5 rounded-br-[20px] rounded-t-[20px] rounded-bl-[20px] rounded-[5px] hover:bg-[#7bbec8]'>Live Diagnostics</a>
                         </li>
                         <li onClick={logout}>
                             <a className='no-underline text-[#333] transition-[0.3s] p-2.5 rounded-br-[20px] rounded-t-[20px] rounded-bl-[20px] rounded-[5px] hover:bg-[#7bbec8]'>Logout</a>

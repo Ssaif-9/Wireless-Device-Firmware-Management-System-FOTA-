@@ -108,12 +108,7 @@ const userServices = {
     if (!car) {
       throw new Error("Car not found");
     }
-    // console.log(car);
     await user.addCar(car);
-    // const token = await utilities.generateToken(user);
-    // user.tokens = user.tokens || [];
-    // user.tokens = user.tokens.concat(token);
-    // console.log(user.tokens);
     await user.save();
 
     // await mailer.handleSignup(user.email);
@@ -313,9 +308,26 @@ const userServices = {
     return user.avatar;
   },
   sendDiagnostics: async (payload, user) => {
-    console.log(payload);
-    const liveDiagnostics = await LiveDiagnostics.create(payload);
+    if (!payload.car || !payload.diagnostics) {
+      return "Car and diagnostics are required!";
+    }
+    const car = await Car.findOne({
+      where: {
+        model: payload.car.model,
+        maker: payload.car.maker,
+        year: payload.car.year,
+      },
+    });
+    if (!car) {
+      return("Car not found");
+    }
+    const liveDiagnostics = await LiveDiagnostics.create({
+      diagnostics: payload.diagnostics,
+      user: user.id,
+      car: car.id,
+    });
     liveDiagnostics.setUser(user);
+    liveDiagnostics.setCar(car);
     return liveDiagnostics;
   },
   getNews: async () =>{

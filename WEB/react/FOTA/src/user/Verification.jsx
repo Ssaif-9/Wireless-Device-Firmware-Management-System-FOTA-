@@ -98,6 +98,7 @@ function OtpInput() {
                         } else {
                             toast.success(json.message);
                             localStorage.removeItem('user');
+                            localStorage.removeItem('email');
                             window.location.href = '/login';
                             toast.success('Please login to continue');
                         }

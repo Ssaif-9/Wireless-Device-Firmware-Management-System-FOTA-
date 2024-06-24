@@ -58,7 +58,7 @@ function SignUpPage() {
 
     const isMobile = window.innerWidth <= 600;
 
-    console.log(isMobile);
+    // console.log(isMobile);
     if (isMobile) {
       setShowLabel(false);
     }
@@ -193,6 +193,26 @@ function SignUpPage() {
       });
   }
 
+  const CheckStrongPassword = (password) => {
+    if (password.length < 8) {
+      return false;
+    }
+    if (!/[a-z]/.test(password)) {
+      return false;
+    }
+    if (!/[A-Z]/.test(password)) {
+      return false;
+    }
+    if (!/[0-9]/.test(password)) {
+      return false;
+    }
+    if (!/[$&+,:;=?@#|'<>.^*()%!-]/.test(password)) {
+      return false;
+    }
+    return true;
+  };
+
+
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -243,8 +263,10 @@ function SignUpPage() {
       }
 
 
+      // console.log(phone)
+      const formattedValueWithoutDash = phone.replace(/-/g, "");
 
-      if (phone.length !== 11) {
+      if (formattedValueWithoutDash.length !== 11) {
         console.error("Phone Number must be 11 numbers!");
         throw new Error("Phone Number must be 11 numbers!");
       }
@@ -259,13 +281,13 @@ function SignUpPage() {
         throw new Error("Password Does Not Match!");
       }
 
-      if (!Validator.isStrongPassword(password)) {
-        console.error("Password Must be more than 7 characters and contains #$*...etc.!");
-        throw new Error("Password Must be more than 7 characters and contains #$*...etc.!!");
+      if (!CheckStrongPassword(password)) {
+        console.error("Password Must be more than 7 characters and contains numbers, uppercase and lowercase, symbols: #$*...etc.!");
+        throw new Error("Password Must be more than 7 characters and contains numbers, uppercase and lowercase, symbols: #$*...etc.!");
       }
       const data = {
         name: name,
-        phone: phone,
+        phone: formattedValueWithoutDash,
         maker: carBrand,
         model: carModel,
         year: carYear,
@@ -273,7 +295,7 @@ function SignUpPage() {
         password: password,
       };
 
-      console.log(data);
+      // console.log(data);
 
       localStorage.setItem("user", JSON.stringify(data));
 
@@ -288,7 +310,7 @@ function SignUpPage() {
       if (response.ok) {
         // Parse the response JSON and return it
         const responseData = await response.json();
-        console.log(responseData);
+        // console.log(responseData);
         // localStorage.setItem("token", responseData.token);
         // localStorage.setItem("user", JSON.stringify(responseData.user));
 
@@ -431,7 +453,7 @@ function SignUpPage() {
                     } else if (formattedValue.length > 7) {
                       formattedValue = formattedValue.replace(/(\d{3})(\d{4})(\d{1,4})/, "$1-$2-$3");
                     }
-
+                    // console.log(formattedValue)
                     setPhone(formattedValue);
                   }}
                   inputMode="tel"

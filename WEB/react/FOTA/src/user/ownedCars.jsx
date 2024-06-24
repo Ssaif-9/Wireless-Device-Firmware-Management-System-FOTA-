@@ -6,21 +6,15 @@ import { cross } from 'react-icons-kit/entypo/cross';
 import NavBar from './navbar'
 
 const OwnedCars = () => {
-    // console.log({ VITE_URL: import.meta.env.VITE_URL })
     const backendUrl = import.meta.env.VITE_URL;
     const [showLabel, setShowLabel] = useState(true);
     const [popupAddCar, setPopupAddCar] = useState(false);
     const [popupRemoveCar, setPopupRemoveCar] = useState(false);
-    // const [showEditMenu, setShowEditMenu] = useState(false);
-    // const [maker, setMaker] = useState('');
-    // const [model, setModel] = useState('');
-    // const [year, setYear] = useState('');
-
     useEffect(() => {
 
         const isMobile = window.innerWidth <= 600;
 
-        console.log(isMobile);
+        // console.log(isMobile);
         if (isMobile) {
             setShowLabel(false);
         }
@@ -55,6 +49,7 @@ const OwnedCars = () => {
                         listItem.textContent = item;
                         dataList.appendChild(listItem);
                     });
+                    setCarBrandFlag('false')
                 })
                 .catch((error) => {
                     console.error("Error fetching data:", error);
@@ -144,12 +139,9 @@ const OwnedCars = () => {
                 .then(data => {
                     setOwnedCars(data)
                     setOwnedCarsFlag(false)
-                    console.log(data)
-                    console.log('from useEffect owned cars')
-                    // setTableHeader(['Car Brand', 'Car Model', 'Car Year'])
                 })
         }
-    }, [ownedCarsFlag])
+    }, [,ownedCarsFlag])
 
     const [tableHeader, setTableHeader] = useState(['Car Brand', 'Car Model', 'Car Year'])
     const [tableData, setTableData] = useState([])
@@ -166,7 +158,7 @@ const OwnedCars = () => {
                 })
             if (response.ok) {
                 const responseData = await response.json()
-                console.log(responseData)
+                // console.log(responseData)
                 setTableHeader(['Car Brand', 'Car Model', 'Car Year', 'Remove'])
                 const tableData = []
                 const tempTableData = []
@@ -176,15 +168,10 @@ const OwnedCars = () => {
                     }} className="border-none bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)] text-center uppercase transition-[0.5s] bg-[200%_auto] text-[white] shadow-[0_0_20px_#eee] cursor-pointer w-auto m-2.5 p-3 rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center]">Remove</button>])
                     tempTableData.push(car)
                 })
-                // console.log(tableData)
 
                 setTableData(tableData)
                 setOwnedCars(tempTableData)
-                console.log({ 'from remove owned cars TableData': tableData })
-                console.log({ 'from remove owned cars OwnedCars': ownedCars })
-                console.log({ 'from remove owned cars tempTableData': tempTableData })
                 setPopupRemoveCar(!popupRemoveCar)
-                // setOwnedCars(tableData)
             }
         } catch (error) {
             console.error('Error:', error.status, error.message)
@@ -195,6 +182,9 @@ const OwnedCars = () => {
 
 
     const PopupToggleAddCar = () => {
+        if (popupRemoveCar){
+            setPopupRemoveCar(!popupRemoveCar)
+        }
         setPopupAddCar(!popupAddCar)
     }
 
@@ -238,7 +228,7 @@ const OwnedCars = () => {
             model: carModel,
             year: carYear
         }
-        console.log(data)
+        // console.log(data)
         try {
             const response = await fetch(`${backendUrl}/users/me/cars`,
                 {
@@ -251,7 +241,7 @@ const OwnedCars = () => {
                 })
             if (response.ok) {
                 const responseData = await response.json()
-                console.log(responseData)
+                // console.log(responseData)
                 toast.success('Car added successfully',
                     {
                         position: "top-center",
@@ -263,6 +253,7 @@ const OwnedCars = () => {
                         progress: undefined,
                     })
                 setPopupAddCar(!popupAddCar)
+                // setOwnedCars(responseData.user.cars)
                 setOwnedCarsFlag(true)
                 setCarBrandFlag('false')
                 // window.location.reload()
@@ -292,7 +283,7 @@ const OwnedCars = () => {
             model: model,
             year: year
         }
-        console.log(data)
+        // console.log(data)
         try {
             const response = await fetch(`${backendUrl}/users/me/cars`,
                 {
@@ -305,7 +296,7 @@ const OwnedCars = () => {
                 })
             if (response.ok) {
                 const responseData = await response.json()
-                console.log(responseData)
+                // console.log(responseData)
                 toast.success('Car removed successfully',
                     {
                         position: "top-center",
@@ -351,12 +342,12 @@ const OwnedCars = () => {
                     <div className="flex justify-between items-center">
                         <h2 className='text-xl'>Owned Cars</h2>
                         <div>
-                            <button className="border-none flex float-right bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)] text-center uppercase transition-[0.5s] bg-[200%_auto] text-[white] shadow-[0_0_20px_#eee] cursor-pointer w-auto m-2.5 p-3 rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center] phone:text-sm" id="button" onclick="toggleAddMode()"
+                            <button className={`border-none flex float-right text-center uppercase transition-[0.5s] bg-[200%_auto] text-[white] shadow-[0_0_20px_#eee] cursor-pointer w-auto m-2.5 p-3 rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center] phone:text-sm ${popupAddCar ? "bg-green" :"bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)]"} `} id="button"
                                 onClick={PopupToggleAddCar}
                             >
                                 Add Car
                             </button>
-                            <button className="border-none flex float-right bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)] text-center uppercase transition-[0.5s] bg-[200%_auto] text-[white] shadow-[0_0_20px_#eee] cursor-pointer w-auto m-2.5 p-3 rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center] phone:text-sm" id="removeBtn" onclick="toggleRemoveMode()"
+                            <button className={`border-none flex float-right text-center uppercase transition-[0.5s] bg-[200%_auto] text-[white] shadow-[0_0_20px_#eee] cursor-pointer w-auto m-2.5 p-3 rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center] phone:text-sm ${popupRemoveCar ? "bg-red-600" :"bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)]"} `} id="removeBtn"
                                 onClick={removeOwnedCars}
                             >
                                 Remove Car
@@ -364,28 +355,31 @@ const OwnedCars = () => {
                         </div>
                     </div>
                     <table id="carList" className='w-full mb-5 border-collapse'>
+                        <thead>
+                            <tr>
+                                {tableHeader.map(headers => (
+                                    <th className='border text-center p-2.5 border-solid border-[#333] bg-[#7bbec8] text-white text-base font-serif' key={headers}>{headers}</th>
+                                ))}
+                            </tr>
+                        </thead>
                         <tbody>
-                            {tableHeader.map(headers => (
-                                <th className='border text-center p-2.5 border-solid border-[#333] bg-[#7bbec8] text-white text-base font-serif'>{headers}</th>
-                            ))
-                            }
-                            {popupRemoveCar &&
-                                tableData.map((car, index) => (
+                            {popupRemoveCar ?
+                                (tableData.map((car, index) => (
                                     <tr key={index}>
-                                        {car.map((data, index) => (
-                                            <td className='border text-center p-2.5 border-solid border-[#333]'>{data}</td>
-                                        ))
-                                        }
+                                        {car.map((data, dataIdx) => (
+                                            <td className='border text-center p-2.5 border-solid border-[#333]' key={`${data}-${index}-${dataIdx}`}>{data}</td>
+                                        ))}
                                     </tr>
                                 ))
-                            }
-                            {!popupRemoveCar && ownedCars.map(car => (
-                                <tr key={car.id}>
-                                    <td className='border text-center p-2.5 border-solid border-[#333]'>{car.maker}</td>
-                                    <td className='border text-center p-2.5 border-solid border-[#333]'>{car.model}</td>
-                                    <td className='border text-center p-2.5 border-solid border-[#333]'>{car.year}</td>
-                                </tr>
-                            ))}
+                                ) :
+                                (ownedCars.map((car, carIdx) => (
+                                    <tr key={`${car.maker}-${car.model}-${car.year}-${carIdx}`}>
+                                        <td className='border text-center p-2.5 border-solid border-[#333]'> {car.maker} </td>
+                                        <td className='border text-center p-2.5 border-solid border-[#333]'> {car.model} </td>
+                                        <td className='border text-center p-2.5 border-solid border-[#333]'> {car.year} </td>
+                                    </tr>
+                                ))
+                                )}
                         </tbody>
                     </table>
                 </div>

@@ -5,9 +5,9 @@ const userController = {
   // Function to create a new user          Done
     createUser:  async (req, res) => {
         try {
-          console.log(req.body);
+          // console.log(req.body);
           const result = await userServices.verifyCode(req.body.email, req.body.code);
-          console.log(result);
+          // console.log(result);
           if (!result){
             return res.status(400).send({error:"Invalid verification code"});
           }
@@ -169,7 +169,7 @@ const userController = {
         res.send({"message":"Avatar uploaded", user: user});
       },
       replaceAvatar: async (req, res) => {
-        console.log(req.user.avatar)
+        // console.log(req.user.avatar)
         if (req.user.avatar) {
           console.log("user have avatar and wants to replace")
         const user = await userServices.replaceAvatar(req.user, req.file);
@@ -205,9 +205,12 @@ const userController = {
       sendDiagnostics: async (req, res) => {
         try {
           if (req.user.role !== 'user') {
-            return res.status(401).send({"error":"Unauthorized access"});
+            return res.status(401).send({"error":"Unauthorized access"}); 
           }
           const diagnostics = await userServices.sendDiagnostics(req.body, req.user);
+          if (diagnostics === 'Car and diagnostics are required!' || diagnostics === 'Car not found') {
+            return res.status(400).send({error: diagnostics});
+          }
           res.send({"message":"Your response sent successfully",diagnostics});
         } catch (error) {
           res.status(400).send({"error":error.message});

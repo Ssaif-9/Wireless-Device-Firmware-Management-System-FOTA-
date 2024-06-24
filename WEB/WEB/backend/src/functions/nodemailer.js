@@ -21,7 +21,7 @@ function sendVerificationEmail(email, verificationCode) {
     to: email,
     subject: "Account Verification",
     text: `Your verification code is: ${verificationCode}\n
-            The code is only valid for 5 minutes.
+            The code is only valid for 3 minutes.
             
             If you didn't request this code, you can safely ignore this email.`,
   };
@@ -59,7 +59,7 @@ function handleSignup(email) {
   const verificationCode = crypto.randomBytes(3).toString("hex"); // Adjust the length of the code as needed
 
    // Store the verification code and expiration timestamp in memory
-   const expirationTime = Date.now() + 5 * 60 * 1000; //  hours in milliseconds
+   const expirationTime = Date.now() + 3 * 60 * 1000; //  hours in milliseconds
    verificationCodes[email] = { code: verificationCode, expiration: expirationTime };
  
    // Send the verification email
@@ -97,7 +97,7 @@ function handleForgotPassword(email) {
   const verificationCode = crypto.randomBytes(6).toString("hex"); // Adjust the length of the code as needed
 
   // Store the verification code and expiration timestamp in memory
-  const expirationTime = Date.now() + 5 * 60 * 1000; // 5 minutes in milliseconds
+  const expirationTime = Date.now() + 1.5 * 60 * 1000; // 5 minutes in milliseconds
   verificationCodes[email] = { code: verificationCode, expiration: expirationTime };
 
   // Send the verification email

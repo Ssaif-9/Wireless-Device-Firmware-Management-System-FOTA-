@@ -17,7 +17,7 @@ const Profile = () => {
 
         const isMobile = window.innerWidth <= 600;
 
-        console.log(isMobile);
+        // console.log(isMobile);
         if (isMobile) {
             setShowLabel(false);
         }
@@ -62,11 +62,21 @@ const Profile = () => {
             }
         }).then(res => res.json())
             .then(data => {
-                console.log(data)
+                // console.log(data)
                 setUser(data)
             })
             .catch(err => {
-                console.log(err)
+                console.err(err)
+                toast.error('An error occurred while fetching user data',
+                    {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
             })
     }
         , []);
@@ -121,7 +131,7 @@ const Profile = () => {
         }
     };
 
-    const handleClickOutside = (event) =>{
+    const handleClickOutside = (event) => {
         if (event.target === document.querySelector('.fixed')) {
             setShowEditMenu(false);
         }
@@ -135,7 +145,7 @@ const Profile = () => {
         // Remove event listener when component unmounts
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('click', handleClickOutside);    
+            window.removeEventListener('click', handleClickOutside);
         };
     }, []); // Empty dependency array to ensure this effect runs only once
 
@@ -194,46 +204,46 @@ const Profile = () => {
                 // avatar: newImg
             }
             await handleEditUser(data)
-            console.log(data)
+            // console.log(data)
         } else if (newName && newPhone) {
             data = {
                 name: newName,
                 phone: newPhone,
             }
             await handleEditUser(data)
-            console.log(data)
+            // console.log(data)
         } else if (newName && newPassword) {
             data = {
                 name: newName,
                 password: newPassword,
             }
             await handleEditUser(data)
-            console.log(data)
+            // console.log(data)
         } else if (newPhone && newPassword) {
             data = {
                 phone: newPhone,
                 password: newPassword,
             }
             await handleEditUser(data)
-            console.log(data)
+            // console.log(data)
         } else if (newName) {
             data = {
                 name: newName,
             }
             await handleEditUser(data)
-            console.log(data)
+            // console.log(data)
         } else if (newPhone) {
             data = {
                 phone: newPhone,
             }
             await handleEditUser(data)
-            console.log(data)
+            // console.log(data)
         } else if (newPassword) {
             data = {
                 password: newPassword,
             }
             await handleEditUser(data)
-            console.log(data)
+            // console.log(data)
         }
         if (newImg) {
             await handleEditImage(newImg)
@@ -241,7 +251,7 @@ const Profile = () => {
     })
 
     const handleEditUser = (async (data) => {
-        console.log(data)
+        // console.log(data)
         await fetch(`${backendUrl}/users/me`, {
             method: 'PATCH',
             headers: {
@@ -263,7 +273,7 @@ const Profile = () => {
                             progress: undefined,
                         })
                 } else {
-                    console.log(data)
+                    // console.log(data)
                     setShowEditMenu(false)
                     if (newName) { setName(capitalizeName(newName)) }
                     if (newPhone) { setPhone(newPhone) }
@@ -302,7 +312,7 @@ const Profile = () => {
         try {
             // console.log(data)
             const newImg = await compressImage(data);
-            console.log({"newImg": newImg});
+            // console.log({"newImg": newImg});
             const formData = new FormData();
             // formData.append('avatar', data);
             formData.append('avatar', newImg, newImg.name);

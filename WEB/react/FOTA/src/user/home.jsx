@@ -3,6 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 // import { Link } from 'react-router-dom';
+import InitialImage from '../assets/latest-news.jpg'
 import NavBar from './navbar'
 // import Sidebar from "react-sidebar";
 
@@ -24,7 +25,7 @@ const Home = () => {
 
         const isMobile = window.innerWidth <= 600;
 
-        console.log(isMobile);
+        // console.log(isMobile);
         if (isMobile) {
             setShowLabel(false);
         }
@@ -41,8 +42,8 @@ const Home = () => {
     }
     );
 
-    const [news, setNews] = useState('')
-    const [image, setImage] = useState('')
+    const [news, setNews] = useState("    <h1>Welcome to My Home Page</h1><p>Stay updated with the latest news and announcements.</p><h2>Upcoming Events</h2><p>Join us for our annual conference on innovation in technology.</p><h2>Latest News</h2><p>Our new product line will be launching next month.</p><h2>Announcements</h2><p>We are expanding our services to new regions.</p><h2>Contact Us</h2><p>For press inquiries, please reach out to our media team.</p>")
+    const [image, setImage] = useState(InitialImage)
     // const [title, setTitle] = useState('')
 
     useEffect(() => {
@@ -61,7 +62,6 @@ const Home = () => {
         })
             .then(response => response.json())
             .then(data => {
-                // console.log(data)
                 setNews(data.news)
                 setImage(data.image)
                 // setTitle(data.title)
@@ -71,6 +71,16 @@ const Home = () => {
             })
             .catch((error) => {
                 console.error('Error:', error);
+                // toast.error('Error fetching news',
+                //     {
+                //         position: "top-center",
+                //         autoClose: 5000,
+                //         hideProgressBar: false,
+                //         closeOnClick: true,
+                //         pauseOnHover: true,
+                //         draggable: true,
+                //         progress: undefined,
+                //     });
             });
     }, [])
 
