@@ -10,6 +10,7 @@ const LiveDiagnostics = () => {
     const [filter, setFilter] = useState('All');
     const [popupVisible, setPopupVisible] = useState(false);
     const [currentMessage, setCurrentMessage] = useState('');
+    const [read,setRead] =useState()
     const [currentDiagIndex, setCurrentDiagIndex] = useState(null);
 
     useEffect(() => {
@@ -57,7 +58,6 @@ const LiveDiagnostics = () => {
         liveDiagData.forEach((diag, index) => {
             const tr = document.createElement('tr');
             createTableCell(tr, `${diag.car.maker} ${diag.car.model} ${diag.car.year}`);
-            console.log(diag.user.email)
             createTableCell(tr, `<a href="mailto:${diag.user.email}" class="text-blue-500 no-underline hover:underline">${diag.user.email}</a>`);
             createTableCell(tr, diag.read ? 'Read' : 'Unread');
 
@@ -136,6 +136,7 @@ const LiveDiagnostics = () => {
 
     const showPopup = (index) => {
         setCurrentMessage(liveDiagData[index].diagnostics);
+        setRead(liveDiagData[index].read)
         setCurrentDiagIndex(index);
         setPopupVisible(true);
     };
@@ -237,12 +238,13 @@ const LiveDiagnostics = () => {
                     <div className="bg-white p-6 rounded shadow-lg mx-20">
                         <h2 className="text-xl font-bold mb-4">Diagnostics Message</h2>
                         <p className="mb-4">{currentMessage}</p>
-                        <button
+                        { !read && <button
                             className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
                             onClick={markAsRead}
+                            
                         >
                             Mark as Read
-                        </button>
+                        </button>}
                         <button
                             className="bg-gray-500 text-white px-4 py-2 rounded"
                             onClick={() => setPopupVisible(false)}

@@ -157,12 +157,18 @@ const Home = () => {
                             <option value="">Select Car</option>
                         </select>
                         <br />
-                        <textarea type="text"
-                            className='overflow-y-auto box-border rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] mb-[4px] text-center p-2 border border-solid border-[#53f0f3] phone:w-[230px] phone:mx-auto tablet:w-[280px] focus:outline-none focus:border-[#2fb0b3] focus:ring-1 focus:ring-[#2fb0b3] hover:bg-[#f2f2f2] focus:bg-[#f2f2f2] focus-visible:bg-[#aaeffa] text-[#59888f]'
+                        <textarea
+                            type="text"
+                            className='overflow-y-hidden resize-none box-border rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] mb-[4px] text-center p-2 border border-solid border-[#53f0f3] phone:w-[230px] phone:mx-auto tablet:w-[280px] focus:outline-none focus:border-[#2fb0b3] focus:ring-1 focus:ring-[#2fb0b3] hover:bg-[#f2f2f2] focus:bg-[#f2f2f2] focus-visible:bg-[#aaeffa] text-[#59888f]'
                             required
                             id="diagnostics"
-                            onChange={(e) => setLiveDiag(e.target.value)}
-                        />
+                            onChange={(e) => {
+                                setLiveDiag(e.target.value);
+                                e.target.style.height = 'auto';
+                                e.target.style.height = e.target.scrollHeight + 'px';
+                            }}
+                            style={{ height: 'auto', overflowY: 'hidden' }}
+                        ></textarea>
                     </div>
                     <div className="block tablet:w-[20%] mx-auto phone:w-[40%] mb-5 text-center">
                         <input type="submit" onClick={HandleLiveDiag} className='border-none bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)] tablet:w-[100%] phone:w-[80%] flex-auto text-center uppercase transition-[0.5s] bg-[200%_auto] text-[white] shadow-[0_0_20px_#eee] cursor-pointer mt-3 p-3 rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center]' />
