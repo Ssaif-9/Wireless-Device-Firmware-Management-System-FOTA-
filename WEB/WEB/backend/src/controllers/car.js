@@ -143,6 +143,26 @@ const carController = {
         } catch (error) {
           res.status(500).send();
         }
+      },
+      getCarById: async (req, res) => {
+        if (!req.user.permissions.includes(5)) {
+            console.error('You do not have permission to perform this action!');
+            return res.status(403).send({
+                error: 'You do not have permission to perform this action!'
+            });
+        }
+        console.log("User have permission to get car by id");
+        try {
+            const car = await carService.getCarById(req.params.id);
+            if (car === 'Car not found') {
+                return res.status(404).send({
+                    error: "Car not found"
+                });
+            }
+            res.send(car);
+        } catch (error) {
+          res.status(500).send();
+        }
       }
 }
 

@@ -163,6 +163,30 @@ const adminServices = {
     }
     return diag;
   },
+  markDiagnostics: async (id) => {
+    const diag = await LiveDiagnostics.findOne({ where: { id } });
+    if (!diag) {
+      return "Diagnostics not found";
+    }
+    diag.read = true;
+    await diag.save();
+    return "Diagnostics marked as read!";
+  },
+  deleteDiagnosticsAfter30Days: async () => {
+    const diagnostics = await LiveDiagnostics.findAll();
+    
+    const thirtyDaysInMilliseconds = 30 * 24 * 60 * 60 * 1000;
+    const currentTime = Date.now();
+    
+    diagnostics.forEach(async (diag) => {
+        const updatedAtTime = new Date(diag.updatedAt).getTime();
+        
+        if (currentTime - updatedAtTime > thirtyDaysInMilliseconds) {
+            await LiveDiagnostics.destroy({ where: { id: diag.id } });
+            console.log(`Deleted diagnostic with ID: ${diag.id}`);
+        }
+    });
+},
 
   // Function to upload Car Hex Files
   addCarUpdate: async ({ file, part, car }) => {
@@ -276,6 +300,18 @@ const adminServices = {
     await user.destroy();
     return "User deleted successfully";
   },
+  getUserById: async (id) => {
+    const user
+      = await User.findOne({ where: { id } });
+    if (!user) {
+      return "User not found";
+    }
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
+  },
 };
-
+adminServices.deleteDiagnosticsAfter30Days()
 module.exports = adminServices;

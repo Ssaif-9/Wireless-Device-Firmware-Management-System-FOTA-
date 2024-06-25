@@ -336,6 +336,62 @@ const userServices = {
       });
       return latestNews;
     },
+    sendDiagnosticsFromCar: async (payload) => {
+      var data = [];
+
+    // Create a client instance
+    var client = mqtt.connect(broker, {
+      port: port,
+      clientId: clientId,
+      username: username,
+      password: password,
+    });
+
+    // Set callback handlers
+    client.on("connect", function () {
+      console.log("Connected to MQTT broker");
+      // Subscribe to the diagnostic topic
+      client.subscribe(topic);
+    });
+
+    client.on("message", function (topic, message) {
+      // message is Buffer
+      console.log(
+        "Message received on topic " + topic + ": " + message.toString()
+      );
+      const messageString = message.toString();
+      const dataString = messageString.split(",");
+      dataString.forEach((element) => {
+        data.push(element);
+      });
+      var headers = {
+        email: data[0],
+        carId: data[1],
+        diagnostic: data[2],
+      };
+      console.log(headers);
+      // Handle incoming message here
+    });
+
+    client.on("error", function (err) {
+      console.error("Error:", err);
+    });
+
+    const user = await User.findOne({ where: { email: data[0] } });
+    const car = await Car.findOne({ where: { id: data[1] } });
+    if (!user || !car) {
+      throw new Error("User or car not found");
+    }
+    const liveDiagnostics = await LiveDiagnostics.create({
+      diagnostics: data[2],
+      user: user.id,
+      car: car.id,
+    });
+    liveDiagnostics.setUser(user);
+    liveDiagnostics.setCar(car);
+    data = [];
+    return liveDiagnostics;
+  },
 };  
 
 module.exports = userServices;

@@ -7,6 +7,10 @@ const LiveDiagnostics = sequelize.define( 'LiveDiagnostics',
         type: DataTypes.TEXT,
         allowNull: false,
         },  
+        read : {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        },
     },
     {
         sequelize,

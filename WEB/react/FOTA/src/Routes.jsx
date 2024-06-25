@@ -8,7 +8,7 @@ import UserHome from './user/home';
 import OwnedCars from './user/ownedCars';
 import Profile from './user/profile';
 import About from './user/about';
-import LiveDiagnostics from './user/liveDiagnostics';
+import LiveDiagnosticsUser from './user/liveDiagnosticsUser';
 import NotFoundPage from './NotFoundPage';
 
 
@@ -16,6 +16,7 @@ import AdminHome from './admin/addNews';
 import AddUpdate from './admin/addUpdate';
 import AddMembers from './admin/addMembers';
 import EditCars from './admin/editCars';
+import LiveDiagnosticsAdmin from './admin/liveDiagnosticsAdmin';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -33,13 +34,14 @@ const Router = () => (
         <Route path="/ownedCars" element={<OwnedCars/>} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/about" element={<About />} />
-        <Route path="/liveDiag" element={<LiveDiagnostics />} />
+        <Route path="/liveDiag" element={<LiveDiagnosticsUser />} />
 
         {/* ADMIN ROUTES */}
         <Route path="/adNews" element={<AdminHome />} />
         <Route path="/adUCar" element={<AddUpdate />} />
         <Route path="/adAMem" element={<AddMembers />} />
         <Route path="/adECar" element={<EditCars />} />
+        <Route path="/adLD" element={<LiveDiagnosticsAdmin />} />
 
         {/* ADDITIONAL PAGES */}
         <Route path="*" element={<NotFoundPage />} />

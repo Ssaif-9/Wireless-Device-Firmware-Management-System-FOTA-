@@ -107,6 +107,26 @@ const adminController = {
       res.status(400).send(error.message);
     }
   },
+  markLiveDiag: async (req, res) => {
+    if (!req.user.permissions.includes(5)) {
+      console.error("You do not have permission to perform this action!");
+      return res.status(403).send({
+        error: "You do not have permission to perform this action!",
+      });
+    }
+    console.log("User have permission to mark live diagnostics");
+    try {
+      const result = await adminService.markDiagnostics(req.params.id);
+      if (result === "Diagnostics not found") {
+        return res.status(404).send({
+          error: result,
+        });
+      }
+      res.status(200).send({ message: "Diagnostics marked as read!" });
+    } catch (error) {
+      res.status(400).send({ error: error.message });
+    }
+  },
   // Function to add update file to the database     Done
   addUpdateFile: async (req, res) => {
     if (!req.user.permissions.includes(3)) {
@@ -185,6 +205,26 @@ const adminController = {
       res.status(400).send({ error: error.message });
     }
   },
+  getUserById: async (req, res) => {
+    if (!req.user.permissions.includes(5)) {
+      console.error("You do not have permission to perform this action!");
+      return res.status(403).send({
+        error: "You do not have permission to perform this action!",
+      });
+    }
+    console.log("User have permission to get user by id");
+    try {
+      const result = await adminService.getUserById(req.params.id);
+      if (result === "User not found") {
+        return res.status(404).send({
+          error: result,
+        });
+      }
+      res.status(200).send({ message: "User fetched successfully!", user: result });
+    } catch (error) {
+      res.status(400).send({ error: error.message });
+    }
+  }
 };
 
 module.exports = adminController;

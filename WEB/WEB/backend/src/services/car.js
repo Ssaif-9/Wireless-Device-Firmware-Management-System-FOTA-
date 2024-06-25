@@ -124,6 +124,22 @@ const carService = {
         await car.destroy();
         return car;
     },
+    getCarById: async (id) => {
+        const car = await Car.findOne({
+            where: {
+                id: id
+            }
+        });
+        if (!car) {
+            return "Car not found";
+        }
+        return {
+            id: car.id,
+            maker: car.maker,
+            model: car.model,
+            year: car.year
+        };
+    },
 };
 
 module.exports = carService;

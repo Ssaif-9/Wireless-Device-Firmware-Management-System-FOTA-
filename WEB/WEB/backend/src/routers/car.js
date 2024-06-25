@@ -21,6 +21,10 @@ router.post("/cars", auth, carController.addCar);
 //        Update Car
 router.patch("/cars/:id", auth, carController.updateCar);
 
+
+//        Get Car By ID
+router.get("/cars/:id", auth, carController.getCarById);
+
 //        Delete Car
 router.delete("/cars", auth, carController.deleteCar);
 

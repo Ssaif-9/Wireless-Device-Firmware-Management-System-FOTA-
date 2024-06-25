@@ -29,8 +29,14 @@ router.post("/admin/members",auth,adminController.addMember);
 //                      Get Live Diagnostics
 router.get("/admin/live_diag", auth, adminController.getLiveDiag);
 
+//                     Mark Live Diagnostics as read
+router.patch("/admin/live_diag/:id", auth, adminController.markLiveDiag);
+
 //                      Delete Member
 router.delete("/admin/members", auth, adminController.deleteMember);
+
+//                    Get User By ID
+router.get("/admin/user/:id", auth, adminController.getUserById);
 
     // Function to upload Hex Files
     const uploadHexFile = multer({
