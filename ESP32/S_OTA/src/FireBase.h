@@ -5,11 +5,11 @@
 
 //Define the WiFi credentials
 
-#define WIFI_SSID                      "Saif_sultan"    
-#define WIFI_PASSWORD                  "12345678s"      
+//#define WIFI_SSID                      "Saif_sultan"    
+//#define WIFI_PASSWORD                  "12345678s"      
 
-//#define WIFI_SSID                         "TE DATA"
-//#define WIFI_PASSWORD                     "S9S26#s25s1"
+#define WIFI_SSID                         "TE DATA"
+#define WIFI_PASSWORD                     "S9S26#s25s1"
 
 //#define WIFI_SSID                      "Radwa’s iPhone"    
 //#define WIFI_PASSWORD                  "radwa15042001"      
@@ -31,9 +31,11 @@
 
 #define UPDATE_NOTIFICATION             'N'
 
-const int ledPin = 2;
-
 extern int Target;
+
+const int lastApp1Address = 0;  // Address for Last_APP1Notification in EEPROM
+const int lastApp2Address = 1;  // Address for Last_APP2Notification in EEPROM
+
 
 //Function to connect to Wifi
 void Wifi_Connect(void);
@@ -49,5 +51,7 @@ int Version_Recieve(void);
 
 //Function to Check Version Update (Between Server and Car)
 void UpdateCheck(void);
+
+void EEPROM_SETUP(void);
 
 #endif

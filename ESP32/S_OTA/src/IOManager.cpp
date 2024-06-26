@@ -1,4 +1,6 @@
+#include <iostream>
 #include "Debug.h"
+#include "LedFlags.h"
 #include "IOManager.h"
 #include "HardwareSerial.h"
 #include "FireBase.h"
@@ -7,6 +9,8 @@
 #include "mbedtls/aes.h"
 
 char Acknowledge;
+//char TargetChar;
+//char FileSizeChar;
 
 void ReadFile(const char *path)
 {
@@ -38,17 +42,19 @@ void SendFile(const char * path)
     debugln("- failed to open file for reading");
     return;
   }
-   
-   Transmit((char)Target);
-   debug("- Target ID : ");
-   debugln(Target);
-   delay(2000);
 
-   Transmit(file.size());    
-   debug("- Size of File: ");
-   debugln(file.size());
-   delay(2000);
-  
+  //char TargetChar = static_cast<char>(Target);
+  Transmit(Target);
+  debug("- Target ID : ");
+  debugln(Target);
+  delay(2000);
+
+ //char FileSizeChar = static_cast<char>(file.size());
+  Transmit(file.size());
+  debug("- Size of File: ");
+  debugln(file.size());
+  delay(2000);
+    
   debugln("- read from file:");
 
   while (file.available())
@@ -68,10 +74,16 @@ void SendFile(const char * path)
       Transmit(SingleByte);            // Send Byte By Byte 
       SendSize++;
       debug(SingleByte);
+      delay(10);
     } while (SingleByte != '\n');
 
       if(SendSize==file.size())
-        {break;}
+        {
+          LEDUpdateFlag(ALLDone);
+          LEDUpdateFlag(ALLDone);
+          LEDUpdateFlag(ALLDone);
+          break;
+        }
 
         continue;
       }
