@@ -90,6 +90,7 @@ void SendFile(const char * path)
       else 
       {
         debugln("Acknowledge not recieved..");
+        Set_ErrorID(AcknowledgeLOSS);
         break;
       } 
       /************************************************************************************/

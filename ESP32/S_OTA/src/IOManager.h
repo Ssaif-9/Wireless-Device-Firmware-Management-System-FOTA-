@@ -8,6 +8,15 @@
 #define DOWNLOAD_PERMISSION           'y'
 #define ACKN                          'A'
 
+//Error List 
+#define ALLRight                       0
+#define AcknowledgeLOSS                1
+#define FileNotSecure                  2
+#define OLDVersion                     3
+#define OutOfTargets                   4  
+
+
+
 
 //Function to Read file from ESP Memory
 void ReadFile(const char *path);
