@@ -67,7 +67,7 @@ void loop()
       */
       /**********************************************************/
 
-      SendFile(ESP_Cipher_file); 
+      SendFile(ESP_Cipher_file);
     }
   }
 }

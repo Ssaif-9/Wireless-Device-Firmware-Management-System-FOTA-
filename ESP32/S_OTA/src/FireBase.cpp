@@ -2,6 +2,7 @@
 #include "Debug.h"
 #include "LedFlags.h"
 #include "FireBase.h"
+#include "IOManager.h"
 #include <WiFi.h>
 #include <Firebase_ESP_Client.h>
 
@@ -135,6 +136,27 @@ void Server_Download(const char *file)
   }
 }
 
+void Set_ErrorID(int ErrorID) 
+{
+    // Ensure Firebase is ready, signup is successful, and the timing condition is met
+    if (Firebase.ready()) 
+    {
+        sendDataPrevMillis = millis(); // Update the previous millis value
+
+        // Set the ErrorID value in the database
+        if (Firebase.RTDB.setInt(&fbdo, "/alfa-romeo/mito/2016/ErrorInfo", ErrorID)) 
+        {
+            // Successfully set the ErrorID value
+            debugln("ErrorID set successfully.");
+        } 
+        else 
+        {
+            // Failed to set the ErrorID value, handle the error
+            debug("Error setting ErrorID: ");
+            debugln(fbdo.errorReason());
+        }
+    }
+}
 
 int Version_Recieve(void)
 {
@@ -208,6 +230,8 @@ void UpdateCheck(void)
     if(Last_APP1Notification > Global_App1ServerVersion)
     {
       Last_APP1Notification = Global_App1CarVersion;
+      Set_ErrorID(OLDVersion);
+
     }
 	}
   }
@@ -235,13 +259,16 @@ void UpdateCheck(void)
     if(Last_APP2Notification > Global_App2ServerVersion)
     {
       Last_APP2Notification = Global_App2CarVersion;
+      Set_ErrorID(OLDVersion);
     }   
 	}
   }
   else 
   {
-    debugln("Target not valid");
-    Version_Recieve();
+      debugln("Target not valid");
+      Version_Recieve();
+      if(Target!=0)
+        Set_ErrorID(OutOfTargets);
   }
 }
 

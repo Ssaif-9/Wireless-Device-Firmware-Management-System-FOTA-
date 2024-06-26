@@ -46,6 +46,7 @@ void Server_Connect(void);
 //Function to download file from server
 void Server_Download(const char *file);
 
+void Set_ErrorID(int ErrorID);
 
 int Version_Recieve(void); 
 
