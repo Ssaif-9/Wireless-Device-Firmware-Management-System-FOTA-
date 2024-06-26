@@ -1,11 +1,14 @@
 
 #include "Debug.h"
+#include "LedFlags.h"
 #include "FireBase.h"
 #include <WiFi.h>
 #include <Firebase_ESP_Client.h>
 
 #include <addons/TokenHelper.h>
 #include <addons/RTDBHelper.h>
+
+#include <EEPROM.h>
 
 
 FirebaseData fbdo;
@@ -34,8 +37,7 @@ bool signupOK = false;
 
 void Wifi_Connect(void)
 {
-  pinMode(ledPin, OUTPUT);
-
+  LEDUpdateFlag(ConnectionLoading);
   Serial.begin(BAUD_RATE);
   Serial2.begin(BAUD_RATE, SERIAL_8N1, RXD2, TXD2);
 
@@ -52,8 +54,11 @@ void Wifi_Connect(void)
   debugln();
 }
 
+
+
 void Server_Connect(void)
 {
+
   debugf("Firebase Client v%s\n\n", FIREBASE_CLIENT_VERSION);
 
   /* Assign the api key (required) */
@@ -84,6 +89,14 @@ void Server_Connect(void)
   config.fcs.download_buffer_size = 2048;
 
   Firebase.begin(&config, &auth);
+
+  LEDUpdateFlag(ConnectionDone);
+}
+
+void EEPROM_SETUP(void)
+{
+  Last_APP1Notification = EEPROM.read(lastApp1Address);
+  Last_APP2Notification = EEPROM.read(lastApp2Address);
 }
 
 void fcsDownloadCallback(FCS_DownloadStatusInfo info)
@@ -108,6 +121,8 @@ void fcsDownloadCallback(FCS_DownloadStatusInfo info)
 
 void Server_Download(const char *file)
 {
+    LEDUpdateFlag(StartUpdateProgress);
+
   if (Firebase.ready() && !taskCompleted)
   {
     taskCompleted = true;
@@ -126,7 +141,7 @@ int Version_Recieve(void)
   if (Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0))
   {
     sendDataPrevMillis = millis();
-    if (Firebase.RTDB.getString(&fbdo,"/alfa-romeo/mito/2016"))
+    if (Firebase.RTDB.getString(&fbdo,"/alfa-romeo/mito/2016/UpdateInfo"))
     {
       if (fbdo.dataType() == "String")
       {
@@ -165,8 +180,11 @@ int Version_Recieve(void)
   }
 }
 
+
 void UpdateCheck(void)
 {
+    LEDUpdateFlag(InitioalStatue);
+
   if(1==Target)
   {
     if (Global_App1CarVersion == Global_App1ServerVersion)
@@ -179,13 +197,18 @@ void UpdateCheck(void)
 		{
 			Transmit(UPDATE_NOTIFICATION);
       debugln(UPDATE_NOTIFICATION);
-      digitalWrite(ledPin, HIGH);
+      LEDUpdateFlag(SendNotification);
       Last_APP1Notification = Global_App1ServerVersion;
+      EEPROM.write(lastApp1Address, Last_APP1Notification);  // Save to EEPROM
     }
 		if (Last_APP1Notification == Global_App1ServerVersion)
 		{
 			Global_App1ServerVersion = Version_Recieve();
 		}        
+    if(Last_APP1Notification > Global_App1ServerVersion)
+    {
+      Last_APP1Notification = Global_App1CarVersion;
+    }
 	}
   }
   else if (2==Target)
@@ -200,15 +223,20 @@ void UpdateCheck(void)
 		{
 			Transmit(UPDATE_NOTIFICATION);
       debugln(UPDATE_NOTIFICATION);
-      digitalWrite(ledPin, HIGH);
+      LEDUpdateFlag(SendNotification);
       Last_APP2Notification = Global_App2ServerVersion;
+      EEPROM.write(lastApp2Address, Last_APP2Notification);  // Save to EEPROM
+
     }
 		if (Last_APP2Notification == Global_App2ServerVersion)
 		{
 			Global_App2ServerVersion = Version_Recieve();
-		}        
+		}     
+    if(Last_APP2Notification > Global_App2ServerVersion)
+    {
+      Last_APP2Notification = Global_App2CarVersion;
+    }   
 	}
-
   }
   else 
   {
