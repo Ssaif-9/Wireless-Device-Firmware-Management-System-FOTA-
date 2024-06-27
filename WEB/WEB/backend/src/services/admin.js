@@ -5,11 +5,13 @@ const News = require("../schemas/news");
 const utilities = require("../functions/utils");
 const firebase = require("../functions/firebase");
 const CryptoJS = require("crypto-js");
-const hmacSHA256 = require("crypto-js/hmac-sha512");
+const hmacSHA256 = require("crypto-js/hmac-sha256");
+const Base64 = require('crypto-js/enc-base64');
 const mailer = require("../functions/nodemailer");
 
 const { Buffer } = require("buffer");
 const LiveDiagnostics = require("../schemas/liveDiagnostics");
+const { version } = require("os");
 
 // var mqtt = require("mqtt");
 // var broker = process.env.MQTTBROKER;
@@ -212,16 +214,37 @@ const adminServices = {
       existCar.hex = base64Data;
 
       await existCar.save();
-
+      const version = existCar.version;
+    
       const fileData = [];
       console.log(binaryData.toString());
       await fileData.push(binaryData.toString().split("\r\n"));
       console.log({ "fileData Before": fileData[0] });
       var fileLines = fileData[0].join("\r\n");
       console.log({ fileLines: fileLines });
-      console.log(fileLines);
       console.log(fileData[0].length);
       var EncryptedLines = [];
+
+      // console.log({fileData:fileData[0]})
+
+      // const allInLine = []
+      // var fileLines2 = fileData[0].join("\n");
+      // console.log({fileLines2:fileLines2})
+      var allInLine ="";
+      fileData[0].forEach((line) => {
+        allInLine = allInLine + line;
+      });
+        // const allInLine = fileLines.replace("\r\n","");
+      // fileLines2.forEach(async(line) => {
+      //   await allInLine.push(line);
+      // });
+      console.log({allInLine:allInLine})
+
+      const hmacDigest = CryptoJS.HmacSHA256(allInLine, process.env.SECURITY_KEY).toString();
+      
+      console.log({hmacDigest:hmacDigest})
+
+      
 
       fileData[0].forEach((line) => {
         var ciphertext = CryptoJS.AES.encrypt(
@@ -234,6 +257,12 @@ const adminServices = {
       console.log({ EncryptedLines: EncryptedLines });
       var EncryptedLinesString = EncryptedLines.join("\r\n");
       console.log(EncryptedLinesString);
+
+      // console.log({hmacDigest:CryptoJS.HmacSHA256(":100000000C9473000C94A20B0C94B4060C94CB0BC0\n:100010000C94930D0C94570D0C9490000C9490003C\n:100020000C9490000C9490000C94420C0C942E07AD\n:100030000C9490000C940F0E0C94380E0C94610EDE\n:100040000C9409080C9490000C9490000C9490006F\n:100050000C949000D00099009900990099009900A3\n:1000600099009900990099009900990099009900C8\n:100070009900990099009900AF00F7009900990044\n:10008000AC00B800BE00B500BB0099009900990013\n:1000900099009900990099009900B2009900E30035\n:1000A0001B01ED0009019900990099009900990040\n:1000B0009900990099009900990000019900990010\n:1000C0009900990099009900990099009900990068\n:1000D000990099009900C100990099009900E800E1\n:1000E0002001F200120111241FBECFE5D8E0DEBFCF\n:00000001FF", process.env.SECURITY_KEY).toString()})
+      // const hmacDigest = Base64.stringify(hmacSHA256(binaryData, process.env.SECURITY_KEY));
+      // console.log({ hmacDigest: hmacDigest });
+
+
 
       // console.log(car);
       // await existCar.save();
@@ -264,6 +293,13 @@ const adminServices = {
       // console.log({"OriginalText":originalText}); // 'my message'
       // // console.log(ciphertext);
 
+      await firebase.uploadDigest_Storage(
+        existCar.maker,
+        existCar.model,
+        existCar.year,
+        hmacDigest
+      );
+
       await firebase.uploadCarUpdate_Storage(
         existCar.maker,
         existCar.model,
@@ -275,11 +311,12 @@ const adminServices = {
         existCar.maker,
         existCar.model,
         existCar.year,
-        part
+        part,
+        version
       );
 
       const users = await existCar.getUsers();
-      console.log(users);
+      // console.log(users);
       users.forEach(async (user) => {
         console.log(user.email);
         await mailer.sendNotificationUpdate(user.email);

@@ -49,6 +49,43 @@ async function uploadCarUpdate_Storage(make, model, year, version, hex) {
 console.log(fileUrl);
 }
 
+
+async function uploadDigest_Storage(make, model, year, hex) {
+  // Set the destination in the bucket
+ const destination = make + "/" + model + "/" + year + "/digest" + ".hex";
+ 
+ // Set the content type to 'application/octet-stream'
+ const metadata = {
+  contentType: 'application/octet-stream',
+};
+ 
+ const uploadTask = bucket.file(destination).createWriteStream({
+  metadata,
+  // resumable: false,
+ });
+
+ console.log(hex);
+//                      To make it Binary File
+//  const hexData = hexToBinary(hex);
+  // console.log(hexData);
+
+ // Pipe the file buffer to the bucket
+ uploadTask.end(hex);
+
+ // Wait for the upload to complete
+ await new Promise((resolve, reject) => {
+   uploadTask.on('finish', resolve);
+   uploadTask.on('error', reject);
+ });
+
+ // Get the public URL of the uploaded file
+ const fileUrl = `https://storage.googleapis.com/${bucket.name}/${destination}`;
+console.log(fileUrl);
+}
+
+
+
+
 function hexToBinary(hexData) {
   const binaryData = Buffer.from(hexData, 'base64');
   return binaryData;
@@ -67,12 +104,17 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-async function uploadCarUpdate_RealtimeDB(make, model, year, part) {
+async function uploadCarUpdate_RealtimeDB(make, model, year, part, version) {
     const db = getDatabase(app);
     // const car_year = year;
+
+    const carPart = 100+part;
+    const carVersion = 1000+version;
+    const partVersion = carPart.toString().substring(1) + carVersion.toString().substring(1)
+    // console.log({partVersion: partVersion});
+
     set(ref(db, make + '/' + model + '/' + year), {
-      part: part,
-      flag: true
+      UpdateInfo: partVersion
     }
     ).then(() => {
         console.log('Hex file uploaded successfully.');
@@ -139,4 +181,4 @@ async function uploadCarUpdate_RealtimeDB(make, model, year, part) {
 
 
 
-module.exports = {uploadCarUpdate_RealtimeDB, uploadCarUpdate_Storage};
+module.exports = {uploadCarUpdate_RealtimeDB, uploadCarUpdate_Storage,uploadDigest_Storage};
