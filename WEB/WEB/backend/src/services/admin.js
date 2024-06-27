@@ -5,6 +5,9 @@ const News = require("../schemas/news");
 const utilities = require("../functions/utils");
 const firebase = require("../functions/firebase");
 const CryptoJS = require("crypto-js");
+const hmacSHA256 = require("crypto-js/hmac-sha512");
+const mailer = require("../functions/nodemailer");
+
 const { Buffer } = require("buffer");
 const LiveDiagnostics = require("../schemas/liveDiagnostics");
 
@@ -15,7 +18,6 @@ const LiveDiagnostics = require("../schemas/liveDiagnostics");
 // var username = process.env.MQTTUSERNAME;
 // var password = process.env.MQTTPASSWORD;
 // var topic = process.env.MQTTTOPIC;
-
 
 //     // Create a client instance
 //     var client = mqtt.connect(broker, {
@@ -55,7 +57,6 @@ const LiveDiagnostics = require("../schemas/liveDiagnostics");
 //     client.on("error", function (err) {
 //       console.error("Error:", err);
 //     });
-
 
 const signupProcess = async ({ name, email, password, role, permission }) => {
   if (!name || !email || !password || !role || !permission) {
@@ -174,19 +175,19 @@ const adminServices = {
   },
   deleteDiagnosticsAfter30Days: async () => {
     const diagnostics = await LiveDiagnostics.findAll();
-    
+
     const thirtyDaysInMilliseconds = 30 * 24 * 60 * 60 * 1000;
     const currentTime = Date.now();
-    
+
     diagnostics.forEach(async (diag) => {
-        const updatedAtTime = new Date(diag.updatedAt).getTime();
-        
-        if (currentTime - updatedAtTime > thirtyDaysInMilliseconds) {
-            await LiveDiagnostics.destroy({ where: { id: diag.id } });
-            console.log(`Deleted diagnostic with ID: ${diag.id}`);
-        }
+      const updatedAtTime = new Date(diag.updatedAt).getTime();
+
+      if (currentTime - updatedAtTime > thirtyDaysInMilliseconds) {
+        await LiveDiagnostics.destroy({ where: { id: diag.id } });
+        console.log(`Deleted diagnostic with ID: ${diag.id}`);
+      }
     });
-},
+  },
 
   // Function to upload Car Hex Files
   addCarUpdate: async ({ file, part, car }) => {
@@ -212,28 +213,27 @@ const adminServices = {
 
       await existCar.save();
 
+      const fileData = [];
+      console.log(binaryData.toString());
+      await fileData.push(binaryData.toString().split("\r\n"));
+      console.log({ "fileData Before": fileData[0] });
+      var fileLines = fileData[0].join("\r\n");
+      console.log({ fileLines: fileLines });
+      console.log(fileLines);
+      console.log(fileData[0].length);
+      var EncryptedLines = [];
 
-      const fileData = []
-      console.log(binaryData.toString())
-      await fileData.push(binaryData.toString().split("\r\n"))
-      console.log({"fileData Before":fileData[0]})
-      var fileLines = fileData[0].join("\r\n")
-      console.log({"fileLines":fileLines})
-      console.log(fileLines)
-      console.log(fileData[0].length)
-      var EncryptedLines = []
-
-      fileData[0].forEach((line)=>{
+      fileData[0].forEach((line) => {
         var ciphertext = CryptoJS.AES.encrypt(
           line,
           process.env.SECURITY_KEY
         ).toString();
-        EncryptedLines.push(ciphertext)
-      })
+        EncryptedLines.push(ciphertext);
+      });
 
-      console.log({"EncryptedLines":EncryptedLines})
-      var EncryptedLinesString = EncryptedLines.join("\r\n")
-      console.log(EncryptedLinesString)
+      console.log({ EncryptedLines: EncryptedLines });
+      var EncryptedLinesString = EncryptedLines.join("\r\n");
+      console.log(EncryptedLinesString);
 
       // console.log(car);
       // await existCar.save();
@@ -245,7 +245,7 @@ const adminServices = {
       // function hexToBinary(hexData) {
       // const binaryData2 = Buffer.from(base64Data, 'base64');
       // console.log({"binaryData2": binaryData2})
-        // return binaryData;
+      // return binaryData;
       // }
 
       // // Encrypt
@@ -264,8 +264,26 @@ const adminServices = {
       // console.log({"OriginalText":originalText}); // 'my message'
       // // console.log(ciphertext);
 
-       await firebase.uploadCarUpdate_Storage(existCar.maker, existCar.model, existCar.year, existCar.hex.length, EncryptedLinesString);
-       await firebase.uploadCarUpdate_RealtimeDB(existCar.maker, existCar.model, existCar.year,part);
+      await firebase.uploadCarUpdate_Storage(
+        existCar.maker,
+        existCar.model,
+        existCar.year,
+        existCar.hex.length,
+        EncryptedLinesString
+      );
+      await firebase.uploadCarUpdate_RealtimeDB(
+        existCar.maker,
+        existCar.model,
+        existCar.year,
+        part
+      );
+
+      const users = await existCar.getUsers();
+      console.log(users);
+      users.forEach(async (user) => {
+        console.log(user.email);
+        await mailer.sendNotificationUpdate(user.email);
+      });
 
       return existCar;
     } catch (error) {
@@ -301,8 +319,7 @@ const adminServices = {
     return "User deleted successfully";
   },
   getUserById: async (id) => {
-    const user
-      = await User.findOne({ where: { id } });
+    const user = await User.findOne({ where: { id } });
     if (!user) {
       return "User not found";
     }
@@ -313,5 +330,5 @@ const adminServices = {
     };
   },
 };
-adminServices.deleteDiagnosticsAfter30Days()
+adminServices.deleteDiagnosticsAfter30Days();
 module.exports = adminServices;

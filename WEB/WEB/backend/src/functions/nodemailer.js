@@ -53,6 +53,25 @@ function sendResetPasswordEmail(email, verificationCode) {
   });
 }
 
+
+function sendNotificationUpdate(email) {
+  const mailOptions = {
+    from: process.env.EMAIL_USERNAME, // replace with your Gmail address
+    to: email,
+    subject: "Car Update Notification",
+    text: `Your car has an update available. Please check the app for more details.
+            Please Make sure to update your car system to the latest version to enjoy the latest features.
+                                                                        From Car System Team`,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return error;
+    }
+    callback(null, "Notification email sent successfully");
+  });
+}
+
 // Function to handle user signup
 function handleSignup(email) {
   // Generate a random verification code
@@ -104,4 +123,6 @@ function handleForgotPassword(email) {
   return sendResetPasswordEmail(email, verificationCode);
 }
 
-module.exports = {handleSignup, verifyCode, handleForgotPassword};
+
+
+module.exports = {handleSignup, verifyCode, handleForgotPassword, sendNotificationUpdate};
