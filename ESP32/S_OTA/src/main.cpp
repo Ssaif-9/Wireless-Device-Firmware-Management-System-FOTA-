@@ -2,10 +2,19 @@
 #include "LedFlags.h"
 #include "FireBase.h"
 #include "IOManager.h"
-#include <LittleFS.h>
+#include "LITTLEFS.h"
 #include "mbedtls/aes.h"
 #include <Base64.h>
 #include <EEPROM.h>
+#include"Decryption.h"
+
+const char *FB_file = "alfa-romeo/mito/2016/version.hex";
+ const char *OEM_HMACfile = "alfa-romeo/mito/2016/digest.hex";         //hmac
+
+const char *ESP_Cipher_file = "/TestStorage.hex";
+// const char * ESP_Decrypted_file = "/Decrypted.hex";
+ const char *OEM_DIGEST_file = "/OEM_digest.hex";                      //hmac
+const char *ESP_DIGEST_file = "/ESP_DIGEST.hex";                      //hmac
 
 bool Update_Secure = true;
 
@@ -40,13 +49,9 @@ void loop()
       
       debugln("Downlaod Enabled");
 
-      const char *FB_file = "alfa-romeo/mito/2016/version.hex";
-      const char *ESP_Cipher_file = "/TestStorage.hex";
-      // const char * ESP_Decrypted_file = "/Decrypted.hex";
-
-      Server_Download(FB_file);
-      // ReadFile(ESP_Cipher_file);
-
+      Server_Download(FB_file,ESP_Cipher_file);
+      //ReadFile(ESP_Cipher_file);
+      
       // DecryptFile(ESP_Cipher_file, ESP_Decrypted_file);
       // ReadFile(ESP_Decrypted_file);
 
@@ -54,20 +59,27 @@ void loop()
       /*                    Check Digest                        */
       /**********************************************************/
 
-      /*
-      DigestCheck(&Update_Secure);
-      if(Update_Secure)
-        continue;
+      Server_Download(OEM_HMACfile,OEM_DIGEST_file);  //hmac
+      ReadFile(OEM_DIGEST_file);                      //hmac
+
+
+      HMAC_File(ESP_Cipher_file,ESP_DIGEST_file);
+      ReadFile(ESP_DIGEST_file);
+
+      if(HMAC_COMPARE(ESP_DIGEST_file,OEM_DIGEST_file))
+        {
+          SendFile(ESP_Cipher_file);
+          LEDUpdateFlag(FilesSecure);
+          Set_ErrorID(ALLRight);
+
+        }
       else
         {
-          debugln("Update Not Secure ");
-          DeleteFiles();
-          break;
+          LEDUpdateFlag(FilesNotSecure);
+          Set_ErrorID(FileNotSecure);
         }
-      */
+      
       /**********************************************************/
-
-      SendFile(ESP_Cipher_file);
     }
   }
 }

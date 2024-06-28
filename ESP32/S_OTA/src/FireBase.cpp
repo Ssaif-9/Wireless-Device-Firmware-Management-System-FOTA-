@@ -5,6 +5,7 @@
 #include "IOManager.h"
 #include <WiFi.h>
 #include <Firebase_ESP_Client.h>
+#include "LITTLEFS.h"
 
 #include <addons/TokenHelper.h>
 #include <addons/RTDBHelper.h>
@@ -20,16 +21,16 @@ FirebaseJson json;
 static int Version;
 int Target;
 
-int Global_App1ServerVersion;
-int Global_App1CarVersion;
-int Last_APP1Notification;
+int Global_App1ServerVersion=0;
+static int Global_App1CarVersion;
 
-int Global_App2ServerVersion;
-int Global_App2CarVersion;
-int Last_APP2Notification;
+int Global_App2ServerVersion=0;
+static int Global_App2CarVersion;
 
 bool taskCompleted = false;
 unsigned long sendDataPrevMillis = 0;
+
+unsigned long setDataPrevMillis = 0;
 
 
 String UpdateInfo;
@@ -94,12 +95,9 @@ void Server_Connect(void)
   LEDUpdateFlag(ConnectionDone);
 }
 
-void EEPROM_SETUP(void)
-{
-  Last_APP1Notification = EEPROM.read(lastApp1Address);
-  Last_APP2Notification = EEPROM.read(lastApp2Address);
-}
-
+/***************************************************/
+/***************  Private Function *****************/
+/***************************************************/
 void fcsDownloadCallback(FCS_DownloadStatusInfo info)
 {
     if (info.status == firebase_fcs_download_status_init)
@@ -119,21 +117,35 @@ void fcsDownloadCallback(FCS_DownloadStatusInfo info)
         debugf("Download failed, %s\n", info.errorMsg.c_str());
     }
 }
+/***************************************************/
 
-void Server_Download(const char *file)
+
+void EEPROM_SETUP(void)
+{
+  EEPROM.begin(EEPROM_SIZE);
+  //storeinEEPROM(lastApp1Address, 0);
+  //storeinEEPROM(lastApp2Address, 0);
+}
+
+void storeinEEPROM(int address,int value) 
+{
+  EEPROM.writeInt(address, value);
+  EEPROM.commit();
+}
+
+
+void Server_Download(const char *file,const char *ESP_File)
 {
     LEDUpdateFlag(StartUpdateProgress);
-
-  if (Firebase.ready() && !taskCompleted)
-  {
-    taskCompleted = true;
-    if (Firebase.Storage.download(&fbdo, STORAGE_BUCKET_ID /* Firebase Storage bucket id */, file /* path of remote file stored in the bucket */, "/TestStorage.hex" /* path to local file */, mem_storage_type_flash /* memory storage type, mem_storage_type_flash and mem_storage_type_sd */,fcsDownloadCallback))
+    if (Firebase.ready() && !taskCompleted)
     {
-      debugln("******************");
-      debugln("Download Complete");
-      debugln("******************");
-    }
+      taskCompleted = true;
+      if (Firebase.Storage.download(&fbdo, STORAGE_BUCKET_ID /* Firebase Storage bucket id */, file /* path of remote file stored in the bucket */, ESP_File /* path to local file */, mem_storage_type_flash /* memory storage type, mem_storage_type_flash and mem_storage_type_sd */, fcsDownloadCallback))
+      {
+        debugln();
+      }
   }
+  taskCompleted = false;
 }
 
 void Set_ErrorID(int ErrorID) 
@@ -141,13 +153,11 @@ void Set_ErrorID(int ErrorID)
     // Ensure Firebase is ready, signup is successful, and the timing condition is met
     if (Firebase.ready()) 
     {
-        sendDataPrevMillis = millis(); // Update the previous millis value
-
-        // Set the ErrorID value in the database
-        if (Firebase.RTDB.setInt(&fbdo, "/alfa-romeo/mito/2016/ErrorInfo", ErrorID)) 
-        {
-            // Successfully set the ErrorID value
-            debugln("ErrorID set successfully.");
+      // Set the ErrorID value in the database
+      if (Firebase.RTDB.setInt(&fbdo, "/alfa-romeo/mito/2016/ErrorInfo", ErrorID))
+      {
+        // Successfully set the ErrorID value
+        debugln("ErrorID set successfully.");
         } 
         else 
         {
@@ -160,116 +170,104 @@ void Set_ErrorID(int ErrorID)
 
 int Version_Recieve(void)
 {
-  if (Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0))
-  {
-    sendDataPrevMillis = millis();
-    if (Firebase.RTDB.getString(&fbdo,"/alfa-romeo/mito/2016/UpdateInfo"))
+  Global_App1CarVersion=EEPROM.readInt(lastApp1Address);
+  Global_App2CarVersion=EEPROM.readInt(lastApp2Address);
+    if (Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0))
     {
-      if (fbdo.dataType() == "String")
-      {
-        UpdateInfo = fbdo.stringData();
+        sendDataPrevMillis = millis();
+        
+        if (Firebase.RTDB.getString(&fbdo, "/alfa-romeo/mito/2016/UpdateInfo"))
+        {
+            if (fbdo.dataType() == "String")
+            {
+                UpdateInfo = fbdo.stringData();
 
+                int targetLength = 3;
+                int versionLength = 3;
 
-        int targetLength = 3;
-        int versionLength = 3;
+                String target = "";
+                for (int i = 0; i < targetLength; ++i)
+                {
+                    target += UpdateInfo[i]; // Append characters to target string
+                }
 
-    String target = "";
-    for (int i = 0; i < targetLength; ++i) 
-    {
-        target += UpdateInfo[i]; // Append characters to target string
+                String version = "";
+                for (int i = targetLength; i < targetLength + versionLength; ++i)
+                {
+                    version += UpdateInfo[i]; // Append characters to version string
+                }
+
+                Target = atoi(target.c_str());
+                Version = atoi(version.c_str());
+
+                debug("Target ECU : ");
+                debugln(Target);
+                debug("Version = ");
+                debugln(Version);
+
+                return Version;
+            }
+        }
+        else
+        {
+            debugln(fbdo.errorReason());
+        }
     }
-
-    String version = "";
-    for (int i = targetLength; i < targetLength + versionLength; ++i) {
-       version += UpdateInfo[i]; // Append characters to version string
-    }
-
-    Target = atoi(target.c_str());
-    Version = atoi(version.c_str());
-
- 
-        debug("Target ECU : ");
-        debugln(Target);
-        debug("Function Version = ");
-        debugln(Version);
-        return Version;
-      }
-    }
-    else 
-    {
-      debugln(fbdo.errorReason());
-    }
-  }
 }
+
 
 
 void UpdateCheck(void)
 {
-    LEDUpdateFlag(InitioalStatue);
+  Version_Recieve();
+  LEDUpdateFlag(InitioalStatue);
 
-  if(1==Target)
+  if (1 == Target)
   {
     if (Global_App1CarVersion == Global_App1ServerVersion)
-	{
-		Global_App1ServerVersion = Version_Recieve();             
-	}
-	else if (Global_App1ServerVersion > Global_App1CarVersion)
-	{
-		if (Last_APP1Notification < Global_App1ServerVersion)
-		{
-			Transmit(UPDATE_NOTIFICATION);
-      debugln(UPDATE_NOTIFICATION);
-      LEDUpdateFlag(SendNotification);
-      Last_APP1Notification = Global_App1ServerVersion;
-      EEPROM.write(lastApp1Address, Last_APP1Notification);  // Save to EEPROM
-    }
-		if (Last_APP1Notification == Global_App1ServerVersion)
-		{
-			Global_App1ServerVersion = Version_Recieve();
-		}        
-    if(Last_APP1Notification > Global_App1ServerVersion)
     {
-      Last_APP1Notification = Global_App1CarVersion;
-      Set_ErrorID(OLDVersion);
-
+      Global_App1ServerVersion = Version_Recieve();
     }
-	}
-  }
-  else if (2==Target)
-  {
-     if (Global_App2CarVersion == Global_App2ServerVersion)
-	{
-		Global_App2ServerVersion = Version_Recieve();             
-	}
-	else if (Global_App2ServerVersion > Global_App2CarVersion)
-	{
-		if (Last_APP2Notification < Global_App2ServerVersion)
-		{
-			Transmit(UPDATE_NOTIFICATION);
-      debugln(UPDATE_NOTIFICATION);
-      LEDUpdateFlag(SendNotification);
-      Last_APP2Notification = Global_App2ServerVersion;
-      EEPROM.write(lastApp2Address, Last_APP2Notification);  // Save to EEPROM
-
-    }
-		if (Last_APP2Notification == Global_App2ServerVersion)
-		{
-			Global_App2ServerVersion = Version_Recieve();
-		}     
-    if(Last_APP2Notification > Global_App2ServerVersion)
+    else if (Global_App1ServerVersion > Global_App1CarVersion)
     {
-      Last_APP2Notification = Global_App2CarVersion;
-      Set_ErrorID(OLDVersion);
-    }   
-	}
+        Transmit(UPDATE_NOTIFICATION);
+        debugln(UPDATE_NOTIFICATION);
+        LEDUpdateFlag(SendNotification);
+        Global_App1CarVersion = Global_App1ServerVersion;
+        storeinEEPROM(lastApp1Address, Global_App1CarVersion); // Save to EEPROM
+    }
+    else if (Global_App1ServerVersion < Global_App1CarVersion)
+    {
+        Global_App1ServerVersion = Version_Recieve();
+    }
   }
-  else 
-  {
-      debugln("Target not valid");
-      Version_Recieve();
-      if(Target!=0)
-        Set_ErrorID(OutOfTargets);
+
+    if (2 == Target)
+    {
+        if (Global_App2CarVersion == Global_App2ServerVersion)
+    {
+      Global_App2ServerVersion = Version_Recieve();
+    }
+    else if (Global_App2ServerVersion > Global_App2CarVersion)
+    {
+        Transmit(UPDATE_NOTIFICATION);
+        debugln(UPDATE_NOTIFICATION);
+        LEDUpdateFlag(SendNotification);
+        Global_App2CarVersion = Global_App2ServerVersion;
+        storeinEEPROM(lastApp2Address, Global_App2CarVersion); // Save to EEPROM
+    }
+    else if (Global_App2ServerVersion < Global_App2CarVersion)
+    {
+        Global_App2ServerVersion = Version_Recieve();
+    }
   }
+
+    if (Target != 0 && Target != 1 && Target != 2)
+    {
+        debugln("Target not valid");
+        Version_Recieve();
+    }
 }
+
 
 

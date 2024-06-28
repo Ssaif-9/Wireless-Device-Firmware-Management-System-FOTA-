@@ -33,8 +33,14 @@
 
 extern int Target;
 
-const int lastApp1Address = 0;  // Address for Last_APP1Notification in EEPROM
-const int lastApp2Address = 1;  // Address for Last_APP2Notification in EEPROM
+#define EEPROM_SIZE 64 
+
+#define lastApp1Address  0  // Address for Last_APP1Notification in EEPROM
+#define lastApp2Address  4  // Address for Last_APP2Notification in EEPROM
+
+//Error List 
+#define ALLRight                       0
+#define FileNotSecure                  1 
 
 
 //Function to connect to Wifi
@@ -44,7 +50,7 @@ void Wifi_Connect(void);
 void Server_Connect(void);
 
 //Function to download file from server
-void Server_Download(const char *file);
+void Server_Download(const char *file, const char *ESP_File);
 
 void Set_ErrorID(int ErrorID);
 
@@ -54,5 +60,6 @@ int Version_Recieve(void);
 void UpdateCheck(void);
 
 void EEPROM_SETUP(void);
+void storeinEEPROM(int address, int value);
 
 #endif

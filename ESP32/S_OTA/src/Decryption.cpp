@@ -1,46 +1,21 @@
 #include "Decryption.h"
-#include "Debug.h"
 
+
+
+const char *privateCipherKey = "fotaprojectfotaa";
+const char *HMAC_Key = "fotaprojectfotaa";
+/*
 void setKey(char * key) 
 {
-  // aes-128bit mode means that your cipher key can only be 16 characters long 
-  // futhermore, only chracters in the cipher key are allowed, not numbers!
-  // 16 characters + '\0'
-  /*
-  if( strlen(key) > 16 ) 
-  {
-    privateCipherKey = new char[17];
-    (String(key).substring(0,16)).toCharArray(privateCipherKey, 17);
-    
-    #ifdef CIPHER_DEBUG
-      debugln("[cipher] error: cipher key to long! Will be cutted to 16 characters.");
-      debugln("[cipher] => " + String(key));
-      debugln("[cipher] => " + String(privateCipherKey));
-    #endif  
-  } 
-  else if( strlen(key) < 16 ) 
-  {
-    privateCipherKey = "abcdefghijklmnop";
-    
-    #ifdef CIPHER_DEBUG
-      debugln("[cipher] error: cipher key to short! Standard cipher key will be used.");
-    #endif
-  } 
-  else 
-  {
-    #ifdef CIPHER_DEBUG
-      debugln("[cipher] cipher key length matched. Using this key.");
-    #endif
-    */
     privateCipherKey = key;
-  }
-/*}*/
+    HMAC_Key = key;
+}
 
 char * getKey() 
 {
   return privateCipherKey;
 }
-
+*/
 void decrypt(unsigned char * cipherText, char * key, unsigned char * outputBuffer) 
 {
   // encrypt ciphered chipherText buffer of length 16 characters to plain text
@@ -52,10 +27,7 @@ void decrypt(unsigned char * cipherText, char * key, unsigned char * outputBuffe
   mbedtls_aes_free( &aes );
 }
 
-void decrypt(unsigned char * cipherText, unsigned char * outputBuffer) 
-{
-  decrypt(cipherText, getKey(), outputBuffer);
-}
+
 
 
 String decryptBuffer(String cipherText, char * key) 
@@ -84,10 +56,6 @@ String decryptBuffer(String cipherText, char * key)
   return decipheredTextString;
 }
 
-String decryptBuffer(String cipherText) 
-{
-  return decryptBuffer(cipherText, getKey());
-}
 
 String decryptString(String cipherText, char * key) {
   // returns encrypted String of plainText with variable length
@@ -107,7 +75,101 @@ String decryptString(String cipherText, char * key) {
   return decipheredTextString;
 }
 
-String decryptString(String cipherText) 
-{
-  return decryptString(cipherText, getKey());
+
+
+void HMAC_File(const char *HEX_file, const char *LocalDigest_File) {
+    // Initialize LittleFS
+    if (!LittleFS.begin()) {
+        debugln("Failed to initialize LittleFS");
+        return;
+    }
+
+    // Open the decrypted file for reading
+    File Decrypted_File = LittleFS.open(HEX_file, "r");
+    if (!Decrypted_File) {
+        debugf("Failed to open input file: %s\n", HEX_file);
+        return;
+    }
+    size_t Decryption_FileSize = Decrypted_File.size();
+
+    String TextString = "";
+    while (Decrypted_File.available()) 
+    {
+        String line = Decrypted_File.readStringUntil('\n');
+        line.trim();
+        TextString += line;
+    }
+    //debugln("Content of the file in one line from string:");
+    //debugln(TextString);
+
+ 
+    size_t TextStringLength = TextString.length();
+
+    // Use a vector for automatic memory management
+    std::vector<uint8_t> Decryption_buffer(TextStringLength);
+    
+    for (size_t i = 0; i < TextStringLength; ++i)
+     {
+        Decryption_buffer[i] = TextString[i];
+    }
+    size_t Decryption_BufferSize = Decryption_buffer.size();
+     
+
+    /*debugln("Content of the file in one line from buffer:");
+    for (size_t i = 0; i < Decryption_buffer.size(); ++i) {
+        debug((char)Decryption_buffer[i]); // Print each byte as character
+    }
+    debugln(); // New line for clarity
+*/
+    Decrypted_File.close();
+
+     // Initialize HMAC context
+     uint8_t HmacBuffer[32];
+     mbedtls_md_context_t ctxx;
+     mbedtls_md_type_t md_type = MBEDTLS_MD_SHA256;
+     const mbedtls_md_info_t *md_info = mbedtls_md_info_from_type(md_type);
+
+     mbedtls_md_init(&ctxx);
+     if (mbedtls_md_setup(&ctxx, md_info, 1) != 0)
+     {
+       debugln("Failed to setup mbedtls_md context");
+       return;
+    }
+
+   if (mbedtls_md_hmac_starts(&ctxx, (const unsigned char *)HMAC_Key, strlen(HMAC_Key)) != 0) {
+    debugln("Failed to start HMAC");
+    mbedtls_md_free(&ctxx);
+    return;
+}
+
+    if (mbedtls_md_hmac_update(&ctxx, Decryption_buffer.data(), Decryption_BufferSize) != 0) {
+        debugln("Failed to update HMAC");
+        mbedtls_md_free(&ctxx);
+        return;
+    }
+
+    if (mbedtls_md_hmac_finish(&ctxx, HmacBuffer) != 0) {
+        debugln("Failed to finish HMAC");
+        mbedtls_md_free(&ctxx);
+        return;
+    }
+
+    mbedtls_md_free(&ctxx);
+
+    // Write the hash to the output file
+    File Digest_File = LittleFS.open(LocalDigest_File, "w");
+
+    if (!Digest_File) {
+        debugf("Failed to open output file: %s\n", LocalDigest_File);
+        return;
+    }
+
+    for (int i = 0; i < sizeof(HmacBuffer); i++)
+     {
+         Digest_File.printf("%02x", HmacBuffer[i]);
+    }
+
+    Digest_File.close();
+
+    debugln("HMAC SHA-256 computed and written to file");
 }
