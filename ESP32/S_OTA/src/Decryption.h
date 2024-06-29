@@ -21,11 +21,13 @@
 //void setKey(char *key);
 //char *getKey();
 
-void decrypt(unsigned char *cipherText, char *key, unsigned char *outputBuffer);
+void decrypt(unsigned char *cipherText,const char *key, unsigned char *outputBuffer);
 
-String decryptBuffer(String cipherText, char *key);
+String decryptBuffer(String cipherText,const char *key);
 
-String decryptString(String cipherText, char *key);
+String decryptString(String cipherText,const char *key);
+
+String decryptString(String cipherText);
 
 void HMAC_File(const char *HEX_file, const char *LocalDigest_File);
 
