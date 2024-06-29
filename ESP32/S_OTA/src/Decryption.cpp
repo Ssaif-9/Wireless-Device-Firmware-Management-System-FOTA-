@@ -16,7 +16,7 @@ char * getKey()
   return privateCipherKey;
 }
 */
-void decrypt(unsigned char * cipherText, char * key, unsigned char * outputBuffer) 
+void decrypt(unsigned char * cipherText,const char * key, unsigned char * outputBuffer) 
 {
   // encrypt ciphered chipherText buffer of length 16 characters to plain text
   mbedtls_aes_context aes;
@@ -30,7 +30,7 @@ void decrypt(unsigned char * cipherText, char * key, unsigned char * outputBuffe
 
 
 
-String decryptBuffer(String cipherText, char * key) 
+String decryptBuffer(String cipherText,const char * key) 
 {
   // returns decrypted String of ciphered text (length: 16 characters)
   String decipheredTextString = "";
@@ -57,7 +57,7 @@ String decryptBuffer(String cipherText, char * key)
 }
 
 
-String decryptString(String cipherText, char * key) {
+String decryptString(String cipherText, const char * key) {
   // returns encrypted String of plainText with variable length
   constexpr int BUFF_SIZE=16;
   String buffer = "";
@@ -75,6 +75,10 @@ String decryptString(String cipherText, char * key) {
   return decipheredTextString;
 }
 
+String decryptString(String cipherText) 
+{
+  return decryptString(cipherText,privateCipherKey);
+}
 
 
 void HMAC_File(const char *HEX_file, const char *LocalDigest_File) {

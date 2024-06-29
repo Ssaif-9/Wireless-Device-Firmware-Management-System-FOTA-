@@ -18,8 +18,6 @@ void DeleteFiles(const char *filePath);
 //Function to Decrypt file and save output in another file
 void DecryptFile(const char *Download_File, const char *OriginalCode_File);
 
-//Function to apply HMAC-SHA256 in file and save output in another file
-
 //Function to compare Digests
 bool HMAC_COMPARE(const char *OEM_DigestFile, const char *TelematicUnit_DigestFile);
 

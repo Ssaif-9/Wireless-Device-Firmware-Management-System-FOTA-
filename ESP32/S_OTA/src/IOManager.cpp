@@ -122,7 +122,8 @@ void SendFile(const char * path)
     file.close();
     debugln("File Closed, Send Done");
 }
-/*
+
+
 void DecryptFile(const char *Download_File, const char *OriginalCode_File)
 {
     String decoded_line = "";
@@ -162,7 +163,7 @@ void DecryptFile(const char *Download_File, const char *OriginalCode_File)
     HEX_file.close();
 }
 
-*/
+
 bool HMAC_COMPARE(const char *OEM_DigestFile, const char *TelematicUnit_DigestFile)
 {
     // Open the first file for reading
