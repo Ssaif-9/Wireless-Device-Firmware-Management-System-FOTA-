@@ -60,14 +60,20 @@ int Base64Class::encode(char *output, char *input, int inputLength) {
 int Base64Class::decode(char * output, char * input, int inputLength) {
 	int i = 0, j = 0;
 	int decodedLength = 0;
-	unsigned char A3[3];
-	unsigned char A4[4];
+	unsigned char A3[3]={0};
+	unsigned char A4[4]={0};
 
 
 	while (inputLength--) {
 		if(*input == '=') {
 			break;
 		}
+
+		if (*input == '\r' || *input == '\n') 
+		{ 
+            input++;
+            continue;
+        }
 
 		A4[i++] = *(input++);
 		if (i == 4) {
@@ -120,25 +126,25 @@ int Base64Class::decodedLength(char * input, int inputLength) {
 
 //Private utility functions
 inline void Base64Class::fromA3ToA4(unsigned char * A4, unsigned char * A3) {
-	A4[0] = (A3[0] & 0xfc) >> 2;
-	A4[1] = ((A3[0] & 0x03) << 4) + ((A3[1] & 0xf0) >> 4);
-	A4[2] = ((A3[1] & 0x0f) << 2) + ((A3[2] & 0xc0) >> 6);
-	A4[3] = (A3[2] & 0x3f);
+    A4[0] = (A3[0] & 0xfc) >> 2;
+    A4[1] = ((A3[0] & 0x03) << 4) + ((A3[1] & 0xf0) >> 4);
+    A4[2] = ((A3[1] & 0x0f) << 2) + ((A3[2] & 0xc0) >> 6);
+    A4[3] = (A3[2] & 0x3f);
 }
 
 inline void Base64Class::fromA4ToA3(unsigned char * A3, unsigned char * A4) {
-	A3[0] = (A4[0] << 2) + ((A4[1] & 0x30) >> 4);
-	A3[1] = ((A4[1] & 0xf) << 4) + ((A4[2] & 0x3c) >> 2);
-	A3[2] = ((A4[2] & 0x3) << 6) + A4[3];
+    A3[0] = (A4[0] << 2) + ((A4[1] & 0x30) >> 4);
+    A3[1] = ((A4[1] & 0xf) << 4) + ((A4[2] & 0x3c) >> 2);
+    A3[2] = ((A4[2] & 0x3) << 6) + A4[3];
 }
 
 inline unsigned char Base64Class::lookupTable(char c) {
-	if(c >='A' && c <='Z') return c - 'A';
-	if(c >='a' && c <='z') return c - 71;
-	if(c >='0' && c <='9') return c + 4;
-	if(c == '+') return 62;
-	if(c == '/') return 63;
-	return -1;
+    if (c >= 'A' && c <= 'Z') return c - 'A';
+    if (c >= 'a' && c <= 'z') return c - 71;
+    if (c >= '0' && c <= '9') return c + 4;
+    if (c == '+') return 62;
+    if (c == '/') return 63;
+    return -1;
 }
 
 Base64Class Base64;
