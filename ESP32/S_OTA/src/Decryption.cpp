@@ -37,15 +37,13 @@ String decryptBuffer(String cipherText,const char * key)
   unsigned char cipherTextOutput[16];
   unsigned char decipheredTextOutput[16];
 
-  for (int i = 0; i < 16; i++) 
-  {
+  for (int i = 0; i < 16; i++) {
     cipherTextOutput[i] = (char)cipherText[i];
   }
   
   decrypt(cipherTextOutput, key, decipheredTextOutput);
 
-  for (int i = 0; i < 16; i++) 
-  {
+  for (int i = 0; i < 16; i++) {
     decipheredTextString = decipheredTextString + (char)decipheredTextOutput[i];
 
     if(decipheredTextString[i] == '\0') {
@@ -55,6 +53,7 @@ String decryptBuffer(String cipherText,const char * key)
 
   return decipheredTextString;
 }
+
 
 
 String decryptString(String cipherText, const char * key) {
@@ -67,7 +66,6 @@ String decryptString(String cipherText, const char * key) {
       for(int j = block*BUFF_SIZE; j < (block+1)*BUFF_SIZE; j++) {
         buffer += cipherText[j];
       }
-      
       decipheredTextString += decryptBuffer(buffer, key);
       buffer = "";
   }
