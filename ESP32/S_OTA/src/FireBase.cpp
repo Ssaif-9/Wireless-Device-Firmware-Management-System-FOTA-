@@ -154,7 +154,7 @@ void Set_ErrorID(int ErrorID)
     if (Firebase.ready()) 
     {
       // Set the ErrorID value in the database
-      if (Firebase.RTDB.setInt(&fbdo, "/alfa-romeo/mito/2016/ErrorInfo", ErrorID))
+      if (Firebase.RTDB.setInt(&fbdo, "/alfa-romeo/146/2017/ErrorInfo", ErrorID))
       {
         // Successfully set the ErrorID value
         debugln("ErrorID set successfully.");
@@ -176,7 +176,7 @@ int Version_Recieve(void)
     {
         sendDataPrevMillis = millis();
         
-        if (Firebase.RTDB.getString(&fbdo, "/alfa-romeo/mito/2016/UpdateInfo"))
+        if (Firebase.RTDB.getString(&fbdo, "/alfa-romeo/146/2017/UpdateInfo"))
         {
             if (fbdo.dataType() == "String")
             {

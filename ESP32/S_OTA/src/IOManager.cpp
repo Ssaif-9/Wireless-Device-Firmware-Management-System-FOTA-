@@ -139,11 +139,7 @@ void DecryptFile(const char *Download_File, const char *OriginalCode_File)
         decoded_line = "";
         line = Cipher_File.readStringUntil('\n');
 
-       
-
         decoded_length = Base64.decodedLength(const_cast<char*>(line.c_str()), line.length());
-
-        
 
         char decodedString[decoded_length];
         Base64.decode(decodedString, const_cast<char*>(line.c_str()), line.length());
@@ -154,16 +150,9 @@ void DecryptFile(const char *Download_File, const char *OriginalCode_File)
         }
     
         decrypted_line = decryptString(decoded_line);
+
         decrypted_line.remove(decrypted_line.indexOf('\n'));
-        debugln(decrypted_line);
-
-        if ((decrypted_line.length()) % 16 == 0)
-        {
-            decrypted_line.remove(decrypted_line.length() - 5);
-        }
-
-        debugln(decrypted_line);
-
+      
         HEX_file.print(decrypted_line + "\n");
     }
     Cipher_File.close();
