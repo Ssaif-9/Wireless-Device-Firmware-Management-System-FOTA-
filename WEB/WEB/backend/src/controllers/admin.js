@@ -205,6 +205,26 @@ const adminController = {
       res.status(400).send({ error: error.message });
     }
   },
+  getAllMembers: async (req, res) => {
+    if (!req.user.permissions.includes(6)) {
+      console.error("You do not have permission to perform this action!");
+      return res.status(403).send({
+        error: "You do not have permission to perform this action!",
+      });
+    }
+    console.log("User have permission to get all members");
+    try {
+      const result = await adminService.getAllMembers();
+      if (result === "No Members found!") {
+        return res.status(404).send({
+          error: result,
+        });
+      }
+      res.status(200).send({ message: "Users fetched successfully!", members: result });
+    } catch (error) {
+      res.status(400).send({ error: error.message });
+    }
+  },
   getUserById: async (req, res) => {
     if (!req.user.permissions.includes(5)) {
       console.error("You do not have permission to perform this action!");

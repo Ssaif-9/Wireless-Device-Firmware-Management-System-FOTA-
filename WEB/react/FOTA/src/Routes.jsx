@@ -16,6 +16,7 @@ import AdminHome from './admin/addNews';
 import AddUpdate from './admin/addUpdate';
 import AddMembers from './admin/addMembers';
 import EditCars from './admin/editCars';
+import DeleteMember from './admin/deleteMember';
 import LiveDiagnosticsAdmin from './admin/liveDiagnosticsAdmin';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -42,6 +43,7 @@ const Router = () => (
         <Route path="/adAMem" element={<AddMembers />} />
         <Route path="/adECar" element={<EditCars />} />
         <Route path="/adLD" element={<LiveDiagnosticsAdmin />} />
+        <Route path="/delMem" element={<DeleteMember />} />
 
         {/* ADDITIONAL PAGES */}
         <Route path="*" element={<NotFoundPage />} />

@@ -12,6 +12,7 @@ const mailer = require("../functions/nodemailer");
 const { Buffer } = require("buffer");
 const LiveDiagnostics = require("../schemas/liveDiagnostics");
 const { version } = require("os");
+const { where } = require("sequelize");
 
 // var mqtt = require("mqtt");
 // var broker = process.env.MQTTBROKER;
@@ -244,13 +245,27 @@ const adminServices = {
       
       console.log({hmacDigest:hmacDigest})
 
-      
 
+// // Define the input line and the key
+// var line1 = ":100000000C9473000C94A20B0C94B4060C94CB0BC0";
+// var key = 'fotaprojectfotaa';
+
+// // Encrypt the input line
+// var encryptedLine = CryptoJS.AES.encrypt(line1, CryptoJS.enc.Utf8.parse(key), {
+//     mode: CryptoJS.mode.ECB,
+//     padding: CryptoJS.pad.Pkcs7
+// }).toString();
+
+// Print the input and encrypted line
+// console.log({line1: line1});
+// console.log({encryptedLine: encryptedLine});
+      // console.log(fileData[0])
       fileData[0].forEach((line) => {
-        var ciphertext = CryptoJS.AES.encrypt(
-          line,
-          process.env.SECURITY_KEY
-        ).toString();
+        var ciphertext = CryptoJS.AES.encrypt(line, CryptoJS.enc.Utf8.parse(process.env.SECURITY_KEY), {
+          mode: CryptoJS.mode.ECB,
+          padding: CryptoJS.pad.Pkcs7
+      }).toString();
+        // console.log({ Ciphertext: ciphertext })
         EncryptedLines.push(ciphertext);
       });
 
@@ -354,6 +369,13 @@ const adminServices = {
     }
     await user.destroy();
     return "User deleted successfully";
+  },
+  getAllMembers: async () => {
+    const users = await User.findAll({ where:{ role: 'member'}});
+    if (!users || users.length === 0) {
+      return "No Members found!";
+    }
+    return users;
   },
   getUserById: async (id) => {
     const user = await User.findOne({ where: { id } });

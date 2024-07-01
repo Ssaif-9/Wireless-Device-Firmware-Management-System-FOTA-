@@ -35,6 +35,9 @@ router.patch("/admin/live_diag/:id", auth, adminController.markLiveDiag);
 //                      Delete Member
 router.delete("/admin/members", auth, adminController.deleteMember);
 
+//                    Get All Members
+router.get("/admin/members", auth, adminController.getAllMembers);
+
 //                    Get User By ID
 router.get("/admin/user/:id", auth, adminController.getUserById);
 

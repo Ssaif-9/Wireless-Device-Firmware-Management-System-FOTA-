@@ -75,6 +75,9 @@ const navbar = () => {
                         <li>
                             <a href="./adAMem" className='no-underline text-[#333] transition-[0.3s] p-2.5 rounded-br-[20px] rounded-t-[20px] rounded-bl-[20px] rounded-[5px] hover:bg-[#7bbec8]'>Add Members</a>
                         </li>
+                        <li>
+                            <a href="./delMem" className='no-underline text-[#333] transition-[0.3s] p-2.5 rounded-br-[20px] rounded-t-[20px] rounded-bl-[20px] rounded-[5px] hover:bg-[#7bbec8]'>Delete Members</a>
+                        </li>
                         <li onClick={logout}>
                             <a className='no-underline text-[#333] transition-[0.3s] p-2.5 rounded-br-[20px] rounded-t-[20px] rounded-bl-[20px] rounded-[5px] hover:bg-[#7bbec8]'>Logout</a>
                         </li>
