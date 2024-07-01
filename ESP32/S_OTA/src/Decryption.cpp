@@ -44,6 +44,11 @@ String decryptBuffer(String cipherText,const char * key)
   decrypt(cipherTextOutput, key, decipheredTextOutput);
 
   for (int i = 0; i < 16; i++) {
+
+   if (!((decipheredTextOutput[i] >= '0' && decipheredTextOutput[i] <= '9') || (decipheredTextOutput[i] >= 'A' && decipheredTextOutput[i] <= 'F') ||decipheredTextOutput[i] == ':')) 
+   {
+    break; 
+   }
     decipheredTextString = decipheredTextString + (char)decipheredTextOutput[i];
 
     if(decipheredTextString[i] == '\0') {
