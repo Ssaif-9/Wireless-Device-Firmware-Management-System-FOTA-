@@ -336,7 +336,7 @@ function ResetPassword() {
                                 onClick={() => {
                                     setTimeLeft(1.5 * 60); setResendCode(false)
                                     handleResendCode()
-                                }}><a>Resend code!!</a></p>}
+                                }}><a className="bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)] text-center uppercase transition-[0.5s] bg-[200%_auto] text-[white] shadow-[0_0_20px_#eee] cursor-pointer w-[100px] m-2.5 p-3 rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center]">Resend code!!</a></p>}
 
 
                             <div className="flex justify-center">

@@ -391,7 +391,7 @@ function SignUpPage() {
 
   return (
     <>
-      <body className='bg-[#ceeff4] font-serif'>
+      <div className='bg-[#ceeff4] font-serif'>
         <title>Signup</title>
         <h1 className="text-center m-[2%] font-serif text-[#487379] text-2xl">SIGNUP</h1>
         <div className="bg-white shadow-[0px_0px_10px_#ccc] mx-auto my-0 rounded-[10px] tablet:w-auto tablet:max-w-5xl tablet:p-5 phone:w-4/5 phone:p-2.5" id="signup-body">
@@ -459,7 +459,7 @@ function SignUpPage() {
                   inputMode="tel"
                   maxLength={13} // Adjusted maxLength to account for "-" characters
                   required
-                  className='mb-1 p-2 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50' />
+                  className='mb-1 p-1.5 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm' />
                 <br />
                 <select
                   name="car-brand"
@@ -519,7 +519,7 @@ function SignUpPage() {
                   className='mb-1 p-1.5 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm'
                 />
                 <br />
-                <div class="inline-flex">
+                <div className="inline-flex">
                   <input
                     type={type}
                     name='password'
@@ -537,7 +537,7 @@ function SignUpPage() {
                   </span>
                 </div>
                 <br />
-                <div class="inline-flex">
+                <div className="inline-flex">
                   <input
                     type={type2}
                     name='repassword'
@@ -564,7 +564,7 @@ function SignUpPage() {
             </div>
           </form >
         </div >
-      </body>
+      </div>
 
       <ToastContainer />
     </>

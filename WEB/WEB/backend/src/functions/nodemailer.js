@@ -15,22 +15,84 @@ const transporter = nodemailer.createTransport({
 });
 
 // Function to send a verification email
+
 function sendVerificationEmail(email, verificationCode) {
   const mailOptions = {
     from: process.env.EMAIL_USERNAME, // replace with your Gmail address
     to: email,
     subject: "Account Verification",
-    text: `Your verification code is: ${verificationCode}\n
-            The code is only valid for 3 minutes.
-            
-            If you didn't request this code, you can safely ignore this email.`,
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Verification Email</title>
+        <style>
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+          }
+          .header {
+            background-color: #2d3748;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+          }
+          .content {
+            padding: 20px;
+            color: #4a5568;
+          }
+          .code {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #edf2f7;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            text-align: center;
+            color: #2d3748;
+          }
+          .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #a0aec0;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h2>Account Verification</h2>
+          </div>
+          <div class="content">
+            <p>Your verification code is:</p>
+            <span class="code">${verificationCode}</span>
+            <p>The code is only valid for 3 minutes.</p>
+            <p>If you didn't request this code, you can safely ignore this email.</p>
+          </div>
+          <div class="footer">
+            <p>&copy; 2024 Your Company. All rights reserved.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       return error;
     }
-    callback(null, "Verification email sent successfully");
+    return "Verification email sent successfully";
   });
 }
 
@@ -39,10 +101,71 @@ function sendResetPasswordEmail(email, verificationCode) {
     from: process.env.EMAIL_USERNAME, // replace with your Gmail address
     to: email,
     subject: "Reset Password",
-    text: `Your reset code is: ${verificationCode}\n
-            The code is only valid for 5 minutes.
-            
-            If you didn't request this code, you can safely ignore this email.`,
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Reset Password</title>
+        <style>
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+          }
+          .header {
+            background-color: #2d3748;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+          }
+          .content {
+            padding: 20px;
+            color: #4a5568;
+          }
+          .code {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #edf2f7;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            text-align: center;
+            color: #2d3748;
+          }
+          .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #a0aec0;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h2>Password Reset</h2>
+          </div>
+          <div class="content">
+            <p>Your Reset code is:</p>
+            <span class="code">${verificationCode}</span>
+            <p>The code is only valid for 1.5 minutes.</p>
+            <p>If you didn't request this code, you can safely ignore this email.</p>
+          </div>
+          <div class="footer">
+            <p>&copy; 2024 Your Company. All rights reserved.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -59,9 +182,69 @@ function sendNotificationUpdate(email) {
     from: process.env.EMAIL_USERNAME, // replace with your Gmail address
     to: email,
     subject: "Car Update Notification",
-    text: `Your car has an update available. Please check the app for more details.
-            Please Make sure to update your car system to the latest version to enjoy the latest features.
-                                                                        From Car System Team`,
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Car Update</title>
+        <style>
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+          }
+          .header {
+            background-color: #2d3748;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+          }
+          .content {
+            padding: 20px;
+            color: #4a5568;
+          }
+          .code {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #edf2f7;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            text-align: center;
+            color: #2d3748;
+          }
+          .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #a0aec0;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h2>Car Update</h2>
+          </div>
+          <div class="content">
+            <p>Your car has an update available. Please check the app for more details.</p>
+            <p>Please Make sure to update your car system to the latest version to enjoy the latest features.</p>
+          </div>
+          <div class="footer">
+            <p>&copy; 2024 Your Company. All rights reserved.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {

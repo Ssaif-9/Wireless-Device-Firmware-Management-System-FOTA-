@@ -146,7 +146,17 @@ function OtpInput() {
     useEffect(() => {
         if (timeLeft === 0) {
             setResendCode(true);
-            toast.error('Time out');
+            toast.error('Time out',
+                {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                }
+            );
         }
     }, [timeLeft]);
 
@@ -205,16 +215,26 @@ function OtpInput() {
                 // Parse the response JSON and return it
                 const responseData = await response.json();
                 console.log(responseData);
-                toast.success(responseData.message);
+                toast.success(responseData.message,
+                    {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    }
+                );
             } else {
                 // If there was an error, handle the error response
                 const errorText = await response.json(); // Get the error message as plain text
                 throw { status: response.status, message: errorText.error };
-              }
-            } catch (error) {
-              // Log the error message and status code
-              console.error('Error:', error.status, error.message);
-              toast.error(error.message , {
+            }
+        } catch (error) {
+            // Log the error message and status code
+            console.error('Error:', error.status, error.message);
+            toast.error(error.message, {
                 position: "top-center",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -222,137 +242,142 @@ function OtpInput() {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-              });
+            });
         }
     }
 
 
-        return (
-            <div>
-                <ToastContainer />
-                <form onSubmit={handleSubmit} className="w-auto tablet:max-w-lg phone:max-w-md bg-white shadow-[0px_0px_10px_#ccc] tablet:mx-auto phone:mx-8 tablet:my-[10%] phone:my-[30%] p-5 rounded-[10px]">
-                    <img src={gif} alt="email" className="w-20 h-20 mx-auto" />
-                    <h1 className="text-2xl font-bold mb-2 text-center">Verification</h1>
-                    <h6 className="text-base text-[#487379] font-bold mb-2 text-center"> verification code has been sent to {email}</h6>
-                    <div className="flex justify-center text-[#487379] text-6xl mb-2 ">
-                        {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
-                    </div>
-                    <h1 className="text-center">Enter OTP</h1>
-                    <div className="flex  justify-center">
-                        <input type="text"
-                            maxLength="1"
-                            className="w-12 h-14 text-[32px] text-center font-[bold] text-[#487379] transition-all duration-[0.1s] m-0.5 p-2.5 rounded-[5px] border-2 border-solid border-[#55525c] focus:shadow-[0_0_2px_2px_#a527ff6a] focus:border-2 focus:border-solid focus:border-[#a527ff]"
-                            onPaste={handleOnPasteOtp}
-                            value={otp[0]}
-                            onChange={(e) => handleChange(e.target, 0)}
-                            onKeyDown={(e) => {
+    return (
+        <div>
+            <ToastContainer />
+            <form onSubmit={handleSubmit} className="w-auto tablet:max-w-lg phone:max-w-md bg-white shadow-[0px_0px_10px_#ccc] tablet:mx-auto phone:mx-8 tablet:my-[5%] phone:my-[30%] p-5 rounded-[10px]">
+                <div className="text-center">
+                    <img src={gif} alt="email" className="w-20   h-20 mx-auto" />
+
+                </div>
+                <h1 className="text-2xl font-bold mb-2 text-center">Verification</h1>
+                <h3 className="phone:text-base text-[#487379] font-bold mb-2 text-center"> verification code has been sent to {email}</h3>
+                <div className="flex justify-center text-[#487379] text-6xl mb-2 ">
+                    {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
+                </div>
+                <h1 className="text-center">Enter OTP</h1>
+                <div className="flex  justify-center">
+                    <input type="text"
+                        maxLength="1"
+                        className="w-12 h-14 text-[32px] text-center font-[bold] text-[#487379] transition-all duration-[0.1s] m-0.5 p-2.5 rounded-[5px] border-2 border-solid border-[#55525c] focus:shadow-[0_0_2px_2px_#a527ff6a] focus:border-2 focus:border-solid focus:border-[#a527ff]"
+                        onPaste={handleOnPasteOtp}
+                        value={otp[0]}
+                        onChange={(e) => handleChange(e.target, 0)}
+                        onKeyDown={(e) => {
+                            if (e.target.value !== '' && e.key !== "Backspace" && isAlphaNumeric(e.key)) {
+                                e.target.value = e.key;
+                                e.target.nextSibling.focus();
+                                setOtp([...otp.map((d, i) => (i === 0 ? e.key : d))]);
+                            }
+                        }}
+                    />
+                    <input type="text"
+                        maxLength="1"
+                        className="w-12 h-14 text-[32px] text-center font-[bold] text-[#487379] transition-all duration-[0.1s] m-0.5 p-2.5 rounded-[5px] border-2 border-solid border-[#55525c] focus:shadow-[0_0_2px_2px_#a527ff6a] focus:border-2 focus:border-solid focus:border-[#a527ff]"
+                        value={otp[1]}
+                        onPaste={handleOnPasteOtp}
+                        onChange={(e) => handleChange(e.target, 1)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Backspace" && e.target.value == '') { e.target.previousSibling.focus() }
+                            else {
                                 if (e.target.value !== '' && e.key !== "Backspace" && isAlphaNumeric(e.key)) {
                                     e.target.value = e.key;
                                     e.target.nextSibling.focus();
-                                    setOtp([...otp.map((d, i) => (i === 0 ? e.key : d))]);
+                                    setOtp([...otp.map((d, i) => (i === 1 ? e.key : d))]);
                                 }
-                            }}
-                        />
-                        <input type="text"
-                            maxLength="1"
-                            className="w-12 h-14 text-[32px] text-center font-[bold] text-[#487379] transition-all duration-[0.1s] m-0.5 p-2.5 rounded-[5px] border-2 border-solid border-[#55525c] focus:shadow-[0_0_2px_2px_#a527ff6a] focus:border-2 focus:border-solid focus:border-[#a527ff]"
-                            value={otp[1]}
-                            onPaste={handleOnPasteOtp}
-                            onChange={(e) => handleChange(e.target, 1)}
-                            onKeyDown={(e) => {
-                                if (e.key === "Backspace" && e.target.value == '') { e.target.previousSibling.focus() }
-                                else {
-                                    if (e.target.value !== '' && e.key !== "Backspace" && isAlphaNumeric(e.key)) {
-                                        e.target.value = e.key;
-                                        e.target.nextSibling.focus();
-                                        setOtp([...otp.map((d, i) => (i === 1 ? e.key : d))]);
-                                    }
+                            }
+                        }} />
+                    <input type="text"
+                        maxLength="1"
+                        className="mr-4 w-12 h-14 text-[32px] text-center font-[bold] text-[#487379] transition-all duration-[0.1s] m-0.5 p-2.5 rounded-[5px] border-2 border-solid border-[#55525c] focus:shadow-[0_0_2px_2px_#a527ff6a] focus:border-2 focus:border-solid focus:border-[#a527ff]"
+                        value={otp[2]}
+                        onPaste={handleOnPasteOtp}
+                        onChange={(e) => handleChange(e.target, 2)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Backspace" && e.target.value == '') { e.target.previousSibling.focus() }
+                            else {
+                                if (e.target.value !== '' && e.key !== "Backspace" && isAlphaNumeric(e.key)) {
+                                    e.target.value = e.key;
+                                    e.target.nextSibling.focus();
+                                    setOtp([...otp.map((d, i) => (i === 2 ? e.key : d))]);
                                 }
-                            }} />
-                        <input type="text"
-                            maxLength="1"
-                            className="mr-4 w-12 h-14 text-[32px] text-center font-[bold] text-[#487379] transition-all duration-[0.1s] m-0.5 p-2.5 rounded-[5px] border-2 border-solid border-[#55525c] focus:shadow-[0_0_2px_2px_#a527ff6a] focus:border-2 focus:border-solid focus:border-[#a527ff]"
-                            value={otp[2]}
-                            onPaste={handleOnPasteOtp}
-                            onChange={(e) => handleChange(e.target, 2)}
-                            onKeyDown={(e) => {
-                                if (e.key === "Backspace" && e.target.value == '') { e.target.previousSibling.focus() }
-                                else {
-                                    if (e.target.value !== '' && e.key !== "Backspace" && isAlphaNumeric(e.key)) {
-                                        e.target.value = e.key;
-                                        e.target.nextSibling.focus();
-                                        setOtp([...otp.map((d, i) => (i === 2 ? e.key : d))]);
-                                    }
+                            }
+                        }}
+                    />
+                    <input type="text"
+                        maxLength="1"
+                        className="w-12 h-14 text-[32px] text-center font-[bold] text-[#487379] transition-all duration-[0.1s] m-0.5 p-2.5 rounded-[5px] border-2 border-solid border-[#55525c] focus:shadow-[0_0_2px_2px_#a527ff6a] focus:border-2 focus:border-solid focus:border-[#a527ff]"
+                        value={otp[3]}
+                        onPaste={handleOnPasteOtp}
+                        onChange={(e) => handleChange(e.target, 3)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Backspace" && e.target.value == '') { e.target.previousSibling.focus() }
+                            else {
+                                if (e.target.value !== '' && e.key !== "Backspace" && isAlphaNumeric(e.key)) {
+                                    e.target.value = e.key;
+                                    e.target.nextSibling.focus();
+                                    setOtp([...otp.map((d, i) => (i === 3 ? e.key : d))]);
                                 }
-                            }}
-                        />
-                        <input type="text"
-                            maxLength="1"
-                            className="w-12 h-14 text-[32px] text-center font-[bold] text-[#487379] transition-all duration-[0.1s] m-0.5 p-2.5 rounded-[5px] border-2 border-solid border-[#55525c] focus:shadow-[0_0_2px_2px_#a527ff6a] focus:border-2 focus:border-solid focus:border-[#a527ff]"
-                            value={otp[3]}
-                            onPaste={handleOnPasteOtp}
-                            onChange={(e) => handleChange(e.target, 3)}
-                            onKeyDown={(e) => {
-                                if (e.key === "Backspace" && e.target.value == '') { e.target.previousSibling.focus() }
-                                else {
-                                    if (e.target.value !== '' && e.key !== "Backspace" && isAlphaNumeric(e.key)) {
-                                        e.target.value = e.key;
-                                        e.target.nextSibling.focus();
-                                        setOtp([...otp.map((d, i) => (i === 3 ? e.key : d))]);
-                                    }
+                            }
+                        }}
+                    />
+                    <input type="text"
+                        maxLength="1"
+                        className="w-12 h-14 text-[32px] text-center font-[bold] text-[#487379] transition-all duration-[0.1s] m-0.5 p-2.5 rounded-[5px] border-2 border-solid border-[#55525c] focus:shadow-[0_0_2px_2px_#a527ff6a] focus:border-2 focus:border-solid focus:border-[#a527ff]"
+                        value={otp[4]}
+                        onPaste={handleOnPasteOtp}
+                        onChange={(e) => handleChange(e.target, 4)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Backspace" && e.target.value == '') { e.target.previousSibling.focus() }
+                            else {
+                                if (e.target.value !== '' && e.key !== "Backspace" && isAlphaNumeric(e.key)) {
+                                    e.target.value = e.key;
+                                    e.target.nextSibling.focus();
+                                    setOtp([...otp.map((d, i) => (i === 4 ? e.key : d))]);
                                 }
-                            }}
-                        />
-                        <input type="text"
-                            maxLength="1"
-                            className="w-12 h-14 text-[32px] text-center font-[bold] text-[#487379] transition-all duration-[0.1s] m-0.5 p-2.5 rounded-[5px] border-2 border-solid border-[#55525c] focus:shadow-[0_0_2px_2px_#a527ff6a] focus:border-2 focus:border-solid focus:border-[#a527ff]"
-                            value={otp[4]}
-                            onPaste={handleOnPasteOtp}
-                            onChange={(e) => handleChange(e.target, 4)}
-                            onKeyDown={(e) => {
-                                if (e.key === "Backspace" && e.target.value == '') { e.target.previousSibling.focus() }
-                                else {
-                                    if (e.target.value !== '' && e.key !== "Backspace" && isAlphaNumeric(e.key)) {
-                                        e.target.value = e.key;
-                                        e.target.nextSibling.focus();
-                                        setOtp([...otp.map((d, i) => (i === 4 ? e.key : d))]);
-                                    }
+                            }
+                        }}
+                    />
+                    <input type="text"
+                        maxLength="1"
+                        className="w-12 h-14 text-[32px] text-center font-[bold] text-[#487379] transition-all duration-[0.1s] m-0.5 p-2.5 rounded-[5px] border-2 border-solid border-[#55525c] focus:shadow-[0_0_2px_2px_#a527ff6a] focus:border-2 focus:border-solid focus:border-[#a527ff]"
+                        value={otp[5]}
+                        onPaste={handleOnPasteOtp}
+                        onChange={(e) => handleChange(e.target, 5)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Backspace" && e.target.value == '') { e.target.previousSibling.focus() }
+                            else {
+                                if (e.target.value !== '' && e.key !== "Backspace" && isAlphaNumeric(e.key)) {
+                                    e.target.value = e.key;
+                                    setOtp([...otp.map((d, i) => (i === 5 ? e.key : d))]);
                                 }
-                            }}
-                        />
-                        <input type="text"
-                            maxLength="1"
-                            className="w-12 h-14 text-[32px] text-center font-[bold] text-[#487379] transition-all duration-[0.1s] m-0.5 p-2.5 rounded-[5px] border-2 border-solid border-[#55525c] focus:shadow-[0_0_2px_2px_#a527ff6a] focus:border-2 focus:border-solid focus:border-[#a527ff]"
-                            value={otp[5]}
-                            onPaste={handleOnPasteOtp}
-                            onChange={(e) => handleChange(e.target, 5)}
-                            onKeyDown={(e) => {
-                                if (e.key === "Backspace" && e.target.value == '') { e.target.previousSibling.focus() }
-                                else {
-                                    if (e.target.value !== '' && e.key !== "Backspace" && isAlphaNumeric(e.key)) {
-                                        e.target.value = e.key;
-                                        setOtp([...otp.map((d, i) => (i === 5 ? e.key : d))]);
-                                    }
-                                }
-                            }}
-                        />
-                    </div>
+                            }
+                        }}
+                    />
+                </div>
+                <div className="text-center">
                     {resendCode && <p className="mt-5 text-lg"
                         onClick={() => {
                             setTimeLeft(3 * 60); setResendCode(false)
                             handleResendCode()
-                        }}><a>Resend code!!</a></p>}
+                        }}><a className=" bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)] text-center uppercase transition-[0.5s] bg-[200%_auto] text-[white] shadow-[0_0_20px_#eee] cursor-pointer w-[100px] m-2.5 p-3 rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center]">Resend code!!</a></p>}
 
-                    <div className="flex justify-center">
-                        <button type="submit" className=" bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)] text-center uppercase transition-[0.5s] bg-[200%_auto] text-[white] shadow-[0_0_20px_#eee] cursor-pointer w-[100px] m-2.5 p-3 rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center]">
-                            Verify
-                        </button>
-                    </div>
+                </div>
+                <div className="flex justify-center">
+                    <button type="submit" className=" bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)] text-center uppercase transition-[0.5s] bg-[200%_auto] text-[white] shadow-[0_0_20px_#eee] cursor-pointer w-[100px] m-2.5 p-3 rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center]">
+                        Verify
+                    </button>
+                </div>
 
-                </form>
-                <p id="error_show" style={{ color: 'red' }}></p>
-            </div>
-        );
-    }
+            </form>
+            <p id="error_show" style={{ color: 'red' }}></p>
+        </div>
+    );
+}
 
-    export default OtpInput;
+export default OtpInput;

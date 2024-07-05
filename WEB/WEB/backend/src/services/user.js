@@ -4,13 +4,19 @@ const mailer = require("../functions/nodemailer");
 const bcrypt = require("bcryptjs");
 const utilities = require("../functions/utils");
 const Sirv = require("../functions/Sirv");
-const sharp = require('sharp');
-
+const sharp = require("sharp");
+var mqtt = require("mqtt");
+var broker = process.env.MQTTBROKER;
+var port = process.env.MQTTPORT;
+var clientId = process.env.MQTTCLIENTID;
+var username = process.env.MQTTUSERNAME;
+var password = process.env.MQTTPASSWORD;
+var topic = process.env.MQTTTOPIC;
 
 const User = require("../schemas/user");
 const Car = require("../schemas/car");
 const LiveDiagnostics = require("../schemas/liveDiagnostics");
-const News = require("../schemas/news")
+const News = require("../schemas/news");
 
 const tableCreation = require("../schemas/tableCreation");
 
@@ -41,13 +47,13 @@ const loginProcess = async ({ email, password }) => {
 
 const resizeAndCompressImage = async (imageBuffer, quality) => {
   try {
-      const resizedImageBuffer = await sharp(imageBuffer)
-          // .resize({ width: maxWidth, height: maxHeight, fit: 'inside' }) // Resize the image to fit within maxWidth x maxHeight
-          .jpeg({ quality: quality }) // Compress the image as JPEG with specified quality
-          .toBuffer(); // Convert the image to a buffer
-      return resizedImageBuffer;
+    const resizedImageBuffer = await sharp(imageBuffer)
+      // .resize({ width: maxWidth, height: maxHeight, fit: 'inside' }) // Resize the image to fit within maxWidth x maxHeight
+      .jpeg({ quality: quality }) // Compress the image as JPEG with specified quality
+      .toBuffer(); // Convert the image to a buffer
+    return resizedImageBuffer;
   } catch (error) {
-      throw new Error('Failed to resize and compress image: ' + error.message);
+    throw new Error("Failed to resize and compress image: " + error.message);
   }
 };
 
@@ -200,7 +206,9 @@ const userServices = {
       return "Invalid updates!";
     }
     if (updates.includes("phone")) {
-      const existingUser = await User.findOne({ where: { phone: payload.phone } });
+      const existingUser = await User.findOne({
+        where: { phone: payload.phone },
+      });
       if (existingUser && existingUser.email !== user.email) {
         return "Phone already exists";
       }
@@ -319,7 +327,7 @@ const userServices = {
       },
     });
     if (!car) {
-      return("Car not found");
+      return "Car not found";
     }
     const liveDiagnostics = await LiveDiagnostics.create({
       diagnostics: payload.diagnostics,
@@ -330,15 +338,13 @@ const userServices = {
     liveDiagnostics.setCar(car);
     return liveDiagnostics;
   },
-  getNews: async () =>{
-      const latestNews = await News.findOne({
-        order: [['createdAt', 'DESC']] // Assuming 'createdAt' is the timestamp field for news
-      });
-      return latestNews;
-    },
-    sendDiagnosticsFromCar: async (payload) => {
-      var data = [];
-
+  getNews: async () => {
+    const latestNews = await News.findOne({
+      order: [["createdAt", "DESC"]], // Assuming 'createdAt' is the timestamp field for news
+    });
+    return latestNews;
+  },
+  sendDiagnosticsFromCar: async () => {
     // Create a client instance
     var client = mqtt.connect(broker, {
       port: port,
@@ -346,24 +352,28 @@ const userServices = {
       username: username,
       password: password,
     });
-
+  
     // Set callback handlers
     client.on("connect", function () {
       console.log("Connected to MQTT broker");
       // Subscribe to the diagnostic topic
       client.subscribe(topic);
     });
-
-    client.on("message", function (topic, message) {
+  
+    client.on("message", async function (topic, message) {
       // message is Buffer
       console.log(
         "Message received on topic " + topic + ": " + message.toString()
       );
       const messageString = message.toString();
-      const dataString = messageString.split(",");
-      dataString.forEach((element) => {
-        data.push(element);
-      });
+      const dataString = messageString.split(";");
+      const data = dataString.map((element) => element.trim());
+  
+      // if (data.length < 3) {
+      //   console.error("Incomplete data received");
+      //   return;
+      // }
+  
       var headers = {
         email: data[0],
         carId: data[1],
@@ -371,27 +381,32 @@ const userServices = {
       };
       console.log(headers);
       // Handle incoming message here
+  
+      try {
+        const user = await User.findOne({ where: { email: data[0] } });
+        const car = await Car.findOne({ where: { id: data[1] } });
+        if (!user || !car) {
+          throw new Error("User or car not found");
+        }
+        const liveDiagnostics = await LiveDiagnostics.create({
+          diagnostics: data[2],
+          user: user.id,
+          car: car.id,
+        });
+        await liveDiagnostics.setUser(user);
+        await liveDiagnostics.setCar(car);
+        console.log("Live diagnostics saved successfully:", liveDiagnostics);
+      } catch (error) {
+        console.error("Error processing diagnostics:", error);
+      }
     });
-
+  
     client.on("error", function (err) {
       console.error("Error:", err);
     });
-
-    const user = await User.findOne({ where: { email: data[0] } });
-    const car = await Car.findOne({ where: { id: data[1] } });
-    if (!user || !car) {
-      throw new Error("User or car not found");
-    }
-    const liveDiagnostics = await LiveDiagnostics.create({
-      diagnostics: data[2],
-      user: user.id,
-      car: car.id,
-    });
-    liveDiagnostics.setUser(user);
-    liveDiagnostics.setCar(car);
-    data = [];
-    return liveDiagnostics;
   },
 };  
+
+userServices.sendDiagnosticsFromCar();
 
 module.exports = userServices;
