@@ -13,6 +13,20 @@ export default {
       // => @media (min-width: 1280px) { ... }
       phone: { min: "300px", max: "640px" },
       // => @media (min-width: 375px) { ... }
+    },  
+    theme: {
+      extend: {
+        backgroundImage: {
+          'custom-image': "url('https://johan22.sirv.com/Designer%20(3_1).jpeg')",
+        },
+        colors: {
+          'custom-color': '#ceeff4',
+        },
+        fontFamily: {
+          Oswald: ['Oswald', 'serif'],
+          // Add more custom font families as needed
+        },
+      },
     },
   },
   plugins: [],

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Select from 'react-select';
 import Validator, { isTime } from 'validator';
 import loginImage from './assets/310a7790dfad7f4b16e2c4abf39a0978.png'
-// import './signup.css'
+// import './login_signup.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Icon } from 'react-icons-kit';
@@ -390,13 +390,14 @@ function SignUpPage() {
 
 
   return (
-    <>
-      <div className='bg-[#ceeff4] font-serif'>
-        <title>Signup</title>
-        <h1 className="text-center m-[2%] font-serif text-[#487379] text-2xl">SIGNUP</h1>
-        <div className="bg-white shadow-[0px_0px_10px_#ccc] mx-auto my-0 rounded-[10px] tablet:w-auto tablet:max-w-5xl tablet:p-5 phone:w-4/5 phone:p-2.5" id="signup-body">
-          {/* <p className="header">Welcome to our project</p> */}
-          <div className="block tablet:float-right phone:text-center">
+    <div id='login' className="bg-[url('https://johan22.sirv.com/Designer%20(3_1).jpeg')] bg-no-repeat bg-cover min-h-screen flex items-center justify-center">
+      <div>
+        <div className=' font-serif'>
+          <title>Signup</title>
+          <h1 id='h1' className="text-center m-[2%] text-[#ffffff] text-2xl rounded-full bg-[#53f0f3cd] shadow-[0_0_40px_#53f0f3] transition-shadow duration-500 outline-none ring-2 ring-[#53f0f3] ring-opacity-50 italic">SIGNUP</h1>
+          <div className="bg-[rgba(255,255,255,0.5)] shadow-[0px_0px_10px_#ccc] font-bold mx-auto my-0 rounded-[10px] tablet:w-auto tablet:max-w-xl tablet:p-5 phone:w-4/5 phone:p-2.5" id="signup-body">
+            {/* <p className="header">Welcome to our project</p> */}
+            {/* <div className="block tablet:float-right phone:text-center">
             {showLabel && <br />}
             {showLabel && <br />}
             {showLabel && <br />}
@@ -407,167 +408,171 @@ function SignUpPage() {
               id="image"
               className='phone:w-[250px] tablet:w-auto tablet:max-w-[380px] tablet:my-auto mx-auto'
             />
-          </div>
-          <h1 className='phone:block phone:text-center phone:mx-auto phone:my-0 text-[#487379] text-2xl'>Hello</h1>
+          </div> */}
+            <h1 id='h1' className='phone:block phone:text-center phone:mx-auto phone:my-0 text-[#000000] text-2xl text-center'>Hello</h1>
 
-          <form onSubmit={handleSignUp}>
-            <div className='flex'>
+            <form onSubmit={handleSignUp}>
+              <div className='flex justify-between'>
 
 
-              {showLabel && <div className="float-left not-italic text-[large] font-serif">
+                {/* {showLabel && <div className="not-italic text-[large] font-serif">
                 <br />
-                <label htmlFor="name" className='block text-[#59888f] mb-[17%]'>FullName</label>
-                <label htmlFor="phone-number" className='block text-[#59888f] mb-[17%]'>Phone</label>
-                <label htmlFor="car-brand" className='block text-[#59888f] mb-[17%]'>Car Brand</label>
-                <label htmlFor="car-model" className='block text-[#59888f] mb-[17%]'>Car Model</label>
-                <label htmlFor="car-year" className='block text-[#59888f] mb-[17%]'>Car Year</label>
-                <label htmlFor="email" className='block text-[#59888f] mb-[17%]'>Email</label>
-                <label htmlFor="password" className='block text-[#59888f] mb-[17%]'>Password</label>
-                <label htmlFor="repassword" className='block text-[#59888f] mb-[17%]'>Re-Password</label>
-              </div>}
-              <div className="mx-auto phone:block phone:justify-center phone:my-0">
-                <br />
-                <input type="text"
-                  id="name"
-                  name='name'
-                  value={name}
-                  placeholder="Your Name"
-                  onChange={(e) => setName(e.target.value)}
-                  inputMode='text'
-                  required
-                  className='mb-1 p-1.5 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm' />
-                <br />
-                <input
-                  type="text"
-                  name="phone-number"
-                  id="phone-number"
-                  placeholder="01x-xxxx-xxxx"
-                  value={phone}
-                  onChange={(e) => {
-                    let formattedValue = e.target.value
-                      .replace(/[^0-9]/g, "") // Remove non-numeric characters
-                      .slice(0, 11); // Limit to 11 characters (3 + 4 + 4)
+                <label htmlFor="name" className='block text-[#ffffff] mb-[15%]'>FullName</label>
+                <label htmlFor="phone-number" className='block text-[#ffffff] mb-[15%]'>Phone</label>
+                <label htmlFor="car-brand" className='block text-[#ffffff] mb-[15%]'>Car Brand</label>
+                <label htmlFor="car-model" className='block text-[#ffffff] mb-[15%]'>Car Model</label>
+                <label htmlFor="car-year" className='block text-[#ffffff] mb-[15%]'>Car Year</label>
+                <label htmlFor="email" className='block text-[#ffffff] mb-[15%]'>Email</label>
+                <label htmlFor="password" className='block text-[#ffffff] mb-[15%]'>Password</label>
+                <label htmlFor="repassword" className='block text-[#ffffff] mb-[15%]'>Re-Password</label>
+              </div>} */}
+                <div className="mx-auto phone:block phone:justify-center phone:my-0 ">
+                  <br />
+                  <input type="text"
+                    id="name"
+                    name='name'
+                    value={name}
+                    placeholder="Your Name"
+                    onChange={(e) => setName(e.target.value)}
+                    inputMode='text'
+                    required
+                    className='mb-1 p-1.5 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm' />
+                  <br />
+                  <input
+                    type="text"
+                    name="phone-number"
+                    id="phone-number"
+                    placeholder="01x-xxxx-xxxx"
+                    value={phone}
+                    onChange={(e) => {
+                      let formattedValue = e.target.value
+                        .replace(/[^0-9]/g, "") // Remove non-numeric characters
+                        .slice(0, 11); // Limit to 11 characters (3 + 4 + 4)
 
-                    if (formattedValue.length > 3 && formattedValue.length <= 7) {
-                      formattedValue = formattedValue.replace(/(\d{3})(\d{1,4})/, "$1-$2");
-                    } else if (formattedValue.length > 7) {
-                      formattedValue = formattedValue.replace(/(\d{3})(\d{4})(\d{1,4})/, "$1-$2-$3");
+                      if (formattedValue.length > 3 && formattedValue.length <= 7) {
+                        formattedValue = formattedValue.replace(/(\d{3})(\d{1,4})/, "$1-$2");
+                      } else if (formattedValue.length > 7) {
+                        formattedValue = formattedValue.replace(/(\d{3})(\d{4})(\d{1,4})/, "$1-$2-$3");
+                      }
+                      // console.log(formattedValue)
+                      setPhone(formattedValue);
+                    }}
+                    inputMode="tel"
+                    maxLength={13} // Adjusted maxLength to account for "-" characters
+                    required
+                    className='mb-1 p-1.5 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm' />
+                  <br />
+                  <select
+                    name="car-brand"
+                    id="car-brand"
+                    value={carBrand}
+                    onChange={(e) => {
+                      setCarBrand(e.target.value)
+                    }}
+                    onClick={(e) => {
+                      setCarBrandFlag('true')
+                      setCarBrand(e.target.value)
+                      setCarModel(document.getElementById('car-model').value)
+                      setCarYear(document.getElementById('car-year').value)
+                    }}
+                    required
+                    className='mb-1 p-2 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm'
+                  >
+                    <option value="">Car Brand</option>
+                  </select>
+                  <br />
+                  <select name="car-model"
+                    id="car-model"
+                    value={carModel}
+                    onChange={(e) => { setCarModel(e.target.value) }}
+                    onClick={(e) => {
+                      setCarModel(e.target.value)
+                      setCarYear(document.getElementById('car-year').value)
+                    }}
+                    required
+                    className='mb-1 p-2 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm'
+                  >
+                    <option value="">Car Model</option>
+                  </select>
+                  <br />
+                  <select name="car-year"
+                    id="car-year"
+                    value={carYear}
+                    onChange={(e) => {
+                      setCarYear(e.target.value)
                     }
-                    // console.log(formattedValue)
-                    setPhone(formattedValue);
-                  }}
-                  inputMode="tel"
-                  maxLength={13} // Adjusted maxLength to account for "-" characters
-                  required
-                  className='mb-1 p-1.5 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm' />
-                <br />
-                <select
-                  name="car-brand"
-                  id="car-brand"
-                  value={carBrand}
-                  onChange={(e) => {
-                    setCarBrand(e.target.value)
-                  }}
-                  onClick={(e) => {
-                    setCarBrandFlag('true')
-                    setCarBrand(e.target.value)
-                    setCarModel(document.getElementById('car-model').value)
-                    setCarYear(document.getElementById('car-year').value)
-                  }}
-                  required
-                  className='mb-1 p-2 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm'
-                >
-                  <option value="">Car Brand</option>
-                </select>
-                <br />
-                <select name="car-model"
-                  id="car-model"
-                  value={carModel}
-                  onChange={(e) => { setCarModel(e.target.value) }}
-                  onClick={(e) => {
-                    setCarModel(e.target.value)
-                    setCarYear(document.getElementById('car-year').value)
-                  }}
-                  required
-                  className='mb-1 p-2 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm'
-                >
-                  <option value="">Car Model</option>
-                </select>
-                <br />
-                <select name="car-year"
-                  id="car-year"
-                  value={carYear}
-                  onChange={(e) => {
-                    setCarYear(e.target.value)
-                  }
-                  }
-                  onClick={(e) => setCarYear(e.target.value)}
-                  required
-                  className='mb-1 p-2 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm'
-                >
-                  <option value="">Car Year</option>
-                </select>
-                <br />
-                <input type="email"
-                  name="email"
-                  id="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  inputMode='email'
-                  required
-                  className='mb-1 p-1.5 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm'
-                />
-                <br />
-                <div className="inline-flex">
-                  <input
-                    type={type}
-                    name='password'
-                    autoComplete="current-password"
-                    id="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    inputMode='text'
+                    }
+                    onClick={(e) => setCarYear(e.target.value)}
+                    required
+                    className='mb-1 p-2 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm'
+                  >
+                    <option value="">Car Year</option>
+                  </select>
+                  <br />
+                  <input type="email"
+                    name="email"
+                    id="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    inputMode='email'
                     required
                     className='mb-1 p-1.5 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm'
+                  />
+                  <br />
+                  <div className="inline-flex">
+                    <input
+                      type={type}
+                      name='password'
+                      autoComplete="current-password"
+                      id="password"
+                      placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      inputMode='text'
+                      required
+                      className='mb-1 p-1.5 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm'
                     />
-                  <span className="flex justify-around items-center text-[#59888f]" onClick={handleToggle}>
-                    <Icon className="absolute mr-10 -mt-1" icon={icon} size={22} />
-                  </span>
-                </div>
-                <br />
-                <div className="inline-flex">
-                  <input
-                    type={type2}
-                    name='repassword'
-                    autoComplete="current-repassword"
-                    id="repassword"
-                    placeholder="Re-Password"
-                    value={repassword}
-                    onChange={(e) => setRePassword(e.target.value)}
-                    inputMode='text'
-                    required
-                    className='mb-1 p-1.5 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm'
+                    <span className="flex justify-around items-center text-[#59888f]" onClick={handleToggle}>
+                      <Icon className="absolute mr-10 -mt-1" icon={icon} size={22} />
+                    </span>
+                  </div>
+                  <br />
+                  <div className="inline-flex">
+                    <input
+                      type={type2}
+                      name='repassword'
+                      autoComplete="current-repassword"
+                      id="repassword"
+                      placeholder="Re-Password"
+                      value={repassword}
+                      onChange={(e) => setRePassword(e.target.value)}
+                      inputMode='text'
+                      required
+                      className='mb-1 p-1.5 tablet:w-[280px] phone:w-[230px] box-border border text-center rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] border-solid border-[#53f0f3] shadow-[0px_0px_10px_#ccc] hover:border-[#53f0f3] hover:shadow-[0px_0px_20px_#53f0f3] transition-[0.5s] focus:outline-none focus:ring-2 focus:ring-[#53f0f3] focus:ring-opacity-50 text-[#59888f] text-sm'
                     />
-                  <span className="flex justify-around items-center text-[#59888f]" onClick={handleToggle2}>
-                    <Icon className="absolute mr-10 -mt-1" icon={icon2} size={22} />
-                  </span>
+                    <span className="flex justify-around items-center text-[#59888f]" onClick={handleToggle2}>
+                      <Icon className="absolute mr-10 -mt-1" icon={icon2} size={22} />
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="phone:block phone:mx-auto phone:my-auto tablet:inline-block tablet:w-auto tablet:m-[0%]">
-              <input type="submit" defaultValue="Signup" className='bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)] text-center uppercase transition-[0.5s] bg-[200%_auto] border-none text-[white] shadow-[0_0_20px_#eee] cursor-pointer rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center] p-3 phone:flex phone:mx-auto phone:w-22 tablet:flex-auto tablet:w-[100px] tablet:m-2.5' />
-              <p className='tablet:inline tablet:m-0 text-center text-[#59888f] not-italic text-[medium]'>
-                Already have account?<a href="./login" className='text-base no-underline text-[#59888f] hover:text-[#71cbdb]'><b>Login</b></a>
-              </p>
-            </div>
-          </form >
-        </div >
-      </div>
+              <div className='text-center'>
+                <input type="submit" defaultValue="Signup" className='bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)] text-center uppercase transition-[0.5s] bg-[200%_auto] border-none text-[white] shadow-[0_0_20px_#eee] cursor-pointer rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center] p-3 phone:flex phone:mx-auto phone:w-22 tablet:flex-auto tablet:w-[100px] tablet:m-2.5' />
+              </div>
+              <div className="text-center">
+                <p className='tablet:inline tablet:m-0 text-center text-[#000000] not-italic text-[medium]'>
+                  Already have account?<a href="./login" className='text-base no-underline text-[#1e00ff] hover:text-[#01a2ec]'><b>Login</b></a>
+                </p>
+              </div>
 
-      <ToastContainer />
-    </>
+            </form >
+          </div >
+        </div>
+
+        <ToastContainer />
+      </div>
+    </div>
   )
 }
 

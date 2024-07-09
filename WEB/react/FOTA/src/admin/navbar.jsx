@@ -52,7 +52,7 @@ const navbar = () => {
                 });
         });
     }
-
+    document.getElementsByTagName('body')[0].style='background-color: #ceeff4; overflow: auto;'
 
 
     return (

@@ -1,12 +1,13 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
 @tailwind utilities;
+ */
 
-
-body {
-  @apply bg-[#ceeff4];
+/* body { */
+  /* @apply bg-[#ceeff4]; */
+  /* @apply bg-[url('https://johan22.sirv.com/Designer%20(3_1).jpeg')] bg-no-repeat bg-cover; */
   /* font-family: Arial, sans-serif; */
-}
+/* } */
 
 /* body{
   background-color: #ceeff4;

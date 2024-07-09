@@ -9,6 +9,8 @@ import { eye } from 'react-icons-kit/feather/eye';
 // import gif from './assets/email.gif'
 
 function ResetPassword() {
+    document.getElementsByTagName('body')[0].style='background-color: #ceeff4; overflow: auto;'
+
     const backendUrl = import.meta.env.VITE_URL;
     // const [resendCode, setResendCode] = useState(false);
     const [password, setPassword] = useState('');

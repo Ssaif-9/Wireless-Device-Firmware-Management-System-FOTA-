@@ -7,7 +7,41 @@ const s3 = new AWS.S3({
     accessKeyId: 'eng.yohannaayad@gmail.com',
     secretAccessKey: 'ubN04RjElrQUQqUBvDiBZzmczrkiqG1Q0lHooqyAh2FNHy4m',
     s3ForcePathStyle: true, // required for non-AWS S3 endpoints
-    signatureVersion: 'v4'
+    signatureVersion: 'v4',
+    region: 'us-west-2',
+    apiVersion: '2006-03-01',
+    sslEnabled: true,
+    httpOptions: {
+        timeout: 0,
+        agent: false,
+    },
+    maxRetries: 3,
+    retryDelayOptions: {
+        base: 1000,
+    },
+    s3BucketEndpoint: true,
+    s3DisableBodySigning: false,
+    s3UseArnRegion: false,
+    computeChecksums: true,
+    convertResponseTypes: true,
+    correctClockSkew: true,
+    customUserAgent: '',
+    dynamoDbCrc32: true,
+    systemClockOffset: 0,
+    Statement: [
+        {
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::johan22/*"
+            ]
+        }
+    ]
 });
 
 const bucketName = 'johan22';
@@ -34,14 +68,15 @@ const Sirv = {
     replaceImage: async (oldImageUrl, newImage) => {
         try {
             const oldImageName = oldImageUrl.split('/').pop();
-
+            console.log(oldImageName)
             // Delete the existing image
             const deleteParams = {
                 Bucket: bucketName,
                 Key: oldImageName,
             };
-
+            console.log(deleteParams)
             await s3.deleteObject(deleteParams).promise();
+            console.log('deleted')
             // Upload the new image
             const uuid = uuidv4();
             const uploadParams = {
@@ -53,7 +88,7 @@ const Sirv = {
             };
 
             const uploadResult = await s3.upload(uploadParams).promise();
-
+            console.log(uploadResult)
             // Return the reference link of the new image
             return uploadResult.Location;
         } catch (error) {
@@ -64,4 +99,3 @@ const Sirv = {
 };
 
 module.exports = Sirv;
-

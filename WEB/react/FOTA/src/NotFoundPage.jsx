@@ -4,6 +4,8 @@ import notFoundimage from './assets/notfound.svg';
 
 
 const NotFoundPage = () => {
+    document.getElementsByTagName('body')[0].style='background-color: #ceeff4; overflow: auto;'
+
     return (
         <>
             <div className="w-full h-screen flex items-center justify-center">

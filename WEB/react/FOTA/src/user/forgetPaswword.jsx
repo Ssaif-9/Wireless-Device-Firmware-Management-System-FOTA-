@@ -5,6 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 // import gif from './assets/email.gif'
 
 function ForgetPassword() {
+    document.getElementsByTagName('body')[0].style='background-color: #ceeff4; overflow: auto;'
+
     const backendUrl = import.meta.env.VITE_URL;
     const [email, setEmail] = useState('');
     const emailRef = useRef();

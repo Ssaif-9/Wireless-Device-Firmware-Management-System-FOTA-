@@ -11,6 +11,8 @@ import About from './user/about';
 import LiveDiagnosticsUser from './user/liveDiagnosticsUser';
 import NotFoundPage from './NotFoundPage';
 
+import './index.css'
+
 
 import AdminHome from './admin/addNews';
 import AddUpdate from './admin/addUpdate';

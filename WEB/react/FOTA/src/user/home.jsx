@@ -5,6 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 // import { Link } from 'react-router-dom';
 import InitialImage from '../assets/latest-news.jpg'
 import NavBar from './navbar'
+
+
 // import Sidebar from "react-sidebar";
 
 
@@ -85,7 +87,7 @@ const Home = () => {
     }, [])
 
     return (
-        <>
+        <div>
             {showLabel && <NavBar />}
             <div className='tablet:m-1 tablet:p-2 phone:m-5 phone:p-2'>
                 {/* <h1 className="font-bold text-3xl">{title}</h1> */}
@@ -100,7 +102,7 @@ const Home = () => {
             </div>
             {/* </Sidebar > */}
             <ToastContainer />
-        </>
+        </div>
     )
 }
 

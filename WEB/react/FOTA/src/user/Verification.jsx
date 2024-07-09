@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import gif from '../assets/email.gif'
 
 function OtpInput() {
+    document.getElementsByTagName('body')[0].style='background-color: #ceeff4; overflow: auto;'
 
     if (!localStorage.getItem('user')) {
         window.location.href = '/signup';
