@@ -409,7 +409,7 @@ function SignUpPage() {
               className='phone:w-[250px] tablet:w-auto tablet:max-w-[380px] tablet:my-auto mx-auto'
             />
           </div> */}
-            <h1 id='h1' className='phone:block phone:text-center phone:mx-auto phone:my-0 text-[#000000] text-2xl text-center'>Hello</h1>
+            {/* <h1 id='h1' className='phone:block phone:text-center phone:mx-auto phone:my-0 text-[#000000] text-2xl text-center'>Hello</h1> */}
 
             <form onSubmit={handleSignUp}>
               <div className='flex justify-between'>
