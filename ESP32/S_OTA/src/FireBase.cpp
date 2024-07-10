@@ -32,7 +32,6 @@ unsigned long sendDataPrevMillis = 0;
 
 unsigned long setDataPrevMillis = 0;
 
-
 String UpdateInfo;
 
 bool signupOK = false;
@@ -148,13 +147,13 @@ void Server_Download(const char *file,const char *ESP_File)
   taskCompleted = false;
 }
 
-void Set_ErrorID(int ErrorID) 
+void Set_ErrorID(const char* RTDB_Path, int ErrorID) 
 {
     // Ensure Firebase is ready, signup is successful, and the timing condition is met
     if (Firebase.ready()) 
     {
       // Set the ErrorID value in the database
-      if (Firebase.RTDB.setInt(&fbdo, "/alfa-romeo/146/2017/ErrorInfo", ErrorID))
+      if (Firebase.RTDB.setInt(&fbdo, RTDB_Path, ErrorID))
       {
         // Successfully set the ErrorID value
         debugln("ErrorID set successfully.");
@@ -168,7 +167,7 @@ void Set_ErrorID(int ErrorID)
     }
 }
 
-int Version_Recieve(void)
+int Version_Recieve(const char* RTDB_Path)
 {
   Global_App1CarVersion=EEPROM.readInt(lastApp1Address);
   Global_App2CarVersion=EEPROM.readInt(lastApp2Address);
@@ -176,7 +175,7 @@ int Version_Recieve(void)
     {
         sendDataPrevMillis = millis();
         
-        if (Firebase.RTDB.getString(&fbdo, "/alfa-romeo/146/2017/UpdateInfo"))
+        if (Firebase.RTDB.getString(&fbdo, RTDB_Path))
         {
             if (fbdo.dataType() == "String")
             {
@@ -217,16 +216,16 @@ int Version_Recieve(void)
 
 
 
-void UpdateCheck(void)
+void UpdateCheck(const char* RTDB_Path)
 {
-  Version_Recieve();
+  Version_Recieve(RTDB_Path);
   LEDUpdateFlag(InitioalStatue);
 
   if (1 == Target)
   {
     if (Global_App1CarVersion == Global_App1ServerVersion)
     {
-      Global_App1ServerVersion = Version_Recieve();
+      Global_App1ServerVersion = Version_Recieve(RTDB_Path);
     }
     else if (Global_App1ServerVersion > Global_App1CarVersion)
     {
@@ -238,7 +237,7 @@ void UpdateCheck(void)
     }
     else if (Global_App1ServerVersion < Global_App1CarVersion)
     {
-        Global_App1ServerVersion = Version_Recieve();
+        Global_App1ServerVersion = Version_Recieve(RTDB_Path);
     }
   }
 
@@ -246,7 +245,7 @@ void UpdateCheck(void)
     {
         if (Global_App2CarVersion == Global_App2ServerVersion)
     {
-      Global_App2ServerVersion = Version_Recieve();
+      Global_App2ServerVersion = Version_Recieve(RTDB_Path);
     }
     else if (Global_App2ServerVersion > Global_App2CarVersion)
     {
@@ -258,14 +257,14 @@ void UpdateCheck(void)
     }
     else if (Global_App2ServerVersion < Global_App2CarVersion)
     {
-        Global_App2ServerVersion = Version_Recieve();
+        Global_App2ServerVersion = Version_Recieve(RTDB_Path);
     }
   }
 
     if (Target != 0 && Target != 1 && Target != 2)
     {
         debugln("Target not valid");
-        Version_Recieve();
+        Version_Recieve(RTDB_Path);
     }
 }
 

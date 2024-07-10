@@ -12,6 +12,8 @@
 const char *OEM_HMAC = "alfa-romeo/146/2017/digest.hex";             //hmac
 const char *OEM_CIPHER = "alfa-romeo/146/2017/cipher.hex";           //cipher
 
+const char *RealtimeDatabase_UpdateInfo = "/alfa-romeo/146/2017/UpdateInfo";
+const char *RealtimeDatabase_ErrorInfo = "/alfa-romeo/146/2017/ErrorInfo";
 
 const char *OEM_HEX_file = "/OEM_HEX.hex";                       //test
 
@@ -39,7 +41,7 @@ void setup()
 
 void loop()
 {
-  UpdateCheck();
+  UpdateCheck(RealtimeDatabase_UpdateInfo);
 
   if (Serial2.available())
   {
@@ -74,13 +76,13 @@ void loop()
         {
           SendFile(ESP_HEX_file);
           LEDUpdateFlag(FilesSecure);
-          Set_ErrorID(ALLRight);
+          Set_ErrorID(RealtimeDatabase_ErrorInfo,ALLRight);
 
         }
       else
         {
           LEDUpdateFlag(FilesNotSecure);
-          Set_ErrorID(FileNotSecure);
+          Set_ErrorID(RealtimeDatabase_ErrorInfo,FileNotSecure);
         }
       
       /**********************************************************/
