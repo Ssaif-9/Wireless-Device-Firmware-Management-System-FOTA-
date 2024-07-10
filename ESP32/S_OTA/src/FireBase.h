@@ -5,11 +5,11 @@
 
 //Define the WiFi credentials
 
-//#define WIFI_SSID                      "Saif_sultan"    
-//#define WIFI_PASSWORD                  "12345678s"      
+#define WIFI_SSID                      "Saif_sultan"    
+#define WIFI_PASSWORD                  "12345678s"      
 
-#define WIFI_SSID                         "TE DATA"
-#define WIFI_PASSWORD                     "S9S26#s25s1"
+//#define WIFI_SSID                         "TE DATA"
+//#define WIFI_PASSWORD                     "S9S26#s25s1"
 
 //#define WIFI_SSID                      "Radwa’s iPhone"    
 //#define WIFI_PASSWORD                  "radwa15042001"      
@@ -33,6 +33,8 @@
 
 extern int Target;
 
+
+
 #define EEPROM_SIZE 64 
 
 #define lastApp1Address  0  // Address for Last_APP1Notification in EEPROM
@@ -40,7 +42,7 @@ extern int Target;
 
 //Error List 
 #define ALLRight                       0
-#define FileNotSecure                  1 
+#define FileNotSecure                  1
 
 
 //Function to connect to Wifi
@@ -52,12 +54,12 @@ void Server_Connect(void);
 //Function to download file from server
 void Server_Download(const char *file, const char *ESP_File);
 
-void Set_ErrorID(int ErrorID);
+void Set_ErrorID(const char *RTDB_Path, int ErrorID);
 
-int Version_Recieve(void); 
+int Version_Recieve(const char *RTDB_Path);
 
 //Function to Check Version Update (Between Server and Car)
-void UpdateCheck(void);
+void UpdateCheck(const char *RTDB_Path);
 
 void EEPROM_SETUP(void);
 void storeinEEPROM(int address, int value);

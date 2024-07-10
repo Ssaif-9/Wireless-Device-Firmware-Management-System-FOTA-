@@ -15,9 +15,9 @@
 
 
 const int ConnectionLed = 2;
-const int NotificationLed=23;
-const int AcceptionModeLed=18;
-const int RejectionModeLed=19;
+const int NotificationLed=26;
+const int AcceptionModeLed=12;
+const int RejectionModeLed=27;
 
 void LED_SetUP(void);
 
