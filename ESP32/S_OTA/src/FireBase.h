@@ -5,14 +5,17 @@
 
 //Define the WiFi credentials
 
-#define WIFI_SSID                      "Saif_sultan"    
-#define WIFI_PASSWORD                  "12345678s"      
+//#define WIFI_SSID                      "Saif_sultan"    
+//#define WIFI_PASSWORD                  "12345678s"      
 
 //#define WIFI_SSID                         "TE DATA"
 //#define WIFI_PASSWORD                     "S9S26#s25s1"
 
 //#define WIFI_SSID                      "Radwa’s iPhone"    
 //#define WIFI_PASSWORD                  "radwa15042001"      
+
+#define WIFI_SSID                      "Akram"    
+#define WIFI_PASSWORD                  "2SX&^+Df3#u%4Q7@"  
 
 //Define the API Key
 #define API_KEY                         "AIzaSyByr95Y2uu7mzTcsndzJniOJNKR5Hm8LwM"
@@ -25,7 +28,7 @@
 //Define the Firebase storage bucket ID e.g bucket-name.appspot.com
 #define STORAGE_BUCKET_ID               "fota-4ca08.appspot.com"
 
-#define BAUD_RATE                       9600
+#define BAUD_RATE                       115200
 #define RXD2                            16
 #define TXD2                            17
 

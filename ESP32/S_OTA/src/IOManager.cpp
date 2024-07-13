@@ -70,15 +70,15 @@ void SendFile(const char * path)
         return;
     }
 
-    Transmit(Target);
+    Transmit("1");
     debug("- Target ID : ");
     debugln(Target);
     delay(150);
 
-    Transmit(file.size());
-    debug("- Size of File: ");
-    debugln(file.size());
-    delay(150);
+    //Transmit(file.size());
+    //debug("- Size of File: ");
+    //debugln(file.size());
+    //delay(150);
 
     debugln("- read from file:");
 
@@ -86,7 +86,6 @@ void SendFile(const char * path)
     {
         char SingleByte;
         Acknowledge = '0';
-    
         while (!(Serial2.available()));
 
         Acknowledge = Receive();                //Receive Acknowledge
@@ -100,9 +99,8 @@ void SendFile(const char * path)
                 Transmit(SingleByte);            // Send Byte By Byte 
                 SendSize++;
                 debug(SingleByte);
-                delay(1);
+                delay(35);
             } while (SingleByte != '\n');
-
             if (SendSize == file.size())
             {
                 LEDUpdateFlag(ALLDone);
