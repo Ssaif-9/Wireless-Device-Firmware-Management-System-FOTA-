@@ -3,45 +3,10 @@ const { v4: uuidv4 } = require('uuid');
 
 // Configure the AWS SDK with your S3 details
 const s3 = new AWS.S3({
-    endpoint: 'https://s3.sirv.com',
-    accessKeyId: 'eng.yohannaayad@gmail.com',
-    secretAccessKey: 'ubN04RjElrQUQqUBvDiBZzmczrkiqG1Q0lHooqyAh2FNHy4m',
+    endpoint: process.env.SIRV_ENDPOINT,
+    accessKeyId: process.env.SIRV_ACCESSKEYID,
+    secretAccessKey: process.env.SIRV_SECRETACCESSKEY,
     s3ForcePathStyle: true, // required for non-AWS S3 endpoints
-    signatureVersion: 'v4',
-    region: 'us-west-2',
-    apiVersion: '2006-03-01',
-    sslEnabled: true,
-    httpOptions: {
-        timeout: 0,
-        agent: false,
-    },
-    maxRetries: 3,
-    retryDelayOptions: {
-        base: 1000,
-    },
-    s3BucketEndpoint: true,
-    s3DisableBodySigning: false,
-    s3UseArnRegion: false,
-    computeChecksums: true,
-    convertResponseTypes: true,
-    correctClockSkew: true,
-    customUserAgent: '',
-    dynamoDbCrc32: true,
-    systemClockOffset: 0,
-    Statement: [
-        {
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": [
-                "s3:GetObject",
-                "s3:PutObject",
-                "s3:DeleteObject"
-            ],
-            "Resource": [
-                "arn:aws:s3:::johan22/*"
-            ]
-        }
-    ]
 });
 
 const bucketName = 'johan22';
@@ -59,7 +24,7 @@ const Sirv = {
             };
 
             const uploadResult = await s3.upload(params).promise();
-            return uploadResult.Location;
+            return 'https://johan22.sirv.com/' + uuid;
         } catch (e) {
             console.error(e);
             throw new Error('Failed to upload image');
@@ -89,8 +54,9 @@ const Sirv = {
 
             const uploadResult = await s3.upload(uploadParams).promise();
             console.log(uploadResult)
+            return 'https://johan22.sirv.com/' + uuid;
             // Return the reference link of the new image
-            return uploadResult.Location;
+            // return uploadResult.Location;
         } catch (error) {
             console.error(error);
             throw new Error('Failed to replace image');
