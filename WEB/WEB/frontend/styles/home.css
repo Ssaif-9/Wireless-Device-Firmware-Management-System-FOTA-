@@ -1,0 +1,104 @@
+body{
+    background-color: #ceeff4;
+    font-family: Arial, sans-serif;
+}
+nav{
+    background-color: #f2f2f2;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+nav ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+}
+nav ul li a{
+    text-decoration: none;
+    color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    transition: 0.3s;
+}
+nav ul li a:hover{
+    background-color: #7bbec8;
+}
+
+
+.notification{
+    display: block;
+    float: right;
+
+    max-height: fit-content;
+    min-height: fit-content;
+    min-width: auto ;
+    max-width: 280px;
+    background-color: #f2f2f2;
+    margin-right: 100px;
+    /* border-radius: 10px; */
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-top: -10px;
+    overflow: auto;
+    transition: 0.3s;
+    /* position: absolute; */
+    /* right: 100px; */
+    /* z-index: 100; */
+}
+
+.notification ul{
+    list-style: none;
+    padding: 10px;
+    margin: 20px;
+    display: block;
+    /* justify-content: space-between; */
+    border: 1px solid #393939;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: auto;
+
+    /* overflow: auto; */
+}
+.notification li{
+    /* margin: 5px; */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #7bbec8;
+    color: #fff;
+    transition: 0.3s;
+    display: flex;
+}
+.message{   
+    float: left;
+}
+.button{
+    float: right; 
+    align-items: center;  
+    margin-top: 30%;
+}
+.button button{
+    background-color: #7bbec8;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    transition: 0.3s;
+}
+.button button:hover{
+    background-color: #f2f2f2;
+    color: #7bbec8;
+}
+

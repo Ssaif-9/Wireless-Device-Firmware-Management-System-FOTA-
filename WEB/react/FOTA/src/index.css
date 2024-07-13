@@ -1,0 +1,20 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  /* @apply bg-[#ceeff4]; */
+  background-color: black;
+  /* background-color: #ceeff4; */
+  overflow: hidden;
+}
+
+#h1{
+  font-variant: small-caps;
+  font-size: 2em;
+  text-align: center;
+  /* font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; */
+  font-family: cursive;
+  font-style: italic;
+}

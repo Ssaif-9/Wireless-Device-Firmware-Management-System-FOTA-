@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owned Cars</title>
+    <link rel="stylesheet" href="./styles/owned_cars.css">
+</head>
+<script src="./js/auth.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<body onload="{displayOwnedCars(), car_brand()}" class="font-arial text-lg m-2">
+    <div class="p-2 m-1">
+        <nav>
+            <ul class="nav_bar">
+                <li><a href="./home.html">Home</a></li>
+                <li><a href="./owned_cars.html">Owned Cars</a></li>
+                <li><a href="./profile.html">Profile</a></li>
+                <li><a href="./about.html">About</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./notifications.html">Notifications</a></li>
+                <li onclick="logout()"><a href="./login.html">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div>
+        <div class="head">
+            <h2>Owned Cars</h2>
+            <div>
+                <button class="button" id="button" onclick="toggleAddMode()">Add Car</button>
+                <button class="button" id="removeBtn" onclick="toggleRemoveMode()">Remove Car</button>
+            </div>
+        </div>
+        <table id="carList">
+            <tr>
+                <th>Car Brand</th>
+                <th>Car Model</th>
+                <th>Car Year</th>
+            </tr>
+        </table>
+    </div>
+    <div class="popup-addCar" id="popup-addCar">
+        <div class="labels">
+            <label for="car-brand">Car Brand:</label>
+            <label for="car-model">Car Model:</label>
+            <label for="car-year">Car Year:</label>
+        </div>
+        <div class="inputs">
+            <select name="car-brand" id="car-brand" onclick="{car_brand()}" onkeydown="car_brand()"></select>
+            <br>
+            <select name="car-model" id="car-model" onchange="{car_year()}"></select>
+            <br>
+            <select name="car-year" id="car-year"></select>
+            <br>
+        </div>
+        <div class="add-button">
+            <span id="error_show"></span>
+            <input type="submit" value="Add" onclick="addCar()">
+        </div>
+    </div>
+    <script src="./js/owned_cars.js"></script>
+</body>
+</html>

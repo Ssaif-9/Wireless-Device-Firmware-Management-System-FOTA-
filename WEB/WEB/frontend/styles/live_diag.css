@@ -1,0 +1,114 @@
+body {
+    background-color: #ceeff4;
+    font-family: Arial, sans-serif;
+  }
+  /* nav {
+    background-color: #f2f2f2;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  nav ul li a {
+    text-decoration: none;
+    color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    transition: 0.3s;
+  }
+  nav ul li a:hover {
+    background-color: #7bbec8;
+  } */
+  .admin-body{
+    border-radius: 10px;
+    width: 700px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0px 0px 10px #ccc;
+}
+  .labels{
+    float: left;
+    font-family: sans-serif;
+    font-style: normal;
+    font-size: large;
+}
+.labels label{
+    display: block;   
+    color: #59888f;
+    margin: 10%;
+    margin-bottom: 20%;
+        
+}
+.inputs{
+    float: inline-end;
+    margin-right: 10%;
+    margin-top: 2px;
+}
+
+.inputs input,select{
+    border-style: solid;
+    border-color: #53f0f3;
+    border-radius: 10px;
+    box-sizing: border-box;
+    width: 280px;
+    margin-bottom: 4px;
+    padding: 8px;
+    border: 1px ridge #53f0f3;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    text-align: center;
+}
+select:hover{
+    background-color: #f2f2f2;
+}
+select:focus{
+    background-color: #f2f2f2;
+    outline: none;
+}
+select:focus-visible{
+    background-color: #aaeffa;
+    outline: none;
+}
+.upload-button{
+    display: inline-block;
+    width: auto;
+    /* margin: 0%; */
+    margin-inline: 40%;
+    margin-inline-end: 60%;
+    
+}
+input[type="submit"]{
+    background-image: linear-gradient(to right, #6cd4e4 0%, #c2e9fb 51%, #51cfe2 100%);                width: 12%;
+    flex: 1 1 auto;
+    margin: 10px;
+    padding: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    cursor: pointer;
+    width: 130px;
+    /* display: inline-flex; */
+}
+input[type="submit"]:hover {
+    background-position: right center; /* change the direction of the change here */            }
