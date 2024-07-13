@@ -1,0 +1,9 @@
+2024-03-11 19:54:33,089 - DEBUG - can config: {'bitrate': 500000, 'interface': 'socketcan', 'channel': 'can0'}
+2024-03-11 19:54:33,089 - ERROR - socket.CMSG_SPACE not available on this platform
+2024-03-11 19:54:33,121 - WARNING - SocketcanBus was not properly shut down
+2024-04-29 13:58:22,148 - DEBUG - can config: {'bitrate': 500000, 'interface': 'socketcan', 'channel': 'can0'}
+2024-04-29 13:58:22,154 - ERROR - socket.CMSG_SPACE not available on this platform
+2024-04-29 13:58:22,219 - WARNING - SocketcanBus was not properly shut down
+2024-04-29 13:59:47,714 - DEBUG - can config: {'bitrate': 500000, 'interface': 'socketcan', 'channel': 'can0'}
+2024-04-29 13:59:47,718 - ERROR - socket.CMSG_SPACE not available on this platform
+2024-04-29 13:59:47,743 - WARNING - SocketcanBus was not properly shut down

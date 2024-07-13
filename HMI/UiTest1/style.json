@@ -1,0 +1,315 @@
+{
+  "QMainWindow": [
+    {
+      "tittle": "Custom window",
+      "frameless": true,
+      "transluscentBg": true,
+      "navigation": [
+        {
+          "minimize": "minimizeBtn",
+          "close": "closeBtn",
+          "restore": [
+            {
+              "buttonName": "restoreBtn",
+              "normalIcon": "D:/UITest/UiTest1/Icons/square.svg",
+              "maximizedIcon": "D:/UITest/UiTest1/Icons/copy.svg"
+            }
+          ],
+          "moveWindow": "headerContainer",
+          "tittleBar": "headerContainer"
+        }
+      ]
+    }
+  ],
+  "QCustomSlideMenu": [
+    {
+      "name": "CenterMenuContainer",
+      "defaultSize": [
+        {
+          "width": 0,
+          "height": "parent"
+        }
+      ],
+      "collapsedSize": [
+        {
+          "width": 0,
+          "height": "parent"
+        }
+      ],
+      "expandedSize": [
+        {
+          "width": 200,
+          "height": "parent"
+        }
+      ],
+      "menuTransitionAnimation": [
+        {
+          "animationDuration": 500,
+          "animationEasingCurve": "Linear",
+          "whenCollapsing": [
+            {
+              "animationDuration": 500,
+              "animationEasingCurve": "Linear"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rightMenuContainer",
+      "defaultSize": [
+        {
+          "width": 0,
+          "height": "parent"
+        }
+      ],
+      "collapsedSize": [
+        {
+          "width": 0,
+          "height": "parent"
+        }
+      ],
+      "expandedSize": [
+        {
+          "width": 200,
+          "height": "parent"
+        }
+      ],
+      "menuTransitionAnimation": [
+        {
+          "animationDuration": 500,
+          "animationEasingCurve": "Linear",
+          "whenCollapsing": [
+            {
+              "animationDuration": 500,
+              "animationEasingCurve": "Linear"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "CriticalModeNotification",
+      "defaultSize": [
+        {
+          "width":0,
+          "height":"parent"
+        }
+      ],
+      "collapsedSize": [
+        {
+          "width":0,
+          "height": "parent"
+        }
+      ],
+      "expandedSize" : [
+        {
+          "width" : 500,
+          "height" : 100
+        }
+      ],
+      "menuTransitionAnimation": [
+        {
+          "animationDuration":500,
+          "animationEasingCurve" : "Linear",
+          "whenCollapsing":[
+            {
+              "animationDuration":500,
+              "animationEasingCurve":"Linear"
+            }
+          ],
+          "floatPosition": [
+            {
+              "relativeTo":"centralwidget",
+              "position":"center-center",
+              "shadow":[
+                {
+                  "color":"#000",
+                  "blurRadius":20,
+                  "xOffset":0,
+                  "yOffset":0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "DownloadingNotification",
+      "defaultSize": [
+        {
+          "width":0,
+          "height":"parent"
+        }
+      ],
+      "collapsedSize": [
+        {
+          "width":0,
+          "height": "parent"
+        }
+      ],
+      "expandedSize" : [
+        {
+          "width" : 500,
+          "height" : 100
+        }
+      ],
+      "menuTransitionAnimation": [
+        {
+          "animationDuration":500,
+          "animationEasingCurve" : "Linear",
+          "whenCollapsing":[
+            {
+              "animationDuration":500,
+              "animationEasingCurve":"Linear"
+            }
+          ],
+          "floatPosition": [
+            {
+              "relativeTo":"centralwidget",
+              "position":"center-center",
+              "shadow":[
+                {
+                  "color":"#000",
+                  "blurRadius":20,
+                  "xOffset":0,
+                  "yOffset":0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "popupNotificationContainer",
+      "defaultSize": [
+        {
+          "width": 0,
+          "height": "parent"
+        }
+      ],
+      "collapsedSize": [
+        {
+          "width": 0,
+          "height": "parent"
+        }
+      ],
+      "expandedSize": [
+        {
+          "width": 500,
+          "height": 100
+        }
+      ],
+      "menuTransitionAnimation": [
+        {
+          "animationDuration": 500,
+          "animationEasingCurve": "Linear",
+          "whenCollapsing": [
+            {
+              "animationDuration": 500,
+              "animationEasingCurve": "Linear"
+            }
+          ],
+      "floatPosition": [
+        {
+          "relativeTo": "centralwidget",
+          "position": "center-center",
+          "shadow":[
+            {
+              "color": "#000",
+              "blurRadius": 20,
+              "xOffset": 0,
+              "yOffset": 0
+          }
+        ]
+      }
+    ]
+        }
+
+      ]
+    }
+  ],
+  "QCustomQStackedWidget":[
+    {
+      "name":"MainPages",
+      "navigation":[
+        {
+          "navigationButtons":[
+            {
+              "Home": "HomePage",
+              "DataAnalysis": "DataAnalysisPage",
+              "Reports": "ReportsPage"
+            }
+          ]
+        }
+      ]
+  
+    },
+    {
+      "name":"RightPages",
+      "navigation":[
+        {
+          "navigationButtons":[
+            {
+              "ProfileBtn": "ProfilePage",
+              "moreMenuBtn": "MorePage"
+            }
+          ]
+        }
+      ]
+  
+    },
+    {
+      "name":"LeftPages",
+      "navigation":[
+        {
+          "navigationButtons":[
+            {
+              "Settings": "SettingsPage",
+              "Information": "InfoPage",
+              "Help":"HelpPage"
+            }
+          ]
+        }
+      ]
+  
+    }
+  ],
+  "QPushButtonGroup": [
+    {
+    "Buttons": [
+      "Home",
+      "DataAnalysis",
+      "Reports"
+    ],
+    "Style":[{
+      "Active": "background-color: #76ABAE;",
+      "NotActive": ""
+    }]
+  },
+    {
+    "Buttons": [
+      "Settings",
+      "Information",
+      "Help"
+    ],
+    "Style":[{
+      "Active": "background-color: #76ABAE;",
+      "NotActive": ""
+    }]
+  },
+    {
+    "Buttons": [
+      "ProfileBtn",
+      "DataAnalysis",
+      "Reports"
+    ],
+    "Style":[{
+      "Active": "background-color: #76ABAE;",
+      "NotActive": ""
+    }]
+  }
+]
+}
