@@ -72,8 +72,10 @@ String decryptString(String cipherText, const char * key) {
         buffer += cipherText[j];
       }
       decipheredTextString += decryptBuffer(buffer, key);
+
       buffer = "";
   }
+    decipheredTextString = decipheredTextString + '\n';
 
   return decipheredTextString;
 }
