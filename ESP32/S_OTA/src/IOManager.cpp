@@ -70,15 +70,10 @@ void SendFile(const char * path)
         return;
     }
 
-    Transmit("1");
+    Transmit(Target);
     debug("- Target ID : ");
     debugln(Target);
     delay(150);
-
-    //Transmit(file.size());
-    //debug("- Size of File: ");
-    //debugln(file.size());
-    //delay(150);
 
     debugln("- read from file:");
 
@@ -99,7 +94,6 @@ void SendFile(const char * path)
                 Transmit(SingleByte);            // Send Byte By Byte 
                 SendSize++;
                 debug(SingleByte);
-                delay(35);
             } while (SingleByte != '\n');
             if (SendSize == file.size())
             {
