@@ -2,20 +2,9 @@
 
 
 
-const char *privateCipherKey = "fotaprojectfotaa";
-const char *HMAC_Key = "fotaprojectfotaa";
-/*
-void setKey(char * key) 
-{
-    privateCipherKey = key;
-    HMAC_Key = key;
-}
+const char *privateCipherKey = "";
+const char *HMAC_Key = "";
 
-char * getKey() 
-{
-  return privateCipherKey;
-}
-*/
 void decrypt(unsigned char * cipherText,const char * key, unsigned char * outputBuffer) 
 {
   // encrypt ciphered chipherText buffer of length 16 characters to plain text
@@ -75,7 +64,7 @@ String decryptString(String cipherText, const char * key) {
 
       buffer = "";
   }
-    decipheredTextString = decipheredTextString + '\n';
+    decipheredTextString = decipheredTextString + '\n'; //Check Point 
 
   return decipheredTextString;
 }

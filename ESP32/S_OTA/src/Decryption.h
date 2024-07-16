@@ -11,15 +11,6 @@
 #include "mbedtls/md.h"
 
 
-//#define CIPHER_KEY "fotaprojectfotaa"
-
-// Global variables
-//extern const unsigned char *privateCipherKey;
-//extern const unsigned char *HMAC_Key;
-// Function prototypes
-
-//void setKey(char *key);
-//char *getKey();
 
 void decrypt(unsigned char *cipherText,const char *key, unsigned char *outputBuffer);
 
