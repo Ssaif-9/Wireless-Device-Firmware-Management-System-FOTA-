@@ -1,0 +1,5 @@
+../Core/Inc/2- HAL/06- DC Motor/DC_program.c:11:6:forward	8	static
+../Core/Inc/2- HAL/06- DC Motor/DC_program.c:18:6:backward	8	static
+../Core/Inc/2- HAL/06- DC Motor/DC_program.c:25:6:left	8	static
+../Core/Inc/2- HAL/06- DC Motor/DC_program.c:33:6:right	8	static
+../Core/Inc/2- HAL/06- DC Motor/DC_program.c:42:6:stop	8	static

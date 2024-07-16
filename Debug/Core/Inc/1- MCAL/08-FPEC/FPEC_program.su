@@ -1,0 +1,6 @@
+../Core/Inc/1- MCAL/08-FPEC/FPEC_program.c:19:6:FPEC_voidInit	4	static
+../Core/Inc/1- MCAL/08-FPEC/FPEC_program.c:33:4:FPEC_voidEraseFlashArea	24	static
+../Core/Inc/1- MCAL/08-FPEC/FPEC_program.c:63:6:FPEC_voidEraseFlash	16	static
+../Core/Inc/1- MCAL/08-FPEC/FPEC_program.c:72:4:FPEC_voidFlashPageErase	24	static
+../Core/Inc/1- MCAL/08-FPEC/FPEC_program.c:99:6:FPEC_voidFlashWrite	32	static
+../Core/Inc/1- MCAL/08-FPEC/FPEC_program.c:119:6:MCALFMI_vMassErase_part	16	static

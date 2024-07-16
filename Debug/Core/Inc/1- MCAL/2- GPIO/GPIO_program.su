@@ -1,0 +1,8 @@
+../Core/Inc/1- MCAL/2- GPIO/GPIO_program.c:33:4:MGPIO_u8SetPinDirection	24	static
+../Core/Inc/1- MCAL/2- GPIO/GPIO_program.c:145:4:MGPIO_u8SetPinValue	24	static
+../Core/Inc/1- MCAL/2- GPIO/GPIO_program.c:228:4:MGPIO_u8GetPinValue	24	static
+../Core/Inc/1- MCAL/2- GPIO/GPIO_program.c:269:4:MGPIO_u8SetLowPortDirection	24	static
+../Core/Inc/1- MCAL/2- GPIO/GPIO_program.c:296:4:MGPIO_u8SetHighPortDirection	24	static
+../Core/Inc/1- MCAL/2- GPIO/GPIO_program.c:323:4:MGPIO_u8SetHalfPortValue	24	static
+../Core/Inc/1- MCAL/2- GPIO/GPIO_program.c:390:6:MGPIO_voidSetPortDirection	16	static
+../Core/Inc/1- MCAL/2- GPIO/GPIO_program.c:411:4:MGPIO_u8SetPortValue	24	static
