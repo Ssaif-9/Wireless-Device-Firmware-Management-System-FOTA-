@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavBar from './navbar'
+import { FaBars } from "react-icons/fa";
+import SideNavBar from './sideNavBar';
 
 const About = () => {
 
@@ -26,12 +28,21 @@ const About = () => {
         });
     });
 
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen);
+    };
     return (
         <>
+            {!showLabel && <FaBars
+                className="tablet:text-3xl phone:text-xl cursor-pointer float-left"
+                onClick={toggleSidebar}
+            />}
+            {sidebarOpen && <SideNavBar toggleSidebar={toggleSidebar} />}
             {showLabel && <NavBar />}
             <div className="min-h-screen0 py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl mx-auto">
-                    <h1 className="text-3xl font-bold text-gray-800 mb-8">About Us</h1>
+                    <h1 className="text-3xl font-bold text-gray-800 mb-8 phone:text-center">About Us</h1>
                     <div className="bg-white shadow-sm rounded-lg overflow-hidden">
                         <div className="px-6 py-8">
                             <p className="text-gray-700 leading-relaxed">

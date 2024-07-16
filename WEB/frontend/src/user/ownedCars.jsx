@@ -4,6 +4,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Icon } from 'react-icons-kit';
 import { cross } from 'react-icons-kit/entypo/cross';
 import NavBar from './navbar'
+import { FaBars } from "react-icons/fa";
+import SideNavBar from './sideNavBar';
 
 const OwnedCars = () => {
     const backendUrl = import.meta.env.VITE_URL;
@@ -141,7 +143,7 @@ const OwnedCars = () => {
                     setOwnedCarsFlag(false)
                 })
         }
-    }, [,ownedCarsFlag])
+    }, [, ownedCarsFlag])
 
     const [tableHeader, setTableHeader] = useState(['Car Brand', 'Car Model', 'Car Year'])
     const [tableData, setTableData] = useState([])
@@ -182,7 +184,7 @@ const OwnedCars = () => {
 
 
     const PopupToggleAddCar = () => {
-        if (popupRemoveCar){
+        if (popupRemoveCar) {
             setPopupRemoveCar(!popupRemoveCar)
         }
         setPopupAddCar(!popupAddCar)
@@ -332,22 +334,31 @@ const OwnedCars = () => {
             toast.error(error.message)
         }
     }
-
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen);
+    };
 
     return (
         <>
             <>
+                {!showLabel && <FaBars
+                    className="tablet:text-3xl phone:text-xl cursor-pointer float-left"
+                    onClick={toggleSidebar}
+                />}
+                {sidebarOpen && <SideNavBar toggleSidebar={toggleSidebar} />}
                 {showLabel && <NavBar />}
                 <div className='mx-7 phone:mt-5'>
-                    <div className="flex justify-between items-center">
-                        <h2 className='text-xl'>Owned Cars</h2>
+                    {!showLabel && <h2 className='text-xl text-center'>Owned Cars</h2>}
+                    <div className="flex justify-between phone:justify-center">
+                        {showLabel && <h2 className='text-xl'>Owned Cars</h2>}
                         <div>
-                            <button className={`border-none flex float-right text-center uppercase transition-[0.5s] bg-[200%_auto] text-[white] shadow-[0_0_20px_#eee] cursor-pointer w-auto m-2.5 p-3 rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center] phone:text-sm ${popupAddCar ? "bg-green" :"bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)]"} `} id="button"
+                            <button className={`border-none flex float-right text-center uppercase transition-[0.5s] bg-[200%_auto] text-[white] shadow-[0_0_20px_#eee] cursor-pointer w-auto m-2.5 p-3 rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center] phone:text-sm ${popupAddCar ? "bg-green" : "bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)]"} `} id="button"
                                 onClick={PopupToggleAddCar}
                             >
                                 Add Car
                             </button>
-                            <button className={`border-none flex float-right text-center uppercase transition-[0.5s] bg-[200%_auto] text-[white] shadow-[0_0_20px_#eee] cursor-pointer w-auto m-2.5 p-3 rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center] phone:text-sm ${popupRemoveCar ? "bg-red-600" :"bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)]"} `} id="removeBtn"
+                            <button className={`border-none flex float-right text-center uppercase transition-[0.5s] bg-[200%_auto] text-[white] shadow-[0_0_20px_#eee] cursor-pointer w-auto m-2.5 p-3 rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] hover:bg-[right_center] phone:text-sm ${popupRemoveCar ? "bg-red-600" : "bg-[linear-gradient(to_right,#6cd4e4_0%,#c2e9fb_51%,#51cfe2_100%)]"} `} id="removeBtn"
                                 onClick={removeOwnedCars}
                             >
                                 Remove Car
@@ -385,12 +396,12 @@ const OwnedCars = () => {
                 </div>
                 {popupAddCar && (
                     <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-200 bg-opacity-75'>
-                        <div className='relative w-[500px] shadow-2xl p-5 m-5 -mt-[10%] bg-white rounded-lg'>
+                        <div className='relative w-[480px] phone:w-[260px] shadow-2xl p-5 m-5 -mt-[10%] bg-[#f9f9f9] rounded-lg'>
                             <div className="absolute top-0 right-0 mr-2" onClick={() => setPopupAddCar(false)}>
                                 <Icon className="text-[#59888f] hover:text-teal-400 focus:text-teal-400" icon={cross} size={22} />
                             </div>
-                            <div className="absolute bg-[#f9f9f9] shadow-[0_2px_5px_rgba(0,0,0,0.1)] z-[1] w-[500px] m-auto p-2.5 rounded-[5px] inset-x-0  phone:w-[280px]" id="popup-addCar">
-                                {showLabel && <div className="float-left not-italic text-[large] font-serif">
+                            <div className="absolute bg-[#f9f9f9] shadow-[0_10px_5px_rgba(0,0,0,0.1)] z-[1] w-[500px] m-auto p-2.5 rounded-[5px] inset-x-0  phone:w-[280px]" id="popup-addCar">
+                                {showLabel && <div className="float-left not-italic text-[large] font-serif mt-1">
                                     <label htmlFor="car-brand" className='block text-[#59888f] mt-1 mb-[22%]'>Car Brand:</label>
                                     <label htmlFor="car-model" className='block text-[#59888f] mt-1 mb-[22%]'>Car Model:</label>
                                     <label htmlFor="car-year" className='block text-[#59888f] mt-1 mb-[22%]'>Car Year:</label>

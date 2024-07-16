@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavBar from './navbar'
+import { FaBars } from "react-icons/fa";
+import SideNavBar from './sideNavBar';
 
 const Home = () => {
     const backendUrl = import.meta.env.VITE_URL;
@@ -68,6 +70,7 @@ const Home = () => {
     }, [, userCars]);
 
 
+
     const HandleLiveDiag = () => {
         const carBrand = userCars.split(" ")[0];
         const carModel = userCars.split(" ")[1];
@@ -124,13 +127,26 @@ const Home = () => {
             });
     }
 
+
     return (
         <>
+            {!showLabel && <header className='phone:mt-5'>
+                {!showLabel && <FaBars
+                    className="tablet:text-3xl phone:text-xl cursor-pointer float-left"
+                    onClick={toggleSidebar}
+                />}
+                {sidebarOpen && <SideNavBar toggleSidebar={toggleSidebar} />}
+            </header>
+            }
             {showLabel && <NavBar />}
+
+            <body>  </body>
+
+            {/* <div> */}
             <div className='mx-7 phone:mt-5 tablet:mt-28'>
                 {/* <div className="flex justify-between items-center"> */}
                 <div className="relative tablet:w-[500px] bg-white shadow-2xl z-[1] m-auto p-2.5 rounded-[5px] inset-x-0  phone:w-[280px] phone:mt-20" id="popup-addCar">
-                    <h1 className='text-center text-[#59888f] font-serif text-[large] mb-5 mt-2'>ADD UPDATE</h1>
+                    <h1 className='text-center text-[#59888f] font-serif text-[large] mb-5 mt-2'>Send Diagnostics</h1>
                     {showLabel &&
                         <div className="float-left not-italic text-[large] font-serif ml-2">
                             <label htmlFor="user-cars" className='block text-[#59888f] mt-1 mb-[22%]'>Select Car:</label>
@@ -176,7 +192,9 @@ const Home = () => {
                 </div>
             </div>
             <ToastContainer />
+            {/* </div> */}
         </>
+
     )
 }
 

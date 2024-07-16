@@ -115,6 +115,18 @@ const AddUpdate = () => {
 
 
     const HandleUploadUpdate = async () => {
+        if(carParts ==='' || carParts == null){
+            toast.error('Please select Car Part', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return;
+        }
         const data = new FormData();
         await data.append('maker', carBrand);
         await data.append('model', carModel);
@@ -223,7 +235,7 @@ const AddUpdate = () => {
                             required
                             className='box-border rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] mb-[4px] text-center p-2 border border-solid border-[#53f0f3] phone:w-[230px] phone:mx-auto tablet:w-[280px] focus:outline-none focus:border-[#2fb0b3] focus:ring-1 focus:ring-[#2fb0b3] hover:bg-[#f2f2f2] focus:bg-[#f2f2f2] focus-visible:bg-[#aaeffa] text-[#59888f]'
                             >
-                                <option value="1">Brakes</option>
+                                <option value="1">Collision System</option>
                                 <option value="2">Engine</option>
                                 <option value="3">Transmission</option>
                                 <option value="4">Steering</option>

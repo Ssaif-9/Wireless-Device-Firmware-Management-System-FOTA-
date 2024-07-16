@@ -115,6 +115,12 @@ const LiveDiagnostics = () => {
         tr.appendChild(td);
     };
 
+    // useEffect(() => {
+    //     const interval = setInterval(refresh, 3000); // 30000 milliseconds = 30 seconds
+    //     return () => clearInterval(interval); // Cleanup interval on component unmount
+    // }, []);
+    
+
     const refresh = () => {
         fetch(`${backendUrl}/admin/live_diag`, {
             method: 'GET',

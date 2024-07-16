@@ -362,9 +362,9 @@ const userServices = {
   
     client.on("message", async function (topic, message) {
       // message is Buffer
-      console.log(
-        "Message received on topic " + topic + ": " + message.toString()
-      );
+      // console.log(
+      //   "Message received on topic " + topic + ": " + message.toString()
+      // );
       const messageString = message.toString();
       const dataString = messageString.split(";");
       const data = dataString.map((element) => element.trim());

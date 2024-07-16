@@ -8,11 +8,17 @@ import { eyeOff } from 'react-icons-kit/feather/eyeOff';
 import { eye } from 'react-icons-kit/feather/eye';
 import { cross } from 'react-icons-kit/entypo/cross';
 import Compressor from 'compressorjs';
+import { FaBars } from "react-icons/fa";
+import SideNavBar from './sideNavBar';
 
 
 const Profile = () => {
     const backendUrl = import.meta.env.VITE_URL;
     const [showLabel, setShowLabel] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen);
+    };
     useEffect(() => {
 
         const isMobile = window.innerWidth <= 600;
@@ -367,7 +373,17 @@ const Profile = () => {
 
     return (
         <>
+            {!showLabel && <header className='phone:mt-5'>
+                {!showLabel && <FaBars
+                    className="tablet:text-3xl phone:text-xl cursor-pointer float-left"
+                    onClick={toggleSidebar}
+                />}
+                {sidebarOpen && <SideNavBar toggleSidebar={toggleSidebar} />}
+            </header>
+            }
             {showLabel && <NavBar />}
+
+            <body>  </body>
             <div className="tablet:max-w-[750px] phone:max-w-fit bg-white shadow-[0_0_10px_rgba(0,0,0,0.2)] mx-auto tablet:my-2 phone:my-10 p-5">
                 <img src={img} className='tablet:w-[200px] phone:w-[150px] tablet:h-[200px] phone:h-[150px] object-cover object-center flex justify-center items-center shadow-[0_0_10px_rgba(0,0,0.1)] transition-[0.3s] phone:mt-3 mb-5 mx-auto my-0 rounded-[50%]' alt="Profile Picture" />
                 <h1 className='tablet:text-4xl phone:text-3xl tablet:mb-5 phone:mb-4 text-center'>{name}</h1>
@@ -408,7 +424,7 @@ const Profile = () => {
                                             required
                                             maxLength={11}
                                             max={11}
-                                            className='box-bor-der rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] mb-[4px] text-center p-2 border border-solid border-[#53f0f3] phone:w-[230px] phone:mx-auto tablet:w-[215px] focus:outline-none focus:border-[#2fb0b3] focus:ring-1 focus:ring-[#2fb0b3] hover:bg-[#f2f2f2] focus:bg-[#f2f2f2] focus-visible:bg-[#aaeffa]  text-[#59888f]'
+                                            className='box-bor-der rounded-br-[25px] rounded-t-[25px] rounded-bl-[25px] mb-[4px] text-center p-2 border border-solid border-[#53f0f3] phone:w-[212px] phone:mx-auto tablet:w-[215px] focus:outline-none focus:border-[#2fb0b3] focus:ring-1 focus:ring-[#2fb0b3] hover:bg-[#f2f2f2] focus:bg-[#f2f2f2] focus-visible:bg-[#aaeffa]  text-[#59888f]'
                                         />
                                         <br />
                                         <div className="inline-flex m-0 p-0">

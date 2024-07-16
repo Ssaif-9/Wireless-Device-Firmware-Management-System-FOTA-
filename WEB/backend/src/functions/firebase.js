@@ -18,7 +18,7 @@ const upload = multer({ storage: storageConfig });
 
 async function uploadCarUpdate_Storage(make, model, year, version, hex) {
   // Set the destination in the bucket
- const destination = make + "/" + model + "/" + year + "/version" + ".hex";
+ const destination = make + "/" + model + "/" + year + "/cipher" + ".hex";
  
  // Set the content type to 'application/octet-stream'
  const metadata = {
@@ -114,7 +114,8 @@ async function uploadCarUpdate_RealtimeDB(make, model, year, part, version) {
     // console.log({partVersion: partVersion});
 
     set(ref(db, make + '/' + model + '/' + year), {
-      UpdateInfo: partVersion
+      UpdateInfo: partVersion,
+      ErrorInfo: 0
     }
     ).then(() => {
         console.log('Hex file uploaded successfully.');
